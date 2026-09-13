@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrisisShield — ce qui est construit et pourquoi</title>
+<style>
+:root{
+  --fond:#F5F7F4;
+  --carte:#FFFFFF;
+  --encre:#141A20;
+  --encre-douce:#52606C;
+  --bleu:#2C4A78;
+  --ocre:#9E4E17;
+  --vert:#1C5C4C;
+  --trait:#DCE2DC;
+  --trait-fin:#E9EDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--fond);color:var(--encre);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px;line-height:1.72;
+  -webkit-text-size-adjust:100%;
+}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto;}
+@media(min-width:1040px){
+  .page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px;}
+}
+
+/* ---- sommaire ---- */
+nav.som{padding:24px 20px 0;}
+@media(min-width:1040px){
+  nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+    padding:56px 0 40px;border-right:1px solid var(--trait);padding-right:24px;}
+}
+nav.som .titre-som{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;letter-spacing:.02em;color:var(--encre-douce);
+  font-weight:600;margin:0 0 14px;}
+nav.som ul{list-style:none;margin:0;padding:0;}
+nav.som li{margin:0;}
+nav.som a{display:block;padding:4px 0;font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:13.5px;line-height:1.4;color:var(--encre-douce);text-decoration:none;
+  border-left:2px solid transparent;padding-left:12px;margin-left:-14px;}
+nav.som a:hover{color:var(--bleu);border-left-color:var(--bleu);}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px;}
+nav.som ul ul{margin-bottom:8px;}
+details.som-mob summary{cursor:pointer;font-family:ui-sans-serif,system-ui,sans-serif;
+  font-size:14px;font-weight:600;padding:14px 0;color:var(--bleu);}
+@media(min-width:1040px){details.som-mob{display:none}}
+@media(max-width:1039px){nav.som.bureau{display:none}}
+
+/* ---- contenu ---- */
+main{padding:0 20px 96px;min-width:0;}
+@media(min-width:1040px){main{padding:56px 0 140px;}}
+.enveloppe{max-width:69ch;}
+
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px;}
+.chapeau h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;
+  letter-spacing:-.022em;margin:0 0 14px;}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);line-height:1.7;}
+.chapeau .meta b{color:var(--encre);font-weight:600;}
+
+h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(23px,3.4vw,30px);line-height:1.2;font-weight:660;letter-spacing:-.02em;
+  margin:72px 0 6px;padding-top:26px;border-top:1px solid var(--trait);}
+h2{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:19px;line-height:1.3;font-weight:640;letter-spacing:-.01em;
+  margin:42px 0 10px;color:var(--bleu);}
+h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;
+  margin:30px 0 8px;}
+p{margin:0 0 16px;}
+main>.enveloppe>p:first-of-type{margin-top:18px;}
+strong{font-weight:660;}
+em{font-style:italic;}
+a{color:var(--bleu);}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86em;
+  background:#EBEFEA;padding:1.5px 5px;border-radius:3px;}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px;}
+pre code{background:none;padding:0;font-size:13px;}
+hr{border:0;border-top:1px solid var(--trait);margin:44px 0;}
+
+ul,ol{margin:0 0 18px;padding-left:22px;}
+li{margin:0 0 7px;}
+
+blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:3px solid var(--bleu);
+  color:var(--encre);font-size:17.5px;}
+blockquote p{margin:0 0 10px;}
+blockquote p:last-child{margin:0;}
+
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14px;line-height:1.55;}
+@media(max-width:700px){table{display:block;overflow-x:auto;white-space:normal;}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;
+  border-bottom:1.5px solid var(--encre);vertical-align:bottom;}
+tbody td{padding:10px 14px 10px 0;border-bottom:1px solid var(--trait-fin);vertical-align:top;}
+tbody tr:last-child td{border-bottom:1px solid var(--trait);}
+td:last-child,th:last-child{padding-right:0;}
+
+/* ---- encarts ---- */
+p.reflexe,p.piege,p.regle{
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14.5px;line-height:1.65;padding:14px 16px;margin:20px 0 22px;
+  background:var(--carte);}
+p.reflexe{border-left:3px solid var(--vert);}
+p.reflexe strong:first-child{color:var(--vert);}
+p.piege{border-left:3px solid var(--ocre);}
+p.piege strong:first-child{color:var(--ocre);}
+p.regle{border-left:3px solid var(--bleu);}
+p.regle strong:first-child{color:var(--bleu);}
+p.fiche{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;
+  color:var(--encre-douce);margin:0 0 18px;}
+p.fiche strong{color:var(--encre);}
+
+/* ---- cases à cocher ---- */
+ul.controle{list-style:none;padding:0;}
+ul.controle li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid var(--trait-fin);font-size:16px;}
+ul.controle input{margin-top:7px;width:16px;height:16px;accent-color:var(--vert);flex-shrink:0;}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through;
+  text-decoration-color:#C3CCD1;}
+
+a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--bleu);outline-offset:3px;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- barre de progression ---- */
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);
+  width:0;z-index:50;transition:width .08s linear;}
+@media(prefers-reduced-motion:reduce){#progression{transition:none}}
+
+/* ---- sommaire actif ---- */
+nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu);font-weight:600;}
+
+/* ---- questions / reponses ---- */
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  margin:0 0 10px;padding:0;}
+details[open]{border-left-color:var(--vert);}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;font-weight:600;line-height:1.45;color:var(--encre);
+  display:flex;gap:12px;align-items:flex-start;}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--bleu);font-weight:700;
+  font-size:17px;line-height:1.3;flex-shrink:0;}
+details[open]>summary::before{content:"2";color:var(--vert);}
+details>summary:hover{background:#F2F5F1;}
+details>*:not(summary){padding:0 18px;}
+details>p:first-of-type{padding-top:2px;}
+details>p:last-child{padding-bottom:16px;margin-bottom:0;}
+details.som-mob{border:0;border-left:0;background:none;}
+details.som-mob>summary{padding:14px 0;}
+details.som-mob>*:not(summary){padding:0;}
+
+/* ---- compteur de controle ---- */
+.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);margin:14px 0 0;}
+.compteur b{color:var(--vert);font-size:16px;}
+
+
+/* ---- couleur par chapitre ---- */
+.chapitre{--teinte:var(--bleu);}
+.chapitre>h1{color:var(--teinte);border-top:0;padding-top:30px;position:relative;}
+.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;
+  background:var(--teinte);}
+.chapitre h2{color:var(--teinte);}
+.chapitre h3{color:var(--teinte);opacity:.92;}
+.chapitre blockquote{border-left-color:var(--teinte);background:var(--carte);
+  padding:14px 20px;}
+.chapitre thead th{border-bottom-color:var(--teinte);color:var(--teinte);}
+.chapitre pre{border-left-color:var(--teinte);}
+.chapitre details{border-left-color:var(--teinte);}
+.chapitre details>summary::before{color:var(--teinte);}
+.chapitre details[open]{border-left-color:var(--vert);}
+.chapitre details[open]>summary::before{color:var(--vert);}
+.chapitre code{background:color-mix(in srgb,var(--teinte) 11%,transparent);
+  color:color-mix(in srgb,var(--teinte) 78%,black);}
+.chapitre a{color:var(--teinte);}
+
+/* ---- bandeau spectre ---- */
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px;}
+.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;font-weight:560;color:var(--encre-douce);
+  background:var(--carte);border:1px solid var(--trait);
+  padding:5px 11px 5px 8px;border-radius:2px;}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px;flex-shrink:0;}
+.spectre a:hover{color:var(--teinte);border-color:var(--teinte);}
+
+/* ---- sommaire colore ---- */
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;
+  border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent);}
+nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item ul a:hover,nav.som li.ch-item ul a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item{margin-bottom:10px;}
+
+@media print{
+  nav.som,details.som-mob,#progression{display:none}
+  .spectre{display:none}
+  details{border:1px solid #ccc}
+  details>*:not(summary){display:block !important}
+  body{background:#fff;font-size:11pt}
+  .page{display:block;padding:0}
+  h1{break-after:avoid;page-break-after:avoid}
+  table,blockquote,p.reflexe,p.piege{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div id="progression"></div>
+<div class="page">
+<nav class="som bureau">
+  <p class="titre-som">Sommaire</p>
+  <div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
+<li><a href="#11-pourquoi-ce-projet-est-pertinent-pour-un-poste-devsecops">1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
+<li><a href="#21-les-briques">2.1 Les briques</a></li>
+<li><a href="#22-lorganisation-du-backend">2.2 L'organisation du backend</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
+<li><a href="#31-la-connexion">3.1 La connexion</a></li>
+<li><a href="#32-une-requete-protegee">3.2 Une requête protégée</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
+<li><a href="#41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</a></li>
+<li><a href="#42-les-cinq-verifications">4.2 Les cinq vérifications</a></li>
+<li><a href="#43-les-tests-negatifs">4.3 Les tests négatifs</a></li>
+<li><a href="#44-pourquoi-deux-chaines-de-securite">4.4 Pourquoi deux chaînes de sécurité</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
+<li><a href="#51-le-mecanisme">5.1 Le mécanisme</a></li>
+<li><a href="#52-la-limite-a-connaitre-absolument">5.2 La limite, à connaître absolument</a></li>
+<li><a href="#53-la-preuve">5.3 La preuve</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
+<li><a href="#61-le-principe">6.1 Le principe</a></li>
+<li><a href="#62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</a></li>
+<li><a href="#63-ce-que-le-fournisseur-ne-voit-jamais">6.3 Ce que le fournisseur ne voit jamais</a></li>
+<li><a href="#64-lhonnetete-sur-le-filtrage">6.4 L'honnêteté sur le filtrage</a></li>
+<li><a href="#65-labstraction-du-fournisseur">6.5 L'abstraction du fournisseur</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
+<li><a href="#71-limage">7.1 L'image</a></li>
+<li><a href="#72-la-chaine">7.2 La chaîne</a></li>
+<li><a href="#73-les-regles-maison">7.3 Les règles maison</a></li>
+<li><a href="#74-kubernetes">7.4 Kubernetes</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+</ul>
+</div>
+
+</nav>
+<main>
+<div class="enveloppe">
+<header class="chapeau">
+  <h1>CrisisShield — ce qui est construit et pourquoi</h1>
+  <p class="meta">Cours orient&eacute; entretien : chaque brique, le pourquoi de chaque choix, ce qui manque, et 25 questions avec r&eacute;ponses mod&egrave;les.<br><b>Lecture :</b> 45 minutes, puis les questions &agrave; voix haute.</p>
+</header>
+<nav class="spectre"><a href="#chapitre-1-le-projet-en-trente-secondes" style="--teinte:#3A4E8C" title="Chapitre 1 — Le projet en trente secondes"><span></span>1 Le projet en trente sec…</a><a href="#chapitre-2-larchitecture" style="--teinte:#6B4A8F" title="Chapitre 2 — L'architecture"><span></span>2 L'architecture</a><a href="#chapitre-3-le-parcours-dune-requete" style="--teinte:#1F6E86" title="Chapitre 3 — Le parcours d'une requête"><span></span>3 Le parcours d'une requê…</a><a href="#chapitre-4-lidentite-et-les-jetons" style="--teinte:#1E6B57" title="Chapitre 4 — L'identité et les jetons"><span></span>4 L'identité et les jetons</a><a href="#chapitre-5-le-multi-locataire" style="--teinte:#A8621A" title="Chapitre 5 — Le multi-locataire"><span></span>5 Le multi-locataire</a><a href="#chapitre-6-lassistant-ia" style="--teinte:#A34434" title="Chapitre 6 — L'assistant IA"><span></span>6 L'assistant IA</a><a href="#chapitre-7-devsecops" style="--teinte:#2D5F8F" title="Chapitre 7 — DevSecOps"><span></span>7 DevSecOps</a><a href="#chapitre-8-ce-qui-nest-pas-fait" style="--teinte:#8C3F63" title="Chapitre 8 — Ce qui n'est pas fait"><span></span>8 Ce qui n'est pas fait</a><a href="#chapitre-9-simulation-dentretien" style="--teinte:#7A6B1B" title="Chapitre 9 — Simulation d'entretien"><span></span>9 Simulation d'entretien</a><a href="#ce-que-tu-dois-savoir-refaire-sans-notes" style="--teinte:#3F6B2E" title="Ce que tu dois savoir refaire sans notes"><span></span>Ce que tu dois savoir ref…</a></nav>
+<details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
+<li><a href="#11-pourquoi-ce-projet-est-pertinent-pour-un-poste-devsecops">1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
+<li><a href="#21-les-briques">2.1 Les briques</a></li>
+<li><a href="#22-lorganisation-du-backend">2.2 L'organisation du backend</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
+<li><a href="#31-la-connexion">3.1 La connexion</a></li>
+<li><a href="#32-une-requete-protegee">3.2 Une requête protégée</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
+<li><a href="#41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</a></li>
+<li><a href="#42-les-cinq-verifications">4.2 Les cinq vérifications</a></li>
+<li><a href="#43-les-tests-negatifs">4.3 Les tests négatifs</a></li>
+<li><a href="#44-pourquoi-deux-chaines-de-securite">4.4 Pourquoi deux chaînes de sécurité</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
+<li><a href="#51-le-mecanisme">5.1 Le mécanisme</a></li>
+<li><a href="#52-la-limite-a-connaitre-absolument">5.2 La limite, à connaître absolument</a></li>
+<li><a href="#53-la-preuve">5.3 La preuve</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
+<li><a href="#61-le-principe">6.1 Le principe</a></li>
+<li><a href="#62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</a></li>
+<li><a href="#63-ce-que-le-fournisseur-ne-voit-jamais">6.3 Ce que le fournisseur ne voit jamais</a></li>
+<li><a href="#64-lhonnetete-sur-le-filtrage">6.4 L'honnêteté sur le filtrage</a></li>
+<li><a href="#65-labstraction-du-fournisseur">6.5 L'abstraction du fournisseur</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
+<li><a href="#71-limage">7.1 L'image</a></li>
+<li><a href="#72-la-chaine">7.2 La chaîne</a></li>
+<li><a href="#73-les-regles-maison">7.3 Les règles maison</a></li>
+<li><a href="#74-kubernetes">7.4 Kubernetes</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+</ul>
+</div>
+</details>
+<section class="chapitre" style="--teinte:#3A4E8C"><h1 id="chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</h1>
+<blockquote>
+<p>CrisisShield est une plateforme de gestion de crise cyber, multi-organisations, avec un assistant IA. Chaque organisation ne voit que ses données, l'identité vient de l'annuaire d'entreprise, les jetons sont signés en asymétrique, et l'assistant ne laisse jamais sortir une donnée personnelle ni ne répond à une injection de prompt. Tout tourne dans Docker, la chaîne CI bloque sur les failles critiques.</p>
+</blockquote>
+<p>C'est ton pitch. Chaque phrase renvoie à un chapitre de ce cours. Si on te demande « c'est-à-dire ? » sur l'une d'elles, tu dois pouvoir descendre d'un niveau.</p>
+<h2 id="11-pourquoi-ce-projet-est-pertinent-pour-un-poste-devsecops">1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps</h2>
+<p>Parce qu'il n'est pas un exercice de sécurité abstrait. C'est une application métier réelle — des plans de crise, des cellules de crise — sur laquelle chaque contrôle de sécurité a une <strong>raison métier</strong> : un plan contient des astreintes et des numéros, une crise engage la responsabilité juridique, deux clients ne doivent jamais se voir.</p>
+<p>En entretien, relie toujours le contrôle à ce qu'il protège. « J'ai mis du TLS mutuel » est une phrase de développeur. « Un plan de crise contient les numéros d'astreinte de la direction, donc rien ne circule en clair entre mes services » est une phrase de Tech Lead.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-2-larchitecture">Chapitre 2 — L'architecture</h1>
+<h2 id="21-les-briques">2.1 Les briques</h2>
+<table>
+<thead>
+<tr>
+<th>Brique</th>
+<th>Rôle</th>
+<th>Techno</th>
+<th>Où</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend</td>
+<td>API, sécurité, métier, assistant</td>
+<td>Spring Boot 3.2, Java 21</td>
+<td><code>backend/</code></td>
+</tr>
+<tr>
+<td>Front</td>
+<td>Interface utilisateur</td>
+<td>React 18, TypeScript, Vite</td>
+<td><code>frontend/</code></td>
+</tr>
+<tr>
+<td>Base</td>
+<td>Données des organisations</td>
+<td>PostgreSQL 16</td>
+<td>conteneur <code>db</code></td>
+</tr>
+<tr>
+<td>Annuaire</td>
+<td>Identités de l'entreprise</td>
+<td>OpenLDAP</td>
+<td><code>infra/ldap/</code></td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>Tout démarre en une commande</td>
+<td>Docker Compose</td>
+<td><code>docker-compose.yml</code></td>
+</tr>
+<tr>
+<td>Cible de production</td>
+<td>Déploiement durci</td>
+<td>Kubernetes, Helm</td>
+<td><code>infra/kubernetes/</code></td>
+</tr>
+<tr>
+<td>Chaîne de livraison</td>
+<td>Construction, tests, contrôles de sécurité</td>
+<td>GitLab CI</td>
+<td><code>.gitlab-ci.yml</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="22-lorganisation-du-backend">2.2 L'organisation du backend</h2>
+<p><code>api/             contrôleurs REST et objets de transfert
+application/     services métier (UserService)
+domain/          entités, dépôts, règles multi-locataire
+infrastructure/  sécurité, filtres, annuaire
+assistant/       la passerelle IA
+config/          amorçage des données de développement</code></p>
+<p><strong>Pourquoi cette séparation.</strong> Le domaine ne dépend de rien. L'infrastructure dépend du domaine. L'API dépend des deux. Cela permet de tester le domaine sans Spring, et de remplacer l'infrastructure — LDAP par Keycloak, PostgreSQL par autre chose — sans toucher au métier.</p>
+<p><strong>Question d'entretien probable :</strong> « Pourquoi pas une architecture hexagonale complète avec des ports et adaptateurs ? »
+Réponse : parce que le projet n'a pas encore la taille qui le justifie. Les couches sont là ; les interfaces de port viendront quand un second adaptateur existera réellement. Ajouter de l'abstraction avant le besoin est une dette, pas un investissement.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</h1>
+<p>C'est le chapitre à connaître par cœur. Un recruteur te demandera « que se passe-t-il quand un utilisateur appelle ton API ? » et attendra la chaîne complète.</p>
+<h2 id="31-la-connexion">3.1 La connexion</h2>
+<p><code>POST /api/auth/login  {username, password}
+        │
+        ▼
+AuthController ──► AuthenticationManager (LdapSecurityConfig)
+        │                    │
+        │                    ▼
+        │           bind LDAP : uid=user,ou=people,dc=springframework,dc=org
+        │                    │  succès
+        │                    ▼
+        │           CustomLdapUserDetailsContextMapper
+        │           lit l'attribut mail, cherche l'utilisateur en base par email
+        │                    │
+        ▼                    ▼
+JwtUtil.generateToken(user)  ──►  jeton RS256, 15 minutes, avec organisationId
+        │
+        ▼
+{ accessToken: "eyJ..." }</code></p>
+<p>Trois points à savoir dire :</p>
+<ol>
+<li><strong>Le mot de passe n'est jamais comparé par l'application.</strong> C'est l'annuaire qui le vérifie, via un bind. L'application ne stocke pas le mot de passe LDAP.</li>
+<li><strong>L'utilisateur doit exister des deux côtés</strong> : dans l'annuaire pour l'authentification, en base pour le rattachement à une organisation et les rôles. C'est le rôle de <code>CustomLdapUserDetailsContextMapper</code>. L'utilisateur <code>user</code> de développement est créé en base au démarrage précisément pour cela.</li>
+<li><strong>La MFA est optionnelle par utilisateur</strong> : si <code>mfaEnabled</code> est vrai, le code TOTP est vérifié avant l'émission du jeton (<code>MfaController</code>, <code>TotpConfig</code>).</li>
+</ol>
+<h2 id="32-une-requete-protegee">3.2 Une requête protégée</h2>
+<p><code>GET /api/users   Authorization: Bearer eyJ...
+        │
+        ▼
+CorrelationIdFilter        pose X-Correlation-Id, le met dans les journaux
+        │
+        ▼
+Chaîne de sécurité 2 (LdapSecurityConfig.apiProtectedChain)
+        │
+        ▼
+JwtAuthenticationFilter    extrait le jeton, vérifie signature / émetteur / audience / expiration
+        │                  charge l'utilisateur, construit TenantAuthentication(user, organisationId)
+        ▼
+TenantFilter               lit organisationId, active le filtre Hibernate orgFilter
+        │
+        ▼
+UserController             @PreAuthorize ROLE_ADMIN, appelle UserService
+        │
+        ▼
+UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la requête</code></p>
+<p><strong>La phrase clé :</strong> le contrôleur ne sait pas qu'il est multi-locataire. Il appelle <code>findAll()</code>. C'est Hibernate, via le filtre activé par <code>TenantFilter</code>, qui restreint à l'organisation. Le développeur ne peut pas oublier de filtrer, parce qu'il n'a pas à y penser.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</h1>
+<h2 id="41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</h2>
+<p>Avant le lot 1, le projet signait en HS256 : un secret partagé, présent dans <code>docker-compose.yml</code>. Quiconque lit ce secret peut forger un jeton administrateur.</p>
+<p>Maintenant, <code>JwtUtil</code> signe avec une clé privée RSA et vérifie avec la clé publique. La clé privée n'existe qu'à un endroit. La clé publique est publiée sur <code>/.well-known/jwks.json</code>.</p>
+<p><strong>Conséquence à énoncer :</strong> n'importe quel service interne peut vérifier un jeton CrisisShield sans détenir le moindre secret. Et la compromission d'un service vérificateur ne permet pas de forger.</p>
+<p><strong>Limite à énoncer aussi :</strong> en développement, la paire est générée au démarrage, donc les jetons ne survivent pas à un redémarrage. En production, la clé privée viendra de KMS ou d'un HSM — c'est l'épic EP09. Dire la limite avant qu'on te la pointe est un marqueur de séniorité.</p>
+<h2 id="42-les-cinq-verifications">4.2 Les cinq vérifications</h2>
+<p><code>JwtUtil.parse</code> impose, dans l'ordre : signature avec la clé publique, émetteur <code>crisisshield</code>, audience <code>crisisshield-api</code>, expiration avec 5 secondes de tolérance, et l'algorithme déduit de la clé — jamais lu dans l'en-tête du jeton.</p>
+<p>Ce dernier point est celui qu'on te fera expliquer. Voir la question 8 du chapitre 9.</p>
+<h2 id="43-les-tests-negatifs">4.3 Les tests négatifs</h2>
+<p><code>JwtUtilTest</code> contient dix cas. Ce n'est pas du remplissage : chacun correspond à une attaque documentée.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Attaque couverte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jeton expiré</td>
+<td>rejeu d'un vieux jeton</td>
+</tr>
+<tr>
+<td>autre clé privée</td>
+<td>forge avec une clé de l'attaquant</td>
+</tr>
+<tr>
+<td>mauvaise audience</td>
+<td>jeton d'un autre service accepté à tort</td>
+</tr>
+<tr>
+<td>mauvais émetteur</td>
+<td>jeton d'un fournisseur d'identité étranger</td>
+</tr>
+<tr>
+<td><code>alg=none</code></td>
+<td>jeton non signé accepté par une bibliothèque naïve</td>
+</tr>
+<tr>
+<td>confusion d'algorithme</td>
+<td>clé publique utilisée comme secret HMAC</td>
+</tr>
+<tr>
+<td>charge utile altérée</td>
+<td>modification du sujet après signature</td>
+</tr>
+</tbody>
+</table>
+<h2 id="44-pourquoi-deux-chaines-de-securite">4.4 Pourquoi deux chaînes de sécurité</h2>
+<p><code>LdapSecurityConfig</code> en déclare deux. La première, prioritaire, ne couvre que les routes publiques : connexion, JWKS, santé. La seconde couvre tout le reste et porte le filtre JWT.</p>
+<p><strong>Pourquoi pas une seule avec des <code>permitAll</code> ?</strong> Parce que le filtre JWT tournerait aussi sur les routes publiques et lèverait des exceptions sur les requêtes sans jeton. Deux chaînes, c'est deux périmètres réellement distincts.</p>
+<p><strong>L'erreur historique du projet :</strong> il y avait <em>trois</em> configurations de sécurité, dont deux actives en même temps sur le profil <code>ldap</code>, chacune déclarant une chaîne attrape-tout. Spring Security refusait de démarrer. C'est l'une des cinq causes qui empêchaient le projet de tourner pendant neuf mois. Raconter cette erreur en entretien est une bonne chose : elle montre que tu sais lire un message de démarrage Spring et en tirer la conclusion.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</h1>
+<h2 id="51-le-mecanisme">5.1 Le mécanisme</h2>
+<p>Trois pièces :</p>
+<ul>
+<li><code>package-info.java</code> déclare le filtre Hibernate <code>orgFilter</code> avec un paramètre <code>orgId</code>.</li>
+<li>Chaque entité multi-locataire porte <code>@Filter(name = "orgFilter", condition = "organisation_id = :orgId")</code>.</li>
+<li><code>TenantFilter</code>, exécuté après l'authentification, active le filtre sur la session avec l'organisation du jeton.</li>
+</ul>
+<p>Dès lors, <strong>toute requête HQL ou Spring Data</strong> sur ces entités est automatiquement restreinte. <code>findAll()</code>, <code>findByUsername()</code>, tout.</p>
+<h2 id="52-la-limite-a-connaitre-absolument">5.2 La limite, à connaître absolument</h2>
+<p>Le filtre Hibernate s'applique aux requêtes, <strong>pas à <code>EntityManager.find(id)</code></strong>. Un accès direct par identifiant contourne le filtre. C'est documenté par Hibernate et c'est une question classique.</p>
+<p>Réponse attendue : les services métier passent toujours par les méthodes de dépôt, jamais par <code>find</code> direct ; et une règle Semgrep (EP19-US03) peut interdire <code>entityManager.find</code> en dehors d'une liste blanche.</p>
+<h2 id="53-la-preuve">5.3 La preuve</h2>
+<p><code>TenantIsolationTest</code> fait trois choses : filtre actif sur A, on ne voit que A ; filtre actif sur B, l'utilisateur de A est invisible même par son nom ; <strong>sans filtre, tout est visible</strong>.</p>
+<p>Le troisième test est le plus important. Il prouve que le filtre est <strong>la seule barrière</strong>. Si un jour quelqu'un désactive <code>TenantFilter</code>, ce test ne le détectera pas, mais il documente que la sécurité dépend entièrement de lui. Un auditeur appréciera cette honnêteté.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</h1>
+<h2 id="61-le-principe">6.1 Le principe</h2>
+<p>Un seul point d'entrée, <code>POST /api/assistant/ask</code>, protégé par la chaîne 2. Aucun autre chemin vers un modèle. <code>AssistantService</code> est <strong>la</strong> passerelle.</p>
+<h2 id="62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</h2>
+<p><code>question
+   │
+   ▼  1. RateLimiter          seau à jetons par utilisateur, 20 requêtes puis 20/min  → 429 si dépassé
+   │
+   ▼  2. PromptGuard          14 motifs d'injection, français et anglais               → 422 si détecté
+   │
+   ▼  3. PiiMasker            courriel, téléphone, IBAN, NIR → marqueurs [[EMAIL_1]]
+   │
+   ▼  4. ModelProvider        appel du modèle avec le texte masqué
+   │
+   ▼  5. PromptGuard.sanitize la réponse est hostile : refus si elle contient le prompt système
+   │
+   ▼  6. PiiMasker.restore    les marqueurs redeviennent les valeurs réelles
+   │
+   ▼  réponse</code></p>
+<p><strong>Pourquoi cet ordre.</strong> Du moins cher au plus cher. La limitation de débit coûte une lecture en mémoire ; le filtrage coûte quelques expressions régulières ; l'appel au modèle coûte de l'argent et des secondes. On rejette avant de payer.</p>
+<h2 id="63-ce-que-le-fournisseur-ne-voit-jamais">6.3 Ce que le fournisseur ne voit jamais</h2>
+<p>Le test <code>AssistantServiceTest.masquageDeBoutEnBout</code> place un fournisseur espion qui enregistre ce qu'il reçoit. Il vérifie que <code>alice@a.test</code> n'y figure pas, que <code>[[EMAIL_1]]</code> y figure, et que la réponse rendue à l'utilisateur contient bien <code>alice@a.test</code>.</p>
+<p>C'est le test à citer en entretien. Il prouve la propriété centrale en une trentaine de lignes.</p>
+<h2 id="64-lhonnetete-sur-le-filtrage">6.4 L'honnêteté sur le filtrage</h2>
+<p><code>PromptGuardBenchTest</code> mesure : 20 charges malveillantes, 10 questions légitimes. Il exige zéro faux positif et publie le taux de détection.</p>
+<p><strong>Ce que tu dois dire :</strong> ce filtre ne bloque pas toute injection, et aucun filtre ne le peut. La vraie défense est ailleurs : le modèle n'a <strong>aucune action possible</strong>. Il ne lit pas la base, il ne modifie rien. Une injection qui passe le filtre obtient au pire une réponse déplacée, jamais un effet. C'est le principe de moindre capacité, et c'est la réponse qui distingue un candidat sérieux.</p>
+<h2 id="65-labstraction-du-fournisseur">6.5 L'abstraction du fournisseur</h2>
+<p><code>ModelProvider</code> est une interface à deux méthodes. <code>MockModelProvider</code> est l'implémentation active. Le jour où Bedrock est choisi, on écrit une classe, on change une propriété, rien d'autre ne bouge.</p>
+<p>Le choix lui-même n'est pas fait, et c'est documenté dans <code>docs/adr/0003-fournisseur-ia.md</code> avec les critères. Un registre de décision « non prise, voici pourquoi et voici comment on décidera » vaut mieux qu'une décision prise sans critères.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-7-devsecops">Chapitre 7 — DevSecOps</h1>
+<h2 id="71-limage">7.1 L'image</h2>
+<p>Le <code>Dockerfile</code> du backend est en deux étapes : Maven construit, puis un JRE Alpine exécute. L'image finale ne contient ni Maven, ni le code source, ni un shell utilisable. Le processus tourne sous l'utilisateur <code>crisisshield</code>, pas <code>root</code>.</p>
+<p><strong>Pourquoi.</strong> Un conteneur compromis avec <code>root</code> et un shell permet d'installer des outils et de tenter une évasion. Sans l'un ni l'autre, l'attaquant est dans une boîte vide.</p>
+<h2 id="72-la-chaine">7.2 La chaîne</h2>
+<p><code>.gitlab-ci.yml</code> enchaîne : construction, tests, puis quatre contrôles de sécurité.</p>
+<table>
+<thead>
+<tr>
+<th>Contrôle</th>
+<th>Outil</th>
+<th>Bloquant ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Secrets dans le code</td>
+<td>Gitleaks</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Failles des dépendances</td>
+<td>Trivy, critique</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Analyse statique</td>
+<td>Semgrep, OWASP + règles maison</td>
+<td>pas encore — le bruit initial se trie d'abord</td>
+</tr>
+<tr>
+<td>Nomenclature logicielle</td>
+<td>Syft, CycloneDX</td>
+<td>produit un artefact</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pourquoi Semgrep n'est pas bloquant.</strong> Parce qu'un contrôle qui bloque sur du bruit sera désactivé à la première urgence, définitivement. On le rend bloquant une fois les faux positifs classés. C'est une décision, pas un oubli, et elle est commentée dans le fichier.</p>
+<h2 id="73-les-regles-maison">7.3 Les règles maison</h2>
+<p><code>.semgrep.yml</code> contient deux règles qui traduisent des décisions d'architecture en vérifications automatiques : interdiction d'appeler un <code>ModelProvider</code> hors de <code>AssistantService</code>, interdiction de secret en dur.</p>
+<p><strong>Pourquoi c'est important.</strong> Une décision d'architecture défendue en revue de code tient tant que l'architecte est là. Une décision encodée en règle tient toute seule.</p>
+<h2 id="74-kubernetes">7.4 Kubernetes</h2>
+<p>Le chart Helm applique au conteneur : pas de racine, système de fichiers en lecture seule, toutes les capacités Linux retirées, pas d'élévation de privilège, sondes de vivacité et de disponibilité distinctes. La politique réseau refuse tout par défaut et n'ouvre que la résolution de noms, la base et l'annuaire.</p>
+<p>Tout cela est écrit et cohérent, mais <strong>pas encore déployé</strong> sur un cluster. Voir le chapitre 8.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</h1>
+<p>À dire spontanément. Un périmètre honnête inspire confiance ; un périmètre gonflé se démonte en trois questions.</p>
+<ul>
+<li><strong>Le métier n'existe pas côté backend.</strong> Plans, crises, war room, kits : le front les affiche avec des données simulées. Le backend n'a que les utilisateurs et les organisations.</li>
+<li><strong>L'assistant tourne sur un fournisseur simulé.</strong> Le pipeline de sécurité est complet ; le modèle derrière est faux.</li>
+<li><strong>Kubernetes et Terraform sont écrits, pas exécutés.</strong> Le chart est cohérent, le plan AWS est un document.</li>
+<li><strong>La clé JWT est générée au démarrage.</strong> Pas encore de KMS ni de fichier de clé monté.</li>
+<li><strong>La PKI interne n'existe pas encore.</strong> Bouncy Castle est dans le <code>pom</code>, <code>CertificateRecord</code> attend son service. Tout l'épic EP09 est devant toi.</li>
+<li><strong>44 tests, tous unitaires ou d'intégration légère.</strong> Aucun test de bout en bout par HTTP.</li>
+</ul>
+<p>Ce sont exactement les tickets du backlog enrichi. Quand on te demande « et ensuite ? », tu as la réponse.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</h1>
+<p>Formule ta réponse à voix haute avant d'ouvrir. Format attendu : une phrase directe, la nuance, un exemple.</p>
+<details>
+<summary>1. Décris-moi ton projet en trente secondes.</summary>
+<p>Le pitch du chapitre 1, mot pour mot. Entraîne-toi jusqu'à ce qu'il sorte sans hésitation. Puis, sans qu'on te le demande, propose de descendre sur la brique qui intéresse l'interlocuteur : « je peux détailler l'identité, le multi-locataire ou l'assistant, selon ce qui vous parle ».</p>
+</details>
+<details>
+<summary>2. Que se passe-t-il quand un utilisateur se connecte ?</summary>
+<p>Le mot de passe part à l'annuaire LDAP par un bind ; l'application ne le voit jamais. Si le bind réussit, je retrouve l'utilisateur en base par son courriel pour connaître son organisation et ses rôles. Si la MFA est active, je vérifie le code TOTP. Puis j'émets un jeton RS256 de quinze minutes qui porte l'identifiant d'organisation.</p>
+<p>Le point que j'ajoute : l'utilisateur doit exister des deux côtés, annuaire et base. C'est une contrainte de conception assumée, et c'est ce que remplacera Keycloak en fédération plus tard.</p>
+</details>
+<details>
+<summary>3. Et quand il appelle une route protégée ?</summary>
+<p>Le filtre JWT vérifie signature, émetteur, audience et expiration, puis construit une authentification qui porte l'organisation. Un second filtre active le filtre Hibernate sur cette organisation. Le contrôleur vérifie le rôle et appelle le service, qui appelle le dépôt. Hibernate ajoute la clause d'organisation à la requête sans que personne ne l'écrive.</p>
+<p>La phrase qui compte : le développeur ne peut pas oublier de filtrer, parce qu'il n'a pas à y penser.</p>
+</details>
+<details>
+<summary>4. Comment garantis-tu qu'un client ne voit pas les données d'un autre ?</summary>
+<p>Par un filtre Hibernate activé à chaque requête à partir de l'organisation du jeton, et par un test qui le prouve dans les deux sens.</p>
+<p>La limite que je nomme moi-même : le filtre ne s'applique pas à l'accès direct par identifiant. Les services passent par les dépôts, et une règle statique peut interdire le contournement. Et mon troisième test montre que sans le filtre tout est visible : c'est la seule barrière, et je le sais.</p>
+</details>
+<details>
+<summary>5. Pourquoi RS256 et pas HS256 ?</summary>
+<p>HS256, c'est un secret partagé entre l'émetteur et tous les vérificateurs. Chacun d'eux peut donc forger. RS256 sépare : une clé privée qui signe, une clé publique qui vérifie. Les vérificateurs ne peuvent rien forger, et la clé publique peut être publiée.</p>
+<p>Dans mon projet elle l'est, sur un point d'accès JWKS standard. Et le secret partagé a disparu du fichier Compose, ce qui était un vrai problème avant.</p>
+</details>
+<details>
+<summary>6. Où est ta clé privée ?</summary>
+<p>Aujourd'hui, générée au démarrage, en mémoire, jamais écrite. C'est correct pour le développement et faux pour la production : les jetons ne survivent pas à un redémarrage, et deux instances auraient deux clés.</p>
+<p>La cible, c'est KMS ou un HSM : la clé ne sort jamais, on lui envoie la donnée à signer. C'est mon épic EP09, et c'est la prochaine étape.</p>
+</details>
+<details>
+<summary>7. Comment révoques-tu un jeton ?</summary>
+<p>Je ne le fais pas. Un jeton signé est valide jusqu'à expiration, c'est le prix de la vérification sans état. Ma réponse est la durée courte : quinze minutes. La fenêtre d'exploitation d'un jeton volé est bornée.</p>
+<p>Si le besoin de révocation immédiate arrivait, j'ajouterais une liste de révocation en cache, en acceptant la dépendance qu'elle crée. Je ne le fais pas par défaut parce que ce besoin n'est pas exprimé.</p>
+</details>
+<details>
+<summary>8. Explique l'attaque par confusion d'algorithme.</summary>
+<p>Le jeton annonce son algorithme dans l'en-tête. Une bibliothèque naïve lit cet en-tête et l'applique. L'attaquant annonce HS256 et signe avec la clé publique RSA — qui est publique, donc qu'il possède. Le vérificateur utilise cette même clé publique comme secret HMAC : la signature est valide.</p>
+<p>Ma parade : l'algorithme est imposé par la clé que je fournis au vérificateur, jamais lu dans le jeton. Et j'ai un test qui construit précisément ce jeton et vérifie son rejet.</p>
+<p>La leçon générale : on ne demande jamais à l'entrée hostile comment il faut la vérifier.</p>
+</details>
+<details>
+<summary>9. Pourquoi deux chaînes de sécurité Spring ?</summary>
+<p>Une chaîne pour les routes publiques sans filtre JWT, une pour tout le reste avec. Deux périmètres réellement distincts, pas un seul avec des exceptions.</p>
+<p>Et j'ai appris à mes dépens qu'on ne déclare jamais deux chaînes attrape-tout dans le même profil : Spring Security refuse de démarrer, avec un message très explicite que je sais maintenant lire.</p>
+</details>
+<details>
+<summary>10. Comment ton assistant IA protège-t-il les données ?</summary>
+<p>Avant tout envoi au modèle, un masqueur remplace courriels, téléphones, IBAN et numéros de sécurité sociale par des marqueurs stables. Le modèle raisonne sur <code>[[EMAIL_1]]</code>, jamais sur la valeur. La valeur est restaurée dans la réponse rendue à l'utilisateur.</p>
+<p>J'ai un test avec un fournisseur espion qui prouve que la valeur ne lui parvient jamais. Et je nomme ma limite : les noms de personnes ne sont pas couverts par des expressions régulières ; il faut un détecteur d'entités, prévu en version 2.</p>
+</details>
+<details>
+<summary>11. Et contre l'injection de prompt ?</summary>
+<p>Une première couche de filtrage, mesurée : un banc d'essai de trente charges, avec le taux de détection publié et zéro faux positif exigé.</p>
+<p>Mais je ne vends pas ce filtre comme la défense. L'injection est structurelle : un modèle ne distingue pas l'instruction de la donnée. La vraie protection, c'est que mon modèle n'a aucune action possible. Une injection qui passe obtient une réponse déplacée, jamais un effet. C'est le principe de moindre capacité.</p>
+</details>
+<details>
+<summary>12. Pourquoi ta limitation de débit est-elle en mémoire ? Ce n'est pas faux ?</summary>
+<p>C'est correct pour une instance et faux dès la deuxième : chaque instance aurait son propre compteur, la limite serait multipliée. Je le sais, c'est écrit dans le code, et le ticket prévoit Redis pour le passage sur Kubernetes.</p>
+<p>Je préfère une version simple, juste et documentée dans sa limite, à une dépendance Redis ajoutée avant d'en avoir besoin.</p>
+</details>
+<details>
+<summary>13. Pourquoi Semgrep n'est-il pas bloquant dans ta chaîne ?</summary>
+<p>Parce qu'un contrôle qui bloque sur du bruit sera désactivé à la première urgence de production, et jamais réactivé. Je le rends bloquant une fois les faux positifs classés. Gitleaks et Trivy critique, eux, sont bloquants dès le premier jour parce qu'ils ne font pas de bruit.</p>
+<p>C'est une décision commentée dans le fichier, pas un oubli.</p>
+</details>
+<details>
+<summary>14. À quoi servent tes règles Semgrep maison ?</summary>
+<p>À encoder des décisions d'architecture : personne n'appelle un fournisseur de modèle hors de la passerelle, personne ne met un secret en dur. Une règle tient toute seule ; une décision défendue en revue tient tant que je suis là.</p>
+</details>
+<details>
+<summary>15. Pourquoi ton conteneur n'est-il pas root ?</summary>
+<p>Un conteneur est un processus sur le noyau de l'hôte, pas une machine virtuelle. Une évasion depuis un processus root donne l'hôte. Depuis un utilisateur sans privilège, avec un système de fichiers en lecture seule et sans capacités, l'attaquant est dans une boîte vide. Mon Dockerfile et mon chart Helm appliquent les deux.</p>
+</details>
+<details>
+<summary>16. Ton chart Helm a une politique réseau. Comment sais-tu qu'elle s'applique ?</summary>
+<p>Je ne le sais pas encore : le chart n'a pas été déployé. Et quand il le sera, je le testerai depuis un conteneur temporaire, parce qu'une politique réseau n'est appliquée que si le greffon réseau du cluster la prend en charge. Sinon elle est acceptée sans effet.</p>
+<p>Je préfère vous dire qu'elle n'est pas testée plutôt que de vous laisser croire qu'elle protège.</p>
+</details>
+<details>
+<summary>17. Qu'est-ce que l'identifiant de corrélation et pourquoi ?</summary>
+<p>Un identifiant unique par requête, repris de l'appelant s'il en fournit un, propagé dans chaque ligne de journal et renvoyé dans la réponse. Quand un utilisateur signale un problème, je retrouve tout le parcours de sa requête en une recherche, à travers tous les composants.</p>
+<p>Il est posé par un filtre de servlet en tout premier, pour couvrir aussi les requêtes refusées par l'authentification.</p>
+</details>
+<details>
+<summary>18. Ton projet ne tournait pas pendant neuf mois. Pourquoi ?</summary>
+<p>Cinq causes cumulées, dont trois qui plantaient avant le premier bean : une propriété interdite dans un fichier de profil, deux chaînes de sécurité attrape-tout, un script SQL sur une table inexistante. Puis deux qui empêchaient la connexion. Corriger l'une ne changeait rien, ce qui rendait le diagnostic difficile.</p>
+<p>Ce que j'en retiens : lire le premier message d'erreur, pas le dernier, et ne jamais accumuler des correctifs sans vérifier lequel a un effet.</p>
+</details>
+<details>
+<summary>19. Pourquoi Spring Boot et pas Quarkus ?</summary>
+<p>Parce que le projet existait déjà en Spring Boot et qu'une migration coûterait un mois sans apporter une fonctionnalité. Spring Security est la référence des offres que je vise. Quarkus reste un sujet de veille. C'est documenté dans un registre de décision d'architecture.</p>
+</details>
+<details>
+<summary>20. Qu'est-ce qu'un registre de décision d'architecture et à quoi ça te sert ?</summary>
+<p>Un document court par décision structurante : contexte, options envisagées, décision, raisons, conséquences. Il empêche l'équipe de rejouer le même débat dans six mois et permet à un nouvel arrivant de comprendre le pourquoi.</p>
+<p>J'en ai trois : conserver Spring Boot, JWT maison puis Keycloak, fournisseur IA non encore choisi. Le troisième est le plus utile : une décision non prise avec ses critères vaut mieux qu'une décision prise sans.</p>
+</details>
+<details>
+<summary>21. Quel est le risque que tu as décidé de ne pas traiter ?</summary>
+<p>L'exfiltration par injection indirecte sophistiquée — encodage, découpage sur plusieurs tours. Le coût d'un traitement fiable est disproportionné à ce stade. Compensation : journalisation intégrale des appels et alerte sur volume de sortie anormal. C'est dans mon modèle de menace, avec un porteur à nommer.</p>
+</details>
+<details>
+<summary>22. Que casse-t-il si ta base tombe ?</summary>
+<p>Tout. Le backend refuse de démarrer sans elle, et c'est voulu : une application qui démarrerait en mode dégradé sans base laisserait passer des requêtes sans contrôle d'organisation. Je préfère le refus de service au passage sans contrôle.</p>
+<p>Ce qui manque, et que je nomme : pas encore de réplique ni de sauvegarde testée. C'est l'épic EP16.</p>
+</details>
+<details>
+<summary>23. Tu as 44 tests. Qu'est-ce qu'ils prouvent, et qu'est-ce qu'ils ne prouvent pas ?</summary>
+<p>Ils prouvent les propriétés de sécurité unité par unité : les jetons invalides sont rejetés, l'isolation fonctionne, le fournisseur ne voit pas les données, l'injection est filtrée, le quota est respecté.</p>
+<p>Ils ne prouvent pas que l'ensemble fonctionne de bout en bout par HTTP, ni que la configuration Docker est correcte. Un test d'intégration complet avec conteneurs est la suite logique.</p>
+</details>
+<details>
+<summary>24. Qu'est-ce que tu ferais différemment ?</summary>
+<p>Je ne laisserais pas trois configurations de sécurité coexister ; je commencerais par un seul profil qui tourne avant d'en ajouter un second. Et je mettrais les tests d'isolation dès le premier jour du multi-locataire, pas neuf mois après.</p>
+</details>
+<details>
+<summary>25. Et la suite ?</summary>
+<p>Dans l'ordre : brancher Bedrock derrière l'interface existante ; monter l'autorité de certification interne et le TLS mutuel entre services ; chiffrer les kits d'urgence par enveloppe avec la clé dans le module matériel ; chaîner les journaux d'audit cryptographiquement ; signer le rapport de crise selon eIDAS.</p>
+<p>Chaque brique cryptographique a un usage métier concret. C'est ça que je veux montrer : pas que je sais faire du PKCS#11, mais que j'ai rendu un rapport de crise opposable.</p>
+</details>
+<hr />
+</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</h1>
+<ul class="controle">
+<li><input type="checkbox"><span>Le pitch de trente secondes</span></li>
+<li><input type="checkbox"><span>Le parcours complet d'une requête, de la connexion au <code>WHERE organisation_id</code></li>
+<li><input type="checkbox"><span>Pourquoi RS256, et où est la clé privée aujourd'hui et demain</span></li>
+<li><input type="checkbox"><span>La confusion d'algorithme et la parade</span></li>
+<li><input type="checkbox"><span>Le filtre Hibernate, sa limite sur l'accès par identifiant, et le test qui montre qu'il est la seule barrière</span></li>
+<li><input type="checkbox"><span>Le pipeline de l'assistant en six étapes, et pourquoi dans cet ordre</span></li>
+<li><input type="checkbox"><span>Le principe de moindre capacité, en une phrase</span></li>
+<li><input type="checkbox"><span>Les cinq causes de non-démarrage</span></li>
+<li><input type="checkbox"><span>La liste de ce qui n'est pas fait, dite spontanément</span></li>
+</ul>
+<p>Si un point résiste, ouvre le fichier correspondant et relis-le. Pas ce cours : le code. C'est lui qu'on te demandera d'expliquer.</p></section>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var barre=document.getElementById('progression');
+  function maj(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    barre.style.width=(h>0?(window.scrollY/h)*100:0)+'%';
+  }
+  window.addEventListener('scroll',maj,{passive:true});
+  window.addEventListener('resize',maj);maj();
+
+
+  var sections=[].slice.call(document.querySelectorAll('section.chapitre'));
+  function teinte(){
+    var pos=window.scrollY+140,t=null;
+    sections.forEach(function(s){if(s.offsetTop<=pos)t=s.style.getPropertyValue('--teinte');});
+    if(t)barre.style.background=t;
+  }
+  window.addEventListener('scroll',teinte,{passive:true});teinte();
+
+  var liens=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]'));
+  var cibles=liens.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function actif(){
+    var pos=window.scrollY+120,idx=-1;
+    cibles.forEach(function(c,i){if(c&&c.offsetTop<=pos)idx=i;});
+    liens.forEach(function(a,i){a.classList.toggle('actif',i===idx);});
+  }
+  window.addEventListener('scroll',actif,{passive:true});actif();
+
+  var cases=[].slice.call(document.querySelectorAll('ul.controle input'));
+  if(cases.length){
+    var c=document.createElement('p');c.className='compteur';
+    document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+    function compte(){
+      var n=cases.filter(function(i){return i.checked;}).length;
+      c.innerHTML='<b>'+n+'</b> / '+cases.length+(n===cases.length?' — prêt pour la technique.':' points maîtrisés.');
+    }
+    cases.forEach(function(i){i.addEventListener('change',compte);});compte();
+  }
+})();
+</script>
+</body>
+</html>

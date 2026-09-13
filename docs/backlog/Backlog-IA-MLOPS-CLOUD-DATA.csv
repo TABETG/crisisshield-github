@@ -1,0 +1,67 @@
+"EPIC_ID","EPIC_NAME","US_ID","US_TITLE","USER_STORY","STORY_POINTS","AC"
+
+"EP01","Fondations Math & Stats","EP01-US01","Statistiques descriptives","En tant que data, je veux maîtriser les statistiques descriptives afin de comprendre une distribution.","3","Moyenne/variance | Corrélation | Notebook clair"
+"EP01","Fondations Math & Stats","EP01-US02","Probabilités & lois","En tant que data, je veux comprendre les probabilités afin de modéliser l'incertitude.","3","Lois normale/binomiale | Simulations Python"
+"EP01","Fondations Math & Stats","EP01-US03","Tests statistiques","En tant que data, je veux appliquer des tests afin de valider des hypothèses.","5","t-test/chi2 | Interprétation correcte"
+"EP01","Fondations Math & Stats","EP01-US04","Optimisation & gradient descent","En tant que data scientist, je veux comprendre l’optimisation afin de savoir comment un modèle apprend.","5","Descente de gradient expliquée + code"
+
+"EP02","Python Data","EP02-US01","Python avancé","En tant que data, je veux écrire du code Python propre et maintenable.","3","Fonctions/typing | Environnement virtuel"
+"EP02","Python Data","EP02-US02","Numpy","En tant que data, je veux manipuler efficacement des tableaux numériques.","3","Vectorisation | Comparaison perf"
+"EP02","Python Data","EP02-US03","Pandas","En tant que data analyst, je veux nettoyer et transformer des données.","5","Missing/outliers | Join/groupby"
+"EP02","Python Data","EP02-US04","Visualisation","En tant que data analyst, je veux visualiser les données pour communiquer.","3","Graphiques lisibles + interprétation"
+
+"EP03","SQL & Modélisation","EP03-US01","SQL fondamental","En tant que data analyst, je veux interroger une base de données.","5","JOIN/GROUP BY | Cas métier"
+"EP03","SQL & Modélisation","EP03-US02","SQL avancé","En tant que data analyst, je veux utiliser les window functions.","5","OVER/LAG/RANK"
+"EP03","SQL & Modélisation","EP03-US03","Optimisation SQL","En tant que data, je veux optimiser mes requêtes.","5","EXPLAIN | Index"
+"EP03","SQL & Modélisation","EP03-US04","Modèle analytique","En tant que data analyst, je veux modéliser les données pour le reporting.","8","Star schema documenté"
+
+"EP04","BI & Data Analyst","EP04-US01","Dashboard KPI","En tant que data analyst, je veux construire un dashboard décisionnel.","5","KPI définis | Filtres | Storytelling"
+"EP04","BI & Data Analyst","EP04-US02","Qualité des données","En tant que data, je veux garantir la fiabilité des chiffres.","5","Règles qualité | Rapport"
+
+"EP05","Machine Learning Fondamental","EP05-US01","Pipeline ML","En tant que data scientist, je veux créer un pipeline ML propre.","8","Train/test | Pipeline sklearn"
+"EP05","Machine Learning Fondamental","EP05-US02","Modèles supervisés","En tant que data scientist, je veux maîtriser les modèles classiques.","8","Régression/arbres/forest"
+"EP05","Machine Learning Fondamental","EP05-US03","Feature engineering","En tant que data scientist, je veux créer de bonnes features.","8","Scaling/encoding | Pas de leakage"
+"EP05","Machine Learning Fondamental","EP05-US04","Évaluation des modèles","En tant que data scientist, je veux évaluer correctement un modèle.","5","RMSE/MAE/AUC"
+
+"EP06","ML Avancé","EP06-US01","Gradient Boosting","En tant que data scientist, je veux utiliser XGBoost/LightGBM.","8","CV | Early stopping"
+"EP06","ML Avancé","EP06-US02","Tuning hyperparamètres","En tant que data scientist, je veux optimiser les performances.","8","Grid/Random | Tracking"
+"EP06","ML Avancé","EP06-US03","Interprétabilité","En tant que data scientist, je veux expliquer mes modèles.","8","SHAP/LIME"
+"EP06","ML Avancé","EP06-US04","Gestion déséquilibre","En tant que data scientist, je veux gérer les classes déséquilibrées.","5","ROC/PR | Seuil optimal"
+
+"EP07","Deep Learning","EP07-US01","Framework DL","En tant que data scientist, je veux maîtriser PyTorch/TensorFlow.","8","Training loop fonctionnel"
+"EP07","Deep Learning","EP07-US02","CNN & LSTM","En tant que data scientist, je veux traiter images et séquences.","8","CNN image | LSTM série"
+
+"EP08","NLP & LLM","EP08-US01","NLP classique","En tant que data scientist, je veux traiter du texte.","5","TF-IDF | Embeddings"
+"EP08","NLP & LLM","EP08-US02","Transformers","En tant que data scientist, je veux fine-tuner un transformer.","13","Fine-tuning + métriques"
+"EP08","NLP & LLM","EP08-US03","RAG","En tant que AI engineer, je veux implémenter un RAG.","13","Vector store | Retrieval"
+
+"EP09","Time Series","EP09-US01","Séries temporelles","En tant que data scientist, je veux prévoir une série temporelle.","8","ARIMA/SARIMAX"
+"EP09","Time Series","EP09-US02","ML sur séries","En tant que data scientist, je veux appliquer ML aux séries.","8","Lags | LightGBM"
+
+"EP10","Data Engineering","EP10-US01","ETL/ELT","En tant que data engineer, je veux construire un pipeline de données.","8","Pipeline documenté"
+"EP10","Data Engineering","EP10-US02","Orchestration","En tant que data engineer, je veux automatiser les traitements.","8","Airflow ou équivalent"
+"EP10","Data Engineering","EP10-US03","Streaming","En tant que data engineer, je veux traiter des flux temps réel.","13","Kafka/PubSub"
+
+"EP11","Cloud Fundamentals","EP11-US01","Concepts Cloud","En tant que data/IA, je veux comprendre le cloud.","5","IaaS/PaaS | Régions"
+"EP11","Cloud Fundamentals","EP11-US02","Réseau & IAM","En tant que cloud data, je veux sécuriser les accès.","8","VPC | IAM least privilege"
+"EP11","Cloud Fundamentals","EP11-US03","Stockage cloud","En tant que data, je veux stocker la donnée sur le cloud.","5","Data lake structuré"
+
+"EP12","Cloud Data & ML","EP12-US01","DWH & Data Lake cloud","En tant que data, je veux analyser à grande échelle.","8","BigQuery/Redshift"
+"EP12","Cloud Data & ML","EP12-US02","Training ML cloud","En tant que data scientist, je veux entraîner sur le cloud.","8","GPU/CPU | Coût maîtrisé"
+"EP12","Cloud Data & ML","EP12-US03","Feature Store","En tant que MLOps, je veux centraliser les features.","13","Online/offline"
+
+"EP13","AI Engineering","EP13-US01","API ML","En tant que AI engineer, je veux exposer un modèle.","8","FastAPI | POST /predict"
+"EP13","AI Engineering","EP13-US02","Docker","En tant que AI engineer, je veux containeriser l’IA.","8","Dockerfile reproductible"
+"EP13","AI Engineering","EP13-US03","Kubernetes","En tant que MLOps, je veux déployer à l’échelle.","13","Autoscaling | Health checks"
+
+"EP14","MLOps","EP14-US01","Tracking & registry","En tant que MLOps, je veux versionner modèles et runs.","8","MLflow + registry"
+"EP14","MLOps","EP14-US02","CI/CD ML","En tant que MLOps, je veux automatiser le déploiement.","13","Pipeline CI/CD"
+"EP14","MLOps","EP14-US03","Monitoring & drift","En tant que MLOps, je veux surveiller les modèles.","13","Data/model drift"
+"EP14","MLOps","EP14-US04","FinOps","En tant que MLOps, je veux optimiser les coûts cloud.","8","Budgets & alertes"
+
+"EP15","Sécurité & Gouvernance","EP15-US01","Sécurité IA","En tant que expert, je veux sécuriser l’IA en production.","13","Auth | Secrets | Audit"
+"EP15","Sécurité & Gouvernance","EP15-US02","RGPD & biais","En tant que expert, je veux une IA conforme et éthique.","13","Fairness | Documentation"
+
+"EP16","Expert IA & Architecture","EP16-US01","Architecture IA cloud","En tant qu’architecte, je veux concevoir une plateforme IA scalable.","13","Schéma cible + justification"
+"EP16","Expert IA & Architecture","EP16-US02","IaC Terraform","En tant qu’architecte, je veux automatiser l’infrastructure.","13","Terraform propre"
+"EP16","Expert IA & Architecture","EP16-US03","Stratégie IA & ROI","En tant que leader IA, je veux piloter la valeur business.","8","Roadmap + KPI"

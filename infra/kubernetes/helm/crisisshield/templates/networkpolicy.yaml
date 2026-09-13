@@ -1,0 +1,26 @@
+# EP18-US01 / cours chap. 7.4 : refus par defaut. On n'ouvre que le necessaire.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-backend-default-deny
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: crisisshield-backend
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - ports:
+        - port: 8080
+  egress:
+    # resolution de noms, souvent oubliee : sans elle tout casse silencieusement
+    - to: []
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # base de donnees et annuaire : a restreindre par selecteur une fois deployes dans le cluster
+    - to: []
+      ports:
+        - port: 5432
+        - port: 389

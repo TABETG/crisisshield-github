@@ -1,0 +1,24 @@
+dn: ou=people,dc=springframework,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=springframework,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=user,ou=people,dc=springframework,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+cn: user
+sn: user
+uid: user
+mail: user@springframework.org
+userPassword: password
+
+dn: cn=users,ou=groups,dc=springframework,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: users
+member: uid=user,ou=people,dc=springframework,dc=org

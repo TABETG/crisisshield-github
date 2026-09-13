@@ -1,0 +1,22 @@
+rules:
+  - id: crisisshield-appel-direct-fournisseur-ia
+    message: Tout appel a un modele passe par AssistantService (EP18-US01). Pas d'appel direct a ModelProvider ailleurs.
+    languages: [java]
+    severity: ERROR
+    patterns:
+      - pattern: $P.complete(...)
+      - pattern-not-inside: |
+          class AssistantService { ... }
+      - metavariable-regex:
+          metavariable: $P
+          regex: (?i).*provider.*
+
+  - id: crisisshield-secret-en-dur
+    message: Secret ou mot de passe en dur. Utiliser une variable d'environnement ou le gestionnaire de secrets (EP09-US09).
+    languages: [java, yaml, properties]
+    severity: ERROR
+    pattern-regex: (?i)(password|secret|apikey|api_key)\s*[:=]\s*["'][^"'${]{8,}["']
+    paths:
+      exclude:
+        - "**/test/**"
+        - docker-compose.yml

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: crisisshield
+description: Backend CrisisShield, deploiement durci (EP01-US07)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

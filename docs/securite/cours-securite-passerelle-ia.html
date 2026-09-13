@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sécurité d'une passerelle IA d'entreprise</title>
+<style>
+:root{
+  --fond:#F5F7F4;
+  --carte:#FFFFFF;
+  --encre:#141A20;
+  --encre-douce:#52606C;
+  --bleu:#2C4A78;
+  --ocre:#9E4E17;
+  --vert:#1C5C4C;
+  --trait:#DCE2DC;
+  --trait-fin:#E9EDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--fond);color:var(--encre);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px;line-height:1.72;
+  -webkit-text-size-adjust:100%;
+}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto;}
+@media(min-width:1040px){
+  .page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px;}
+}
+
+/* ---- sommaire ---- */
+nav.som{padding:24px 20px 0;}
+@media(min-width:1040px){
+  nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+    padding:56px 0 40px;border-right:1px solid var(--trait);padding-right:24px;}
+}
+nav.som .titre-som{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;letter-spacing:.02em;color:var(--encre-douce);
+  font-weight:600;margin:0 0 14px;}
+nav.som ul{list-style:none;margin:0;padding:0;}
+nav.som li{margin:0;}
+nav.som a{display:block;padding:4px 0;font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:13.5px;line-height:1.4;color:var(--encre-douce);text-decoration:none;
+  border-left:2px solid transparent;padding-left:12px;margin-left:-14px;}
+nav.som a:hover{color:var(--bleu);border-left-color:var(--bleu);}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px;}
+nav.som ul ul{margin-bottom:8px;}
+details.som-mob summary{cursor:pointer;font-family:ui-sans-serif,system-ui,sans-serif;
+  font-size:14px;font-weight:600;padding:14px 0;color:var(--bleu);}
+@media(min-width:1040px){details.som-mob{display:none}}
+@media(max-width:1039px){nav.som.bureau{display:none}}
+
+/* ---- contenu ---- */
+main{padding:0 20px 96px;min-width:0;}
+@media(min-width:1040px){main{padding:56px 0 140px;}}
+.enveloppe{max-width:69ch;}
+
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px;}
+.chapeau h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;
+  letter-spacing:-.022em;margin:0 0 14px;}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);line-height:1.7;}
+.chapeau .meta b{color:var(--encre);font-weight:600;}
+
+h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(23px,3.4vw,30px);line-height:1.2;font-weight:660;letter-spacing:-.02em;
+  margin:72px 0 6px;padding-top:26px;border-top:1px solid var(--trait);}
+h2{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:19px;line-height:1.3;font-weight:640;letter-spacing:-.01em;
+  margin:42px 0 10px;color:var(--bleu);}
+h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;
+  margin:30px 0 8px;}
+p{margin:0 0 16px;}
+main>.enveloppe>p:first-of-type{margin-top:18px;}
+strong{font-weight:660;}
+em{font-style:italic;}
+a{color:var(--bleu);}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86em;
+  background:#EBEFEA;padding:1.5px 5px;border-radius:3px;}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px;}
+pre code{background:none;padding:0;font-size:13px;}
+hr{border:0;border-top:1px solid var(--trait);margin:44px 0;}
+
+ul,ol{margin:0 0 18px;padding-left:22px;}
+li{margin:0 0 7px;}
+
+blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:3px solid var(--bleu);
+  color:var(--encre);font-size:17.5px;}
+blockquote p{margin:0 0 10px;}
+blockquote p:last-child{margin:0;}
+
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14px;line-height:1.55;}
+@media(max-width:700px){table{display:block;overflow-x:auto;white-space:normal;}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;
+  border-bottom:1.5px solid var(--encre);vertical-align:bottom;}
+tbody td{padding:10px 14px 10px 0;border-bottom:1px solid var(--trait-fin);vertical-align:top;}
+tbody tr:last-child td{border-bottom:1px solid var(--trait);}
+td:last-child,th:last-child{padding-right:0;}
+
+/* ---- encarts ---- */
+p.reflexe,p.piege,p.regle{
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14.5px;line-height:1.65;padding:14px 16px;margin:20px 0 22px;
+  background:var(--carte);}
+p.reflexe{border-left:3px solid var(--vert);}
+p.reflexe strong:first-child{color:var(--vert);}
+p.piege{border-left:3px solid var(--ocre);}
+p.piege strong:first-child{color:var(--ocre);}
+p.regle{border-left:3px solid var(--bleu);}
+p.regle strong:first-child{color:var(--bleu);}
+p.fiche{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;
+  color:var(--encre-douce);margin:0 0 18px;}
+p.fiche strong{color:var(--encre);}
+
+/* ---- cases à cocher ---- */
+ul.controle{list-style:none;padding:0;}
+ul.controle li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid var(--trait-fin);font-size:16px;}
+ul.controle input{margin-top:7px;width:16px;height:16px;accent-color:var(--vert);flex-shrink:0;}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through;
+  text-decoration-color:#C3CCD1;}
+
+a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--bleu);outline-offset:3px;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- barre de progression ---- */
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);
+  width:0;z-index:50;transition:width .08s linear;}
+@media(prefers-reduced-motion:reduce){#progression{transition:none}}
+
+/* ---- sommaire actif ---- */
+nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu);font-weight:600;}
+
+/* ---- questions / reponses ---- */
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  margin:0 0 10px;padding:0;}
+details[open]{border-left-color:var(--vert);}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;font-weight:600;line-height:1.45;color:var(--encre);
+  display:flex;gap:12px;align-items:flex-start;}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--bleu);font-weight:700;
+  font-size:17px;line-height:1.3;flex-shrink:0;}
+details[open]>summary::before{content:"2";color:var(--vert);}
+details>summary:hover{background:#F2F5F1;}
+details>*:not(summary){padding:0 18px;}
+details>p:first-of-type{padding-top:2px;}
+details>p:last-child{padding-bottom:16px;margin-bottom:0;}
+details.som-mob{border:0;border-left:0;background:none;}
+details.som-mob>summary{padding:14px 0;}
+details.som-mob>*:not(summary){padding:0;}
+
+/* ---- compteur de controle ---- */
+.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);margin:14px 0 0;}
+.compteur b{color:var(--vert);font-size:16px;}
+
+
+/* ---- couleur par chapitre ---- */
+.chapitre{--teinte:var(--bleu);}
+.chapitre>h1{color:var(--teinte);border-top:0;padding-top:30px;position:relative;}
+.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;
+  background:var(--teinte);}
+.chapitre h2{color:var(--teinte);}
+.chapitre h3{color:var(--teinte);opacity:.92;}
+.chapitre blockquote{border-left-color:var(--teinte);background:var(--carte);
+  padding:14px 20px;}
+.chapitre thead th{border-bottom-color:var(--teinte);color:var(--teinte);}
+.chapitre pre{border-left-color:var(--teinte);}
+.chapitre details{border-left-color:var(--teinte);}
+.chapitre details>summary::before{color:var(--teinte);}
+.chapitre details[open]{border-left-color:var(--vert);}
+.chapitre details[open]>summary::before{color:var(--vert);}
+.chapitre code{background:color-mix(in srgb,var(--teinte) 11%,transparent);
+  color:color-mix(in srgb,var(--teinte) 78%,black);}
+.chapitre a{color:var(--teinte);}
+
+/* ---- bandeau spectre ---- */
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px;}
+.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;font-weight:560;color:var(--encre-douce);
+  background:var(--carte);border:1px solid var(--trait);
+  padding:5px 11px 5px 8px;border-radius:2px;}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px;flex-shrink:0;}
+.spectre a:hover{color:var(--teinte);border-color:var(--teinte);}
+
+/* ---- sommaire colore ---- */
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;
+  border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent);}
+nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item ul a:hover,nav.som li.ch-item ul a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item{margin-bottom:10px;}
+
+@media print{
+  nav.som,details.som-mob,#progression{display:none}
+  .spectre{display:none}
+  details{border:1px solid #ccc}
+  details>*:not(summary){display:block !important}
+  body{background:#fff;font-size:11pt}
+  .page{display:block;padding:0}
+  h1{break-after:avoid;page-break-after:avoid}
+  table,blockquote,p.reflexe,p.piege{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div id="progression"></div>
+<div class="page">
+<nav class="som bureau">
+  <p class="titre-som">Sommaire</p>
+  <div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-pourquoi-une-passerelle-et-contre-quoi">Chapitre 1 — Pourquoi une passerelle, et contre quoi</a><ul>
+<li><a href="#11-le-probleme-que-tu-resous">1.1 Le problème que tu résous</a></li>
+<li><a href="#12-le-principe-darchitecture-sous-jacent">1.2 Le principe d'architecture sous-jacent</a></li>
+<li><a href="#13-ce-que-la-passerelle-ne-fait-pas">1.3 Ce que la passerelle ne fait pas</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-modelisation-des-menaces">Chapitre 2 — Modélisation des menaces</a><ul>
+<li><a href="#21-la-demarche">2.1 La démarche</a></li>
+<li><a href="#22-la-frontiere-de-confiance">2.2 La frontière de confiance</a></li>
+<li><a href="#23-stride">2.3 STRIDE</a></li>
+<li><a href="#24-le-risque-residuel">2.4 Le risque résiduel</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-identite-authentification-autorisation">Chapitre 3 — Identité, authentification, autorisation</a><ul>
+<li><a href="#31-les-trois-questions-a-ne-jamais-confondre">3.1 Les trois questions à ne jamais confondre</a></li>
+<li><a href="#32-jeton-didentite-contre-jeton-dacces">3.2 Jeton d'identité contre jeton d'accès</a></li>
+<li><a href="#33-les-cinq-validations-obligatoires-dun-jeton">3.3 Les cinq validations obligatoires d'un jeton</a></li>
+<li><a href="#34-le-probleme-de-la-revocation">3.4 Le problème de la révocation</a></li>
+<li><a href="#35-point-de-decision-et-point-dapplication">3.5 Point de décision et point d'application</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-cryptographie-appliquee-et-infrastructure-a-cles-publiques">Chapitre 4 — Cryptographie appliquée et infrastructure à clés publiques</a><ul>
+<li><a href="#41-les-trois-usages-a-ne-pas-melanger">4.1 Les trois usages à ne pas mélanger</a></li>
+<li><a href="#42-anatomie-dun-certificat-x509">4.2 Anatomie d'un certificat X.509</a></li>
+<li><a href="#43-la-chaine-de-confiance">4.3 La chaîne de confiance</a></li>
+<li><a href="#44-revocation-le-point-faible-historique">4.4 Révocation : le point faible historique</a></li>
+<li><a href="#45-tls-et-tls-mutuel">4.5 TLS et TLS mutuel</a></li>
+<li><a href="#46-module-materiel-de-securite-et-service-de-gestion-de-cles">4.6 Module matériel de sécurité et service de gestion de clés</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-securite-des-modeles-de-langage">Chapitre 5 — Sécurité des modèles de langage</a><ul>
+<li><a href="#51-pourquoi-un-modele-de-langage-est-structurellement-vulnerable">5.1 Pourquoi un modèle de langage est structurellement vulnérable</a></li>
+<li><a href="#52-injection-directe-et-injection-indirecte">5.2 Injection directe et injection indirecte</a></li>
+<li><a href="#53-pourquoi-le-filtrage-ne-suffira-jamais">5.3 Pourquoi le filtrage ne suffira jamais</a></li>
+<li><a href="#54-le-principe-de-moindre-capacite">5.4 Le principe de moindre capacité</a></li>
+<li><a href="#55-les-risques-du-referentiel-owasp-pour-les-modeles-de-langage">5.5 Les risques du référentiel OWASP pour les modèles de langage</a></li>
+<li><a href="#56-le-cas-particulier-des-donnees-personnelles">5.6 Le cas particulier des données personnelles</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-devsecops">Chapitre 6 — DevSecOps</a><ul>
+<li><a href="#61-ce-que-le-terme-signifie-reellement">6.1 Ce que le terme signifie réellement</a></li>
+<li><a href="#62-les-familles-danalyse">6.2 Les familles d'analyse</a></li>
+<li><a href="#63-le-faux-positif-est-le-vrai-sujet">6.3 Le faux positif est le vrai sujet</a></li>
+<li><a href="#64-chaine-dapprovisionnement-logicielle">6.4 Chaîne d'approvisionnement logicielle</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-securite-des-conteneurs-et-de-kubernetes">Chapitre 7 — Sécurité des conteneurs et de Kubernetes</a><ul>
+<li><a href="#71-ce-quest-reellement-un-conteneur">7.1 Ce qu'est réellement un conteneur</a></li>
+<li><a href="#72-les-quatre-controles-qui-comptent">7.2 Les quatre contrôles qui comptent</a></li>
+<li><a href="#73-les-secrets-kubernetes-ne-sont-pas-chiffres">7.3 Les secrets Kubernetes ne sont pas chiffrés</a></li>
+<li><a href="#74-le-refus-par-defaut">7.4 Le refus par défaut</a></li>
+<li><a href="#75-le-controle-dadmission">7.5 Le contrôle d'admission</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-observabilite-et-reponse-a-incident">Chapitre 8 — Observabilité et réponse à incident</a><ul>
+<li><a href="#81-les-trois-piliers-et-ce-quils-servent">8.1 Les trois piliers, et ce qu'ils servent</a></li>
+<li><a href="#82-jamais-la-moyenne">8.2 Jamais la moyenne</a></li>
+<li><a href="#83-la-fatigue-dalerte">8.3 La fatigue d'alerte</a></li>
+<li><a href="#84-les-phases-de-la-reponse-a-incident">8.4 Les phases de la réponse à incident</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-9-la-posture-tech-lead">Chapitre 9 — La posture Tech Lead</a><ul>
+<li><a href="#91-la-difference-en-une-phrase">9.1 La différence, en une phrase</a></li>
+<li><a href="#92-le-registre-de-decision-darchitecture">9.2 Le registre de décision d'architecture</a></li>
+<li><a href="#93-ce-qui-ne-simprovise-pas-en-entretien">9.3 Ce qui ne s'improvise pas en entretien</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-10-simulation-dentretien">Chapitre 10 — Simulation d'entretien</a><ul>
+<li><a href="#identite-et-acces">Identité et accès</a></li>
+<li><a href="#cryptographie-et-infrastructure-a-cles-publiques">Cryptographie et infrastructure à clés publiques</a></li>
+<li><a href="#securite-des-modeles-de-langage">Sécurité des modèles de langage</a></li>
+<li><a href="#devsecops-et-chaine-de-livraison">DevSecOps et chaîne de livraison</a></li>
+<li><a href="#conteneurs-infrastructure-exploitation">Conteneurs, infrastructure, exploitation</a></li>
+<li><a href="#posture-et-architecture">Posture et architecture</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#glossaire-francais-et-anglais">Glossaire français et anglais</a></li>
+</ul>
+</div>
+
+</nav>
+<main>
+<div class="enveloppe">
+<header class="chapeau">
+  <h1>Sécurité d'une passerelle IA d'entreprise</h1>
+  <p class="meta">Cours de fondamentaux &mdash; à lire avant d'attaquer le backlog.<br><b>Lecture :</b> environ 1 h 30. <b>Public :</b> développeur expérimenté en transition vers la sécurité applicative.</p>
+</header>
+<nav class="spectre"><a href="#chapitre-1-pourquoi-une-passerelle-et-contre-quoi" style="--teinte:#3A4E8C" title="Chapitre 1 — Pourquoi une passerelle, et contre quoi"><span></span>1 Pourquoi une passerelle…</a><a href="#chapitre-2-modelisation-des-menaces" style="--teinte:#6B4A8F" title="Chapitre 2 — Modélisation des menaces"><span></span>2 Modélisation des menaces</a><a href="#chapitre-3-identite-authentification-autorisation" style="--teinte:#1F6E86" title="Chapitre 3 — Identité, authentification, autorisation"><span></span>3 Identité, authentificat…</a><a href="#chapitre-4-cryptographie-appliquee-et-infrastructure-a-cles-publiques" style="--teinte:#1E6B57" title="Chapitre 4 — Cryptographie appliquée et infrastructure à clés publiques"><span></span>4 Cryptographie appliquée…</a><a href="#chapitre-5-securite-des-modeles-de-langage" style="--teinte:#A8621A" title="Chapitre 5 — Sécurité des modèles de langage"><span></span>5 Sécurité des modèles de…</a><a href="#chapitre-6-devsecops" style="--teinte:#A34434" title="Chapitre 6 — DevSecOps"><span></span>6 DevSecOps</a><a href="#chapitre-7-securite-des-conteneurs-et-de-kubernetes" style="--teinte:#2D5F8F" title="Chapitre 7 — Sécurité des conteneurs et de Kubernetes"><span></span>7 Sécurité des conteneurs…</a><a href="#chapitre-8-observabilite-et-reponse-a-incident" style="--teinte:#8C3F63" title="Chapitre 8 — Observabilité et réponse à incident"><span></span>8 Observabilité et répons…</a><a href="#chapitre-9-la-posture-tech-lead" style="--teinte:#7A6B1B" title="Chapitre 9 — La posture Tech Lead"><span></span>9 La posture Tech Lead</a><a href="#ce-que-tu-dois-savoir-refaire-sans-notes" style="--teinte:#3F6B2E" title="Ce que tu dois savoir refaire sans notes"><span></span>Ce que tu dois savoir ref…</a><a href="#chapitre-10-simulation-dentretien" style="--teinte:#8A4E2A" title="Chapitre 10 — Simulation d'entretien"><span></span>10 Simulation d'entretien</a><a href="#glossaire-francais-et-anglais" style="--teinte:#4A4A55" title="Glossaire français et anglais"><span></span>Glossaire français et ang…</a></nav>
+<details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-pourquoi-une-passerelle-et-contre-quoi">Chapitre 1 — Pourquoi une passerelle, et contre quoi</a><ul>
+<li><a href="#11-le-probleme-que-tu-resous">1.1 Le problème que tu résous</a></li>
+<li><a href="#12-le-principe-darchitecture-sous-jacent">1.2 Le principe d'architecture sous-jacent</a></li>
+<li><a href="#13-ce-que-la-passerelle-ne-fait-pas">1.3 Ce que la passerelle ne fait pas</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-modelisation-des-menaces">Chapitre 2 — Modélisation des menaces</a><ul>
+<li><a href="#21-la-demarche">2.1 La démarche</a></li>
+<li><a href="#22-la-frontiere-de-confiance">2.2 La frontière de confiance</a></li>
+<li><a href="#23-stride">2.3 STRIDE</a></li>
+<li><a href="#24-le-risque-residuel">2.4 Le risque résiduel</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-identite-authentification-autorisation">Chapitre 3 — Identité, authentification, autorisation</a><ul>
+<li><a href="#31-les-trois-questions-a-ne-jamais-confondre">3.1 Les trois questions à ne jamais confondre</a></li>
+<li><a href="#32-jeton-didentite-contre-jeton-dacces">3.2 Jeton d'identité contre jeton d'accès</a></li>
+<li><a href="#33-les-cinq-validations-obligatoires-dun-jeton">3.3 Les cinq validations obligatoires d'un jeton</a></li>
+<li><a href="#34-le-probleme-de-la-revocation">3.4 Le problème de la révocation</a></li>
+<li><a href="#35-point-de-decision-et-point-dapplication">3.5 Point de décision et point d'application</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-cryptographie-appliquee-et-infrastructure-a-cles-publiques">Chapitre 4 — Cryptographie appliquée et infrastructure à clés publiques</a><ul>
+<li><a href="#41-les-trois-usages-a-ne-pas-melanger">4.1 Les trois usages à ne pas mélanger</a></li>
+<li><a href="#42-anatomie-dun-certificat-x509">4.2 Anatomie d'un certificat X.509</a></li>
+<li><a href="#43-la-chaine-de-confiance">4.3 La chaîne de confiance</a></li>
+<li><a href="#44-revocation-le-point-faible-historique">4.4 Révocation : le point faible historique</a></li>
+<li><a href="#45-tls-et-tls-mutuel">4.5 TLS et TLS mutuel</a></li>
+<li><a href="#46-module-materiel-de-securite-et-service-de-gestion-de-cles">4.6 Module matériel de sécurité et service de gestion de clés</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-securite-des-modeles-de-langage">Chapitre 5 — Sécurité des modèles de langage</a><ul>
+<li><a href="#51-pourquoi-un-modele-de-langage-est-structurellement-vulnerable">5.1 Pourquoi un modèle de langage est structurellement vulnérable</a></li>
+<li><a href="#52-injection-directe-et-injection-indirecte">5.2 Injection directe et injection indirecte</a></li>
+<li><a href="#53-pourquoi-le-filtrage-ne-suffira-jamais">5.3 Pourquoi le filtrage ne suffira jamais</a></li>
+<li><a href="#54-le-principe-de-moindre-capacite">5.4 Le principe de moindre capacité</a></li>
+<li><a href="#55-les-risques-du-referentiel-owasp-pour-les-modeles-de-langage">5.5 Les risques du référentiel OWASP pour les modèles de langage</a></li>
+<li><a href="#56-le-cas-particulier-des-donnees-personnelles">5.6 Le cas particulier des données personnelles</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-devsecops">Chapitre 6 — DevSecOps</a><ul>
+<li><a href="#61-ce-que-le-terme-signifie-reellement">6.1 Ce que le terme signifie réellement</a></li>
+<li><a href="#62-les-familles-danalyse">6.2 Les familles d'analyse</a></li>
+<li><a href="#63-le-faux-positif-est-le-vrai-sujet">6.3 Le faux positif est le vrai sujet</a></li>
+<li><a href="#64-chaine-dapprovisionnement-logicielle">6.4 Chaîne d'approvisionnement logicielle</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-securite-des-conteneurs-et-de-kubernetes">Chapitre 7 — Sécurité des conteneurs et de Kubernetes</a><ul>
+<li><a href="#71-ce-quest-reellement-un-conteneur">7.1 Ce qu'est réellement un conteneur</a></li>
+<li><a href="#72-les-quatre-controles-qui-comptent">7.2 Les quatre contrôles qui comptent</a></li>
+<li><a href="#73-les-secrets-kubernetes-ne-sont-pas-chiffres">7.3 Les secrets Kubernetes ne sont pas chiffrés</a></li>
+<li><a href="#74-le-refus-par-defaut">7.4 Le refus par défaut</a></li>
+<li><a href="#75-le-controle-dadmission">7.5 Le contrôle d'admission</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-observabilite-et-reponse-a-incident">Chapitre 8 — Observabilité et réponse à incident</a><ul>
+<li><a href="#81-les-trois-piliers-et-ce-quils-servent">8.1 Les trois piliers, et ce qu'ils servent</a></li>
+<li><a href="#82-jamais-la-moyenne">8.2 Jamais la moyenne</a></li>
+<li><a href="#83-la-fatigue-dalerte">8.3 La fatigue d'alerte</a></li>
+<li><a href="#84-les-phases-de-la-reponse-a-incident">8.4 Les phases de la réponse à incident</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-9-la-posture-tech-lead">Chapitre 9 — La posture Tech Lead</a><ul>
+<li><a href="#91-la-difference-en-une-phrase">9.1 La différence, en une phrase</a></li>
+<li><a href="#92-le-registre-de-decision-darchitecture">9.2 Le registre de décision d'architecture</a></li>
+<li><a href="#93-ce-qui-ne-simprovise-pas-en-entretien">9.3 Ce qui ne s'improvise pas en entretien</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-10-simulation-dentretien">Chapitre 10 — Simulation d'entretien</a><ul>
+<li><a href="#identite-et-acces">Identité et accès</a></li>
+<li><a href="#cryptographie-et-infrastructure-a-cles-publiques">Cryptographie et infrastructure à clés publiques</a></li>
+<li><a href="#securite-des-modeles-de-langage">Sécurité des modèles de langage</a></li>
+<li><a href="#devsecops-et-chaine-de-livraison">DevSecOps et chaîne de livraison</a></li>
+<li><a href="#conteneurs-infrastructure-exploitation">Conteneurs, infrastructure, exploitation</a></li>
+<li><a href="#posture-et-architecture">Posture et architecture</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#glossaire-francais-et-anglais">Glossaire français et anglais</a></li>
+</ul>
+</div>
+</details>
+<section class="chapitre" style="--teinte:#3A4E8C"><h1 id="chapitre-1-pourquoi-une-passerelle-et-contre-quoi">Chapitre 1 — Pourquoi une passerelle, et contre quoi</h1>
+<h2 id="11-le-probleme-que-tu-resous">1.1 Le problème que tu résous</h2>
+<p>Une entreprise qui met un modèle de langage à disposition de ses salariés est confrontée à quatre risques simultanés :</p>
+<table>
+<thead>
+<tr>
+<th>Risque</th>
+<th>Manifestation concrète</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fuite de données</td>
+<td>Un salarié colle un contrat client dans le prompt. Il part chez un tiers, hors de ton contrôle.</td>
+</tr>
+<tr>
+<td>Perte de traçabilité</td>
+<td>Six mois plus tard, impossible de savoir qui a envoyé quoi. Aucun audit possible.</td>
+</tr>
+<tr>
+<td>Dérive de coût</td>
+<td>Une boucle mal écrite consomme le budget annuel en une nuit.</td>
+</tr>
+<tr>
+<td>Détournement du modèle</td>
+<td>Une entrée utilisateur retourne les instructions du système et contourne les garde-fous.</td>
+</tr>
+</tbody>
+</table>
+<p>Un accès direct au fournisseur ne permet de traiter aucun des quatre. La passerelle est le <strong>point de contrôle unique</strong> qui les rend traitables.</p>
+<h2 id="12-le-principe-darchitecture-sous-jacent">1.2 Le principe d'architecture sous-jacent</h2>
+<p>C'est un <strong>mandataire de médiation de politique</strong> (policy enforcement proxy). Le motif est ancien : il est le même qu'une passerelle d'interfaces de programmation, un pare-feu applicatif ou un mandataire de base de données.</p>
+<p>La règle générale, que tu dois savoir énoncer :</p>
+<blockquote>
+<p>Quand une ressource est sensible, partagée et externe, on ne sécurise pas chaque appelant. On interpose un point de passage obligatoire, et on rend tout autre chemin impossible.</p>
+</blockquote>
+<p>La deuxième moitié de la phrase est la plus importante. Une passerelle qu'on peut contourner ne sert à rien. C'est pourquoi le ticket INF-2, les politiques réseau, n'est pas un détail d'infrastructure : c'est ce qui rend ta passerelle <strong>obligatoire</strong> plutôt que <strong>recommandée</strong>.</p>
+<h2 id="13-ce-que-la-passerelle-ne-fait-pas">1.3 Ce que la passerelle ne fait pas</h2>
+<p>À savoir énoncer spontanément, c'est un marqueur de maturité :</p>
+<ul>
+<li>Elle ne protège pas contre un salarié qui utilise le modèle grand public sur son téléphone. C'est un sujet de politique interne, pas de technique.</li>
+<li>Elle ne rend pas le modèle fiable. Les erreurs factuelles du modèle ne sont pas un problème de sécurité.</li>
+<li>Elle ne supprime pas l'injection de prompt. Elle en réduit la probabilité et surtout l'impact.</li>
+</ul>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-2-modelisation-des-menaces">Chapitre 2 — Modélisation des menaces</h1>
+<h2 id="21-la-demarche">2.1 La démarche</h2>
+<p>Modéliser une menace, c'est répondre à quatre questions, dans l'ordre :</p>
+<ol>
+<li>Sur quoi je travaille ? — le diagramme de flux de données</li>
+<li>Qu'est-ce qui peut mal tourner ? — STRIDE</li>
+<li>Qu'est-ce que je fais ? — les mitigations</li>
+<li>Est-ce que j'ai bien fait ? — la vérification</li>
+</ol>
+<p>La plupart des équipes sautent la première question et se perdent. Le diagramme n'est pas de la décoration : sans frontières de confiance dessinées, on ne sait pas où appliquer les contrôles.</p>
+<h2 id="22-la-frontiere-de-confiance">2.2 La frontière de confiance</h2>
+<p>Une <strong>frontière de confiance</strong> est un endroit où le niveau de confiance dans les données change.</p>
+<p>Dans ton projet il y en a trois :</p>
+<p><code>[Poste utilisateur]  --FRONTIÈRE 1--&gt;  [Passerelle]  --FRONTIÈRE 2--&gt;  [Fournisseur externe]
+                                            |
+                                       FRONTIÈRE 3
+                                            v
+                                   [Services internes]</code></p>
+<p>Règle : <strong>toute donnée qui franchit une frontière entrante est hostile jusqu'à preuve du contraire.</strong></p>
+<p>Le piège propre aux systèmes d'IA : la réponse du modèle franchit la frontière 2 en sens inverse, et elle est donc elle aussi hostile. Beaucoup de développeurs traitent la sortie du modèle comme une donnée de confiance. C'est l'origine de la majorité des failles réelles.</p>
+<h2 id="23-stride">2.3 STRIDE</h2>
+<p>Six catégories, à appliquer à chaque flux du diagramme :</p>
+<table>
+<thead>
+<tr>
+<th>Lettre</th>
+<th>Menace</th>
+<th>Exemple dans ton projet</th>
+<th>Propriété violée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong></td>
+<td>Usurpation d'identité</td>
+<td>Un jeton falsifié se fait passer pour un administrateur</td>
+<td>Authentification</td>
+</tr>
+<tr>
+<td><strong>T</strong></td>
+<td>Altération</td>
+<td>Modification du prompt système en transit</td>
+<td>Intégrité</td>
+</tr>
+<tr>
+<td><strong>R</strong></td>
+<td>Répudiation</td>
+<td>« Ce n'est pas moi qui ai envoyé ce prompt »</td>
+<td>Non-répudiation</td>
+</tr>
+<tr>
+<td><strong>I</strong></td>
+<td>Divulgation</td>
+<td>Données personnelles envoyées au fournisseur</td>
+<td>Confidentialité</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>Déni de service</td>
+<td>Saturation du quota par un seul utilisateur</td>
+<td>Disponibilité</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>Élévation de privilège</td>
+<td>Un utilisateur standard atteint un modèle réservé</td>
+<td>Autorisation</td>
+</tr>
+</tbody>
+</table>
+<p>Chaque lettre correspond à un contrôle : authentification, intégrité, journalisation, chiffrement, limitation de débit, autorisation. C'est exactement la liste de tes épics. Ce n'est pas un hasard : le backlog est dérivé de STRIDE.</p>
+<h2 id="24-le-risque-residuel">2.4 Le risque résiduel</h2>
+<p>Tu ne traiteras jamais tout. Le risque résiduel accepté n'est pas un aveu de faiblesse, c'est le signe d'une analyse aboutie.</p>
+<p>Un risque résiduel bien formulé comporte quatre éléments : la menace, la raison de ne pas la traiter, la mesure de compensation, et le nom de la personne qui l'accepte.</p>
+<blockquote>
+<p><em>Exemple.</em> « L'exfiltration de données par injection indirecte via un document fourni n'est pas bloquée de façon fiable. Coût de traitement disproportionné à ce stade. Compensation : journalisation intégrale et alerte sur volume de sortie anormal. Accepté par [responsable]. »</p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-3-identite-authentification-autorisation">Chapitre 3 — Identité, authentification, autorisation</h1>
+<p>Tu connais déjà Keycloak et les jetons. Ce chapitre ne réexplique pas les bases, il cible les endroits où les gens expérimentés se trompent.</p>
+<h2 id="31-les-trois-questions-a-ne-jamais-confondre">3.1 Les trois questions à ne jamais confondre</h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Nom</th>
+<th>Mécanisme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qui es-tu ?</td>
+<td>Authentification</td>
+<td>OpenID Connect, jeton d'identité</td>
+</tr>
+<tr>
+<td>Qu'as-tu le droit de faire ?</td>
+<td>Autorisation</td>
+<td>OAuth 2.0, jeton d'accès, portées</td>
+</tr>
+<tr>
+<td>Qu'as-tu fait ?</td>
+<td>Traçabilité</td>
+<td>Journalisation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OAuth 2.0 est un protocole d'autorisation déléguée, pas d'authentification.</strong> OpenID Connect est la couche d'authentification construite par-dessus. Confondre les deux est l'erreur la plus fréquente, et elle est souvent posée en entretien.</p>
+<h2 id="32-jeton-didentite-contre-jeton-dacces">3.2 Jeton d'identité contre jeton d'accès</h2>
+<ul>
+<li>Le <strong>jeton d'identité</strong> est destiné au client. Il dit qui est l'utilisateur. Son audience est le client.</li>
+<li>Le <strong>jeton d'accès</strong> est destiné au service. Il dit ce que le porteur peut faire. Son audience est le service.</li>
+</ul>
+<p class="piege"><strong>L'erreur classique :</strong> envoyer le jeton d'identité à l'interface de programmation comme jeton d'accès. Ça fonctionne — la signature est valide — et c'est une faille : l'audience n'est pas la bonne, et le service accepte un jeton qui ne lui était pas destiné.</p>
+<p>D'où la règle : <strong>valider systématiquement l'audience.</strong> Une signature valide ne signifie pas que le jeton t'était destiné.</p>
+<h2 id="33-les-cinq-validations-obligatoires-dun-jeton">3.3 Les cinq validations obligatoires d'un jeton</h2>
+<ol>
+<li><strong>Signature</strong> — avec la clé publique correspondant à l'identifiant de clé annoncé</li>
+<li><strong>Émetteur</strong> — exactement celui que tu attends, comparaison stricte de chaîne</li>
+<li><strong>Audience</strong> — ton service doit y figurer</li>
+<li><strong>Expiration</strong> — avec une tolérance d'horloge de quelques secondes, jamais plusieurs minutes</li>
+<li><strong>Algorithme</strong> — imposé par ta configuration, jamais lu depuis l'en-tête du jeton</li>
+</ol>
+<p>Le point 5 est le plus subtil. Deux attaques historiques :</p>
+<ul>
+<li><strong>Algorithme <code>none</code></strong> : le jeton annonce qu'il n'est pas signé, et les implémentations naïves l'acceptent.</li>
+<li><strong>Confusion d'algorithme</strong> : le jeton annonce un algorithme symétrique, et la bibliothèque utilise la clé publique RSA comme secret partagé. Or la clé publique est publique — l'attaquant peut donc forger un jeton valide.</li>
+</ul>
+<p>Dans les deux cas, la faille vient de ce que le vérificateur fait confiance à l'en-tête fourni par l'attaquant. <strong>On ne demande jamais à l'attaquant comment vérifier son propre jeton.</strong></p>
+<h2 id="34-le-probleme-de-la-revocation">3.4 Le problème de la révocation</h2>
+<p>Un jeton signé est valide jusqu'à son expiration. Il n'existe aucun moyen de l'annuler, parce que la vérification est locale et hors ligne. C'est le prix du sans-état.</p>
+<p>Trois réponses, à connaître avec leurs compromis :</p>
+<table>
+<thead>
+<tr>
+<th>Approche</th>
+<th>Avantage</th>
+<th>Coût</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Durée de vie courte</td>
+<td>Simple, sans état</td>
+<td>Fenêtre de vulnérabilité résiduelle</td>
+</tr>
+<tr>
+<td>Introspection à chaque appel</td>
+<td>Révocation immédiate</td>
+<td>Latence, dépendance forte à Keycloak</td>
+</tr>
+<tr>
+<td>Liste de révocation en cache</td>
+<td>Compromis</td>
+<td>Complexité, cohérence à gérer</td>
+</tr>
+</tbody>
+</table>
+<p>Pour ta passerelle : durée de vie courte, cinq à quinze minutes. Savoir expliquer pourquoi tu n'as pas choisi l'introspection — dépendance et latence sur le chemin critique — vaut mieux que de citer la solution « la plus sécurisée ».</p>
+<h2 id="35-point-de-decision-et-point-dapplication">3.5 Point de décision et point d'application</h2>
+<p>Vocabulaire d'architecture à maîtriser :</p>
+<ul>
+<li>Le <strong>point de décision</strong> évalue la politique et répond oui ou non.</li>
+<li>Le <strong>point d'application</strong> applique cette réponse.</li>
+</ul>
+<p>Les séparer permet de faire évoluer la politique sans toucher au code, et de la tester isolément. Les confondre disperse les contrôles dans tout le code, et c'est ainsi qu'on finit par en oublier un.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-4-cryptographie-appliquee-et-infrastructure-a-cles-publiques">Chapitre 4 — Cryptographie appliquée et infrastructure à clés publiques</h1>
+<p>C'est le chapitre le plus dense, et celui où ton avantage concurrentiel se construit. Peu de développeurs, même seniors, maîtrisent réellement cette matière.</p>
+<h2 id="41-les-trois-usages-a-ne-pas-melanger">4.1 Les trois usages à ne pas mélanger</h2>
+<table>
+<thead>
+<tr>
+<th>Usage</th>
+<th>Garantit</th>
+<th>Mécanisme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chiffrement</td>
+<td>Confidentialité</td>
+<td>Symétrique ou asymétrique</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>Intégrité et origine</td>
+<td>Asymétrique</td>
+</tr>
+<tr>
+<td>Empreinte</td>
+<td>Intégrité seule</td>
+<td>Fonction de hachage</td>
+</tr>
+</tbody>
+</table>
+<p>Une clé sert à <strong>un seul</strong> usage. Une clé de signature ne chiffre pas, une clé de chiffrement ne signe pas. Cette séparation figure dans les extensions du certificat, et c'est un point d'audit.</p>
+<h2 id="42-anatomie-dun-certificat-x509">4.2 Anatomie d'un certificat X.509</h2>
+<p>Un certificat est une <strong>affirmation signée</strong> : une autorité déclare que telle clé publique appartient à telle identité.</p>
+<p>Les champs qui comptent :</p>
+<ul>
+<li><strong>Sujet</strong> — l'identité certifiée</li>
+<li><strong>Émetteur</strong> — qui l'affirme</li>
+<li><strong>Clé publique</strong> — l'objet de l'affirmation</li>
+<li><strong>Validité</strong> — les dates de début et de fin</li>
+<li><strong>Nom alternatif du sujet</strong> — les noms réellement vérifiés par les clients modernes. Le nom commun est obsolète depuis longtemps ; s'appuyer dessus est une erreur fréquente.</li>
+<li><strong>Contraintes de base</strong> — indique si le certificat peut signer d'autres certificats. Sans ce garde-fou, n'importe quel certificat de service pourrait émettre des certificats.</li>
+<li><strong>Usage de la clé et usage étendu</strong> — à quoi la clé a le droit de servir</li>
+</ul>
+<h2 id="43-la-chaine-de-confiance">4.3 La chaîne de confiance</h2>
+<p><code>Racine (hors ligne, autosignée)
+   └── Intermédiaire (en ligne, signe au quotidien)
+          └── Certificat de service (courte durée)</code></p>
+<p>Pourquoi cette structure, question posée systématiquement :</p>
+<ul>
+<li>La clé racine est le secret ultime. Si elle est compromise, <strong>toute</strong> l'infrastructure s'effondre et il faut redistribuer la racine à tous les clients. On la garde donc hors ligne, protégée matériellement, et on ne l'utilise que quelques fois par an.</li>
+<li>L'intermédiaire travaille au quotidien. Si elle est compromise, on la révoque et on en émet une nouvelle. La racine reste valide, les clients ne bougent pas.</li>
+</ul>
+<p>Une racine qui signe directement les certificats de service est le signe immédiat d'une conception amateur.</p>
+<h2 id="44-revocation-le-point-faible-historique">4.4 Révocation : le point faible historique</h2>
+<p>Trois approches :</p>
+<table>
+<thead>
+<tr>
+<th>Mécanisme</th>
+<th>Principe</th>
+<th>Faiblesse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Liste de révocation</td>
+<td>Fichier des certificats révoqués</td>
+<td>Volumineuse, mise à jour différée</td>
+</tr>
+<tr>
+<td>Vérification en ligne</td>
+<td>Interrogation de l'autorité</td>
+<td>Latence, fuite de confidentialité, disponibilité critique</td>
+</tr>
+<tr>
+<td><strong>Durée de vie courte</strong></td>
+<td>Le certificat expire seul</td>
+<td>Aucune, si la rotation est fiable</td>
+</tr>
+</tbody>
+</table>
+<p>La troisième est l'approche moderne, et c'est celle de ton ticket INF-4. La formule à retenir :</p>
+<blockquote>
+<p>Le renouvellement fréquent est une révocation par expiration. Si le certificat vit vingt-quatre heures, la fenêtre d'exploitation d'une clé volée est de vingt-quatre heures au maximum, sans aucune infrastructure de révocation à maintenir.</p>
+</blockquote>
+<h2 id="45-tls-et-tls-mutuel">4.5 TLS et TLS mutuel</h2>
+<p>Le protocole TLS standard n'authentifie que le serveur. Le client vérifie que le serveur présente un certificat valide pour le nom demandé.</p>
+<p>En <strong>TLS mutuel</strong>, le serveur exige en retour un certificat du client. Le résultat est fondamental :</p>
+<blockquote>
+<p>L'identité du service est établie <strong>avant</strong> la première requête applicative. Un appelant non autorisé est rejeté au niveau du transport, sans jamais atteindre ton code.</p>
+</blockquote>
+<p>C'est une défense structurellement plus forte qu'un jeton, parce qu'elle ne dépend d'aucune ligne de ton application.</p>
+<p>Attention à la distinction que beaucoup ratent : présenter un certificat valide est de l'<strong>authentification</strong>. Décider que ce porteur a le droit d'appeler ce point d'accès reste de l'<strong>autorisation</strong>, et c'est à toi de l'implémenter. Un TLS mutuel sans contrôle d'autorisation signifie que tout service du maillage peut appeler tous les autres.</p>
+<h2 id="46-module-materiel-de-securite-et-service-de-gestion-de-cles">4.6 Module matériel de sécurité et service de gestion de clés</h2>
+<p>Le principe fondateur, en une phrase :</p>
+<blockquote>
+<p><strong>La clé privée ne sort jamais du module. On ne lui envoie pas la clé pour signer, on lui envoie la donnée, et il renvoie la signature.</strong></p>
+</blockquote>
+<p>Conséquences pratiques :</p>
+<ul>
+<li>La compromission du serveur applicatif ne donne pas la clé, elle donne seulement la capacité de signer <strong>tant que l'accès dure</strong>.</li>
+<li>Toutes les opérations sont journalisées côté module.</li>
+<li>La révocation d'un accès est immédiate et n'exige pas de changer la clé.</li>
+</ul>
+<p><strong>PKCS#11</strong> est l'interface normalisée d'accès à ces modules. Même code, que tu parles à un module matériel physique, à SoftHSM en développement ou à un service géré.</p>
+<p><strong>AWS KMS</strong> est un service de gestion de clés adossé à du matériel certifié. Pour ton projet : les clés asymétriques de KMS signent tes certificats d'autorité, la clé privée n'existe nulle part ailleurs, et chaque signature laisse une trace dans le journal d'audit du nuage.</p>
+<p><strong>Pourquoi pas CloudHSM ?</strong> Environ 1,90 dollar de l'heure. Le compromis coût contre besoin réel est une décision d'architecte, et c'est celle que tu documenteras dans ton registre de décision.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-5-securite-des-modeles-de-langage">Chapitre 5 — Sécurité des modèles de langage</h1>
+<p>C'est le domaine le plus récent, donc le moins bien maîtrisé par tes concurrents sur le marché. C'est là que ta rareté se joue.</p>
+<h2 id="51-pourquoi-un-modele-de-langage-est-structurellement-vulnerable">5.1 Pourquoi un modèle de langage est structurellement vulnérable</h2>
+<p>Une application classique sépare le code et les données. Une requête paramétrée est sûre parce que le moteur sait ce qui est instruction et ce qui est donnée.</p>
+<p><strong>Un modèle de langage ne fait pas cette distinction.</strong> Instructions système et entrée utilisateur arrivent dans la même fenêtre de contexte, sous la même forme : du texte.</p>
+<blockquote>
+<p>C'est une injection par conception, pas par défaut d'implémentation.</p>
+</blockquote>
+<p>Cette phrase, comprise et énoncée correctement, te place immédiatement au-dessus de la moyenne des candidats.</p>
+<h2 id="52-injection-directe-et-injection-indirecte">5.2 Injection directe et injection indirecte</h2>
+<p><strong>Directe</strong> : l'utilisateur écrit lui-même l'instruction malveillante. Détectable par filtrage, avec un taux correct.</p>
+<p><strong>Indirecte</strong> : l'instruction est cachée dans un contenu que le système va lire — un document, une page web, un courriel, un ticket. L'utilisateur peut être totalement innocent.</p>
+<p>L'injection indirecte est bien plus grave, pour trois raisons : la victime ne voit rien, la charge utile est dissimulée dans un flux légitime, et le filtrage d'entrée utilisateur ne la voit pas passer.</p>
+<h2 id="53-pourquoi-le-filtrage-ne-suffira-jamais">5.3 Pourquoi le filtrage ne suffira jamais</h2>
+<p>Filtrer, c'est chercher à distinguer une instruction malveillante d'un texte légitime. Or, en langue naturelle, la même phrase peut être l'une ou l'autre selon le contexte. Il n'existe pas de frontière décidable.</p>
+<p>Chaque filtre est contournable par reformulation, encodage, changement de langue, découpage, ou détour narratif. Tu améliores le taux de détection, tu ne l'amènes jamais à cent pour cent.</p>
+<h2 id="54-le-principe-de-moindre-capacite">5.4 Le principe de moindre capacité</h2>
+<p>C'est <strong>la</strong> bonne réponse architecturale, et celle qui te distinguera.</p>
+<blockquote>
+<p>Puisqu'on ne peut pas garantir ce qu'on <strong>dit</strong> au modèle, on limite ce qu'il <strong>peut faire</strong>.</p>
+</blockquote>
+<p>Concrètement :</p>
+<ul>
+<li>Le modèle n'a aucun accès direct à une base de données ou à une interface de programmation.</li>
+<li>Chaque action est médiatisée par un outil au périmètre étroit, validé côté serveur.</li>
+<li>Toute action irréversible ou sensible exige une confirmation humaine.</li>
+<li>La sortie du modèle est traitée comme une donnée hostile : jamais interprétée comme du code, ni insérée telle quelle dans une page ou une requête.</li>
+</ul>
+<p>Formulation à retenir : <strong>une injection de prompt réussie doit rester sans conséquence.</strong></p>
+<h2 id="55-les-risques-du-referentiel-owasp-pour-les-modeles-de-langage">5.5 Les risques du référentiel OWASP pour les modèles de langage</h2>
+<p>Les six qui concernent directement ta passerelle :</p>
+<table>
+<thead>
+<tr>
+<th>Risque</th>
+<th>Ce que ça veut dire</th>
+<th>Ton ticket</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Injection de prompt</td>
+<td>Détournement des instructions</td>
+<td>AI-1</td>
+</tr>
+<tr>
+<td>Divulgation d'information sensible</td>
+<td>Fuite de données vers le fournisseur</td>
+<td>AI-2</td>
+</tr>
+<tr>
+<td>Traitement non sûr de la sortie</td>
+<td>La réponse est exécutée ou insérée sans contrôle</td>
+<td>AI-1</td>
+</tr>
+<tr>
+<td>Autonomie excessive</td>
+<td>Le modèle a plus de pouvoir que nécessaire</td>
+<td>IAM-3</td>
+</tr>
+<tr>
+<td>Consommation illimitée</td>
+<td>Coût et déni de service</td>
+<td>AI-4</td>
+</tr>
+<tr>
+<td>Fuite du prompt système</td>
+<td>Révélation des instructions et des règles internes</td>
+<td>AI-1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="56-le-cas-particulier-des-donnees-personnelles">5.6 Le cas particulier des données personnelles</h2>
+<p>Deux exigences qui se contredisent : protéger les données, et conserver une réponse utile.</p>
+<p>Le masquage par marqueurs stables résout la tension : chaque entité détectée est remplacée par un marqueur cohérent au sein d'une même session, puis restaurée dans la réponse. Le modèle raisonne sur la structure sans jamais voir la donnée réelle.</p>
+<p>La limite à connaître et à documenter : la <strong>réidentification par recoupement</strong>. Un texte peut rester identifiant même sans nom, par combinaison d'éléments contextuels. Aucun masquage ne l'élimine complètement.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-6-devsecops">Chapitre 6 — DevSecOps</h1>
+<h2 id="61-ce-que-le-terme-signifie-reellement">6.1 Ce que le terme signifie réellement</h2>
+<p>Pas « ajouter des outils de sécurité dans la chaîne ». Cela signifie :</p>
+<blockquote>
+<p>Déplacer la détection au plus près du moment où le défaut est introduit, et la rendre automatique.</p>
+</blockquote>
+<p>La justification est économique : plus un défaut est détecté tard, plus il coûte cher à corriger. Un défaut trouvé à l'écriture coûte quelques minutes ; en production, il coûte un incident, une correction urgente et une perte de confiance.</p>
+<h2 id="62-les-familles-danalyse">6.2 Les familles d'analyse</h2>
+<table>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Quand</th>
+<th>Voit</th>
+<th>Ne voit pas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Statique</td>
+<td>À l'écriture</td>
+<td>Le code source, les motifs dangereux</td>
+<td>Le comportement réel, la configuration</td>
+</tr>
+<tr>
+<td>Composition</td>
+<td>À la construction</td>
+<td>Les vulnérabilités connues des dépendances</td>
+<td>Les failles de ton propre code</td>
+</tr>
+<tr>
+<td>Dynamique</td>
+<td>À l'exécution</td>
+<td>Le comportement réel, la configuration</td>
+<td>Le code non atteint par les tests</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Au commit</td>
+<td>Les identifiants en clair</td>
+<td>Ce qui est déjà dans l'historique</td>
+</tr>
+</tbody>
+</table>
+<p>Aucune ne remplace les autres. Elles couvrent des angles morts distincts, et c'est la raison pour laquelle on les cumule.</p>
+<h2 id="63-le-faux-positif-est-le-vrai-sujet">6.3 Le faux positif est le vrai sujet</h2>
+<p>Une chaîne qui remonte quatre cents alertes dont trente comptent produit un effet unique : l'équipe cesse de les lire.</p>
+<p>La compétence de terrain n'est pas de brancher les outils. C'est de :</p>
+<ol>
+<li>Calibrer les règles sur ton contexte réel</li>
+<li>Classer les faux positifs de façon durable, jamais les ignorer silencieusement</li>
+<li>Bloquer uniquement sur ce qui le mérite vraiment</li>
+<li>Prévoir une dérogation tracée pour les urgences</li>
+</ol>
+<p>Sans le point 4, le premier incident de production fera désactiver l'ensemble des contrôles, définitivement.</p>
+<h2 id="64-chaine-dapprovisionnement-logicielle">6.4 Chaîne d'approvisionnement logicielle</h2>
+<p>Ton application est faite à quatre-vingt-dix pour cent de code que tu n'as pas écrit. La question devient : <strong>d'où vient ce que je déploie, et puis-je le prouver ?</strong></p>
+<p>Trois artefacts :</p>
+<ul>
+<li>La <strong>nomenclature logicielle</strong> liste tout ce que contient ton livrable. Sans elle, une alerte sur une bibliothèque te laisse sans réponse à « suis-je concerné ? ».</li>
+<li>La <strong>signature</strong> prouve l'origine de l'artefact.</li>
+<li>L'<strong>attestation</strong> prouve un fait à son sujet : il a été construit par cette chaîne, à partir de ce commit, avec ces contrôles passés.</li>
+</ul>
+<p>La distinction signature contre attestation est exactement le genre de nuance qu'on teste en entretien pour un poste senior.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-7-securite-des-conteneurs-et-de-kubernetes">Chapitre 7 — Sécurité des conteneurs et de Kubernetes</h1>
+<h2 id="71-ce-quest-reellement-un-conteneur">7.1 Ce qu'est réellement un conteneur</h2>
+<p>Ce n'est pas une machine virtuelle. C'est un processus du noyau hôte, isolé par des espaces de noms et limité par des groupes de contrôle. <strong>Le noyau est partagé.</strong></p>
+<p>Conséquence directe : une faille d'évasion du noyau donne accès à l'hôte, et donc à tous les autres conteneurs. C'est pourquoi retirer les privilèges n'est pas une précaution optionnelle.</p>
+<h2 id="72-les-quatre-controles-qui-comptent">7.2 Les quatre contrôles qui comptent</h2>
+<ol>
+<li><strong>Sans utilisateur racine</strong> — si le processus n'est pas racine, une évasion vaut beaucoup moins.</li>
+<li><strong>Système de fichiers racine en lecture seule</strong> — l'attaquant ne peut pas déposer ses outils.</li>
+<li><strong>Capacités Linux retirées</strong> — par défaut un conteneur en reçoit plusieurs dizaines dont il n'utilise aucune.</li>
+<li><strong>Élévation de privilège interdite</strong> — bloque le passage par les binaires à bit setuid.</li>
+</ol>
+<h2 id="73-les-secrets-kubernetes-ne-sont-pas-chiffres">7.3 Les secrets Kubernetes ne sont pas chiffrés</h2>
+<p>Ils sont encodés en base64, ce qui n'est pas du chiffrement. Sans chiffrement au repos activé sur le magasin de configuration du cluster, un accès à ce magasin donne tous les secrets en clair.</p>
+<p>C'est une idée fausse extrêmement répandue. La corriger correctement en entretien est un signal fort.</p>
+<h2 id="74-le-refus-par-defaut">7.4 Le refus par défaut</h2>
+<p>Réseau comme droits : <strong>on n'ouvre que ce qui est nécessaire, on ferme tout le reste par défaut.</strong></p>
+<p>Sans politique de refus par défaut, tous les modules d'un espace de noms peuvent se joindre entre eux et sortir sur Internet. Le déplacement latéral après compromission d'un seul composant devient trivial.</p>
+<p>Et le piège pratique : une politique réseau n'est appliquée que si le greffon réseau du cluster la supporte. Sinon, elle est acceptée sans effet. D'où la règle : <strong>une politique non vérifiée est une politique inexistante.</strong></p>
+<h2 id="75-le-controle-dadmission">7.5 Le contrôle d'admission</h2>
+<p>C'est le moment où le cluster peut refuser une ressource avant sa création. C'est le seul endroit où une règle devient réellement contraignante plutôt que recommandée.</p>
+<p>Passer de « nous recommandons de ne pas exécuter en racine » à « le cluster refuse les modules en racine » est le saut de maturité qu'on attend d'un Tech Lead.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-8-observabilite-et-reponse-a-incident">Chapitre 8 — Observabilité et réponse à incident</h1>
+<h2 id="81-les-trois-piliers-et-ce-quils-servent">8.1 Les trois piliers, et ce qu'ils servent</h2>
+<table>
+<thead>
+<tr>
+<th>Pilier</th>
+<th>Répond à</th>
+<th>Coût</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Métriques</td>
+<td>Est-ce que ça va mal ?</td>
+<td>Faible</td>
+</tr>
+<tr>
+<td>Traces</td>
+<td>Où exactement ?</td>
+<td>Moyen</td>
+</tr>
+<tr>
+<td>Journaux</td>
+<td>Que s'est-il passé précisément ?</td>
+<td>Élevé</td>
+</tr>
+</tbody>
+</table>
+<p>L'ordre d'investigation est toujours le même : métrique, puis trace, puis journal. Commencer par les journaux, c'est chercher une aiguille sans savoir dans quelle botte.</p>
+<h2 id="82-jamais-la-moyenne">8.2 Jamais la moyenne</h2>
+<p>Une latence moyenne de 200 millisecondes peut recouvrir quatre-vingt-quinze pour cent des appels à 50 millisecondes et cinq pour cent à 3 secondes. La moyenne masque exactement la population que tu cherches.</p>
+<p>Raisonne en centiles : le cinquantième pour le ressenti courant, le quatre-vingt-quinzième et le quatre-vingt-dix-neuvième pour les cas dégradés.</p>
+<h2 id="83-la-fatigue-dalerte">8.3 La fatigue d'alerte</h2>
+<p>Une alerte qui se déclenche sans exiger d'action sera ignorée, puis désactivée. Trois règles :</p>
+<ol>
+<li>Toute alerte exige une action humaine, sinon c'est une métrique.</li>
+<li>Toute alerte porte un mode opératoire.</li>
+<li>Une alerte bruyante se corrige dans la semaine, ou se supprime.</li>
+</ol>
+<h2 id="84-les-phases-de-la-reponse-a-incident">8.4 Les phases de la réponse à incident</h2>
+<p><strong>Préparation, détection, confinement, éradication, rétablissement, retour d'expérience.</strong></p>
+<p>Deux points de vigilance :</p>
+<ul>
+<li><strong>Confiner avant d'éradiquer.</strong> L'instinct pousse à corriger tout de suite. On arrête d'abord l'hémorragie.</li>
+<li><strong>Le retour d'expérience se fait sans recherche de faute.</strong> Une culture qui cherche un coupable obtient des incidents dissimulés, et perd toute capacité d'apprentissage.</li>
+</ul>
+<hr />
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="chapitre-9-la-posture-tech-lead">Chapitre 9 — La posture Tech Lead</h1>
+<h2 id="91-la-difference-en-une-phrase">9.1 La différence, en une phrase</h2>
+<blockquote>
+<p>Un développeur confirmé choisit une solution. Un Tech Lead explique pourquoi il a écarté les autres.</p>
+</blockquote>
+<h2 id="92-le-registre-de-decision-darchitecture">9.2 Le registre de décision d'architecture</h2>
+<p>Un document court, par décision structurante :</p>
+<ul>
+<li><strong>Contexte</strong> — le problème, les contraintes</li>
+<li><strong>Options</strong> — celles réellement envisagées</li>
+<li><strong>Décision</strong> — celle retenue</li>
+<li><strong>Raison</strong> — pourquoi elle, pourquoi pas les autres</li>
+<li><strong>Conséquences</strong> — ce que ça coûte, y compris le négatif</li>
+</ul>
+<p>C'est ce qui empêche l'équipe de rejouer le même débat dans six mois, et c'est un artefact que peu de candidats savent produire.</p>
+<h2 id="93-ce-qui-ne-simprovise-pas-en-entretien">9.3 Ce qui ne s'improvise pas en entretien</h2>
+<p>Prépare une réponse solide à ces cinq questions. Elles tombent presque toujours :</p>
+<ol>
+<li>Quel est le risque que tu as décidé de <strong>ne pas</strong> traiter, et pourquoi ?</li>
+<li>Quelle est la limite de ta solution de filtrage d'injection ?</li>
+<li>Pourquoi une autorité intermédiaire plutôt qu'une racine qui signe directement ?</li>
+<li>Comment tu arbitres entre sécurité et adoption par les utilisateurs ?</li>
+<li>Qu'est-ce qui casserait si ta passerelle tombait ?</li>
+</ol>
+<p>La cinquième est la plus révélatrice. Un point de contrôle unique est aussi un point de défaillance unique. Avoir pensé au mode dégradé — refuser tout, ou laisser passer sans contrôle — et savoir défendre son choix, c'est exactement le niveau attendu.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</h1>
+<p>Avant d'attaquer la technique, vérifie que tu peux expliquer à voix haute, pendant trois minutes chacun :</p>
+<ul class="controle">
+<li><input type="checkbox"><span>La différence entre OAuth 2.0 et OpenID Connect</span></li>
+<li><input type="checkbox"><span>Les cinq validations d'un jeton et l'attaque par confusion d'algorithme</span></li>
+<li><input type="checkbox"><span>Pourquoi la racine d'une autorité de certification reste hors ligne</span></li>
+<li><input type="checkbox"><span>Pourquoi des certificats à durée de vie courte remplacent la révocation</span></li>
+<li><input type="checkbox"><span>Pourquoi l'injection de prompt est structurelle et non corrigeable</span></li>
+<li><input type="checkbox"><span>Ce qu'est le principe de moindre capacité</span></li>
+<li><input type="checkbox"><span>Pourquoi les secrets Kubernetes ne sont pas chiffrés par défaut</span></li>
+<li><input type="checkbox"><span>Pourquoi on raisonne en centiles et jamais en moyenne</span></li>
+</ul>
+<p>Si un point résiste, reviens dessus avant le ticket correspondant. Le construire sans le comprendre produit une démonstration qui s'effondre à la première question.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8A4E2A"><h1 id="chapitre-10-simulation-dentretien">Chapitre 10 — Simulation d'entretien</h1>
+<p>Vingt-cinq questions réellement posées pour des postes de Tech Lead sécurité. Formule ta réponse à voix haute <strong>avant</strong> d'ouvrir la correction. Lire la réponse sans avoir tenté la sienne ne produit aucun apprentissage.</p>
+<p>Le format attendu à l'oral : une phrase de réponse directe, puis la nuance, puis un exemple concret. Jamais l'inverse.</p>
+<h2 id="identite-et-acces">Identité et accès</h2>
+<details>
+<summary>1. Quelle est la différence entre OAuth 2.0 et OpenID Connect ?</summary>
+<p>OAuth 2.0 est un protocole d'autorisation déléguée : il permet à une application d'agir sur une ressource au nom d'un utilisateur, sans jamais dire qui est cet utilisateur. OpenID Connect est la couche d'identité construite au-dessus : elle ajoute le jeton d'identité, qui répond à la question « qui ».</p>
+<p>La conséquence pratique : utiliser OAuth 2.0 seul pour authentifier est une erreur de conception courante, parce que le jeton d'accès ne garantit rien sur l'identité du porteur.</p>
+</details>
+<details>
+<summary>2. Un jeton a une signature valide. Est-ce suffisant pour l'accepter ?</summary>
+<p>Non. La signature prouve seulement que le jeton a été émis par une autorité que je connais. Il me faut encore vérifier l'émetteur, l'audience, l'expiration, et imposer l'algorithme depuis ma configuration.</p>
+<p>Le cas concret : un jeton d'identité destiné au client possède une signature parfaitement valide, mais son audience n'est pas mon service. L'accepter, c'est accepter un jeton qui ne m'était pas destiné.</p>
+</details>
+<details>
+<summary>3. Explique l'attaque par confusion d'algorithme.</summary>
+<p>Le vérificateur lit l'algorithme dans l'en-tête du jeton, donc dans une donnée fournie par l'attaquant. Si le jeton annonce un algorithme symétrique, une bibliothèque naïve utilise la clé publique RSA comme secret partagé. Or cette clé est publique : l'attaquant peut donc forger un jeton que le service acceptera.</p>
+<p>La leçon générale dépasse les jetons : on ne demande jamais à l'entrée hostile comment il faut la vérifier.</p>
+</details>
+<details>
+<summary>4. Comment révoques-tu un jeton déjà émis ?</summary>
+<p>On ne le révoque pas. C'est le prix du sans-état : la vérification est locale, donc l'émetteur n'est plus consulté.</p>
+<p>Trois réponses possibles : durée de vie courte, introspection à chaque appel, ou liste de révocation en cache. J'ai retenu la durée de vie courte, entre cinq et quinze minutes, parce que l'introspection place Keycloak sur le chemin critique de chaque requête — latence ajoutée et dépendance forte.</p>
+</details>
+<details>
+<summary>5. Pourquoi séparer point de décision et point d'application ?</summary>
+<p>Pour que la politique d'autorisation soit évaluée à un seul endroit, testable isolément et modifiable sans toucher au code applicatif.</p>
+<p>Le symptôme du contraire : des contrôles dispersés dans quinze contrôleurs. Le jour où la règle change, on en oublie un, et c'est celui-là qui devient la faille.</p>
+</details>
+<h2 id="cryptographie-et-infrastructure-a-cles-publiques">Cryptographie et infrastructure à clés publiques</h2>
+<details>
+<summary>6. Pourquoi une autorité intermédiaire plutôt qu'une racine qui signe directement ?</summary>
+<p>Parce que la compromission de la racine est irréparable : il faut redistribuer le nouveau magasin de confiance à tous les clients. La racine reste donc hors ligne et ne sert que quelques fois par an.</p>
+<p>L'intermédiaire, elle, travaille au quotidien. Compromise, elle se révoque et se remplace sans que le magasin de confiance des clients ne bouge.</p>
+</details>
+<details>
+<summary>7. Comment gères-tu la révocation de certificats ?</summary>
+<p>Je ne la gère pas, je l'évite. Les certificats de service vivent vingt-quatre à soixante-douze heures et sont renouvelés automatiquement.</p>
+<p>Un renouvellement fréquent est une révocation par expiration : la fenêtre d'exploitation d'une clé volée est bornée par la durée de vie, sans avoir à maintenir une liste de révocation ni un service de vérification en ligne qui deviendrait lui-même critique.</p>
+</details>
+<details>
+<summary>8. Qu'est-ce qu'un module matériel de sécurité apporte qu'un fichier de clé n'apporte pas ?</summary>
+<p>La clé privée ne sort jamais du module. On ne lui envoie pas la clé, on lui envoie la donnée à signer et il renvoie la signature.</p>
+<p>Conséquence : la compromission du serveur applicatif ne donne pas la clé, elle donne seulement la capacité de signer pendant la durée de l'accès. Cet accès se coupe immédiatement, sans changer la clé ni réémettre les certificats.</p>
+</details>
+<details>
+<summary>9. TLS mutuel ou jeton : lequel est le plus fort, et pourquoi ?</summary>
+<p>Le TLS mutuel, parce que l'identité est établie au niveau du transport, avant que la moindre ligne de mon code ne s'exécute. Un appelant non autorisé est rejeté pendant la négociation.</p>
+<p>Mais attention : présenter un certificat valide relève de l'authentification. Décider que ce porteur a le droit d'appeler ce point d'accès reste de l'autorisation, et cela reste à ma charge. Un maillage en TLS mutuel sans autorisation signifie que tout service peut appeler tous les autres.</p>
+</details>
+<details>
+<summary>10. Pourquoi ne pas utiliser la même clé pour chiffrer et pour signer ?</summary>
+<p>Parce que ce sont deux propriétés différentes — confidentialité d'un côté, intégrité et origine de l'autre — et que leurs cycles de vie divergent. Une clé de chiffrement doit être conservée pour déchiffrer l'ancien ; une clé de signature doit pouvoir être détruite.</p>
+<p>La séparation est inscrite dans les extensions d'usage du certificat, et c'est un point vérifié en audit.</p>
+</details>
+<h2 id="securite-des-modeles-de-langage">Sécurité des modèles de langage</h2>
+<details>
+<summary>11. Comment bloques-tu l'injection de prompt ?</summary>
+<p>Je ne la bloque pas complètement, et personne ne le peut. Un modèle de langage ne distingue pas l'instruction de la donnée : elles arrivent dans la même fenêtre de contexte, sous la même forme. C'est une injection par conception, pas un défaut d'implémentation.</p>
+<p>Je réduis la probabilité par filtrage en couches, et surtout je réduis l'impact par le principe de moindre capacité : le modèle n'a aucune action sensible directe, chaque outil a un périmètre étroit validé côté serveur, et toute action irréversible exige une confirmation humaine. L'objectif n'est pas qu'aucune injection ne réussisse, c'est qu'une injection réussie reste sans conséquence.</p>
+</details>
+<details>
+<summary>12. Quelle est la différence entre injection directe et indirecte, et laquelle t'inquiète le plus ?</summary>
+<p>Directe, l'utilisateur écrit lui-même l'instruction malveillante. Indirecte, elle est dissimulée dans un contenu que le système va lire : un document, une page, un ticket.</p>
+<p>L'indirecte m'inquiète davantage, pour trois raisons : l'utilisateur est innocent, la charge utile voyage dans un flux légitime, et le filtrage de l'entrée utilisateur ne la voit jamais passer.</p>
+</details>
+<details>
+<summary>13. La réponse du modèle est-elle une donnée de confiance ?</summary>
+<p>Non, et c'est l'erreur la plus répandue. La réponse franchit une frontière de confiance en provenance d'un système externe influençable par l'entrée.</p>
+<p>Elle ne doit donc jamais être interprétée comme du code, insérée telle quelle dans une page, ni utilisée pour construire une requête. C'est l'origine de la majorité des failles réelles observées sur ces systèmes.</p>
+</details>
+<details>
+<summary>14. Comment protèges-tu les données personnelles sans détruire la qualité des réponses ?</summary>
+<p>Masquage par marqueurs stables : chaque entité détectée est remplacée par un marqueur cohérent au sein de la session, puis restaurée dans la réponse rendue à l'utilisateur. Le modèle raisonne sur la structure sans voir la donnée réelle.</p>
+<p>Je mesure la dégradation induite, parce qu'une sécurité qui rend l'outil inutilisable sera contournée, pas adoptée. Et je documente la limite : la réidentification par recoupement reste possible, aucun masquage ne l'élimine.</p>
+</details>
+<details>
+<summary>15. Qu'est-ce que l'autonomie excessive ?</summary>
+<p>C'est donner au modèle plus de pouvoir que la tâche n'en exige : accès direct à une base, droit d'écriture là où la lecture suffirait, outils au périmètre trop large.</p>
+<p>C'est le risque qui transforme une injection anodine en incident réel. La mitigation n'est pas un filtre, c'est une réduction de périmètre.</p>
+</details>
+<h2 id="devsecops-et-chaine-de-livraison">DevSecOps et chaîne de livraison</h2>
+<details>
+<summary>16. Ta chaîne remonte quatre cents alertes. Que fais-tu ?</summary>
+<p>Je ne les corrige pas, je les trie. Quatre cents alertes non triées produisent un seul effet : l'équipe cesse de les lire.</p>
+<p>Je calibre les règles sur le contexte réel, je classe les faux positifs de façon durable plutôt que de les ignorer, je ne bloque que sur ce qui le mérite, et je prévois une dérogation tracée et nominative. Sans cette soupape, la première urgence de production fera désactiver l'ensemble des contrôles, définitivement.</p>
+</details>
+<details>
+<summary>17. Quelle est la différence entre une signature et une attestation ?</summary>
+<p>La signature prouve l'origine de l'artefact : il vient bien de moi et n'a pas été modifié.</p>
+<p>L'attestation prouve un fait à son sujet : il a été construit par cette chaîne, à partir de ce commit, avec ces contrôles passés. La signature répond à « qui », l'attestation répond à « comment ».</p>
+</details>
+<details>
+<summary>18. À quoi sert vraiment une nomenclature logicielle ?</summary>
+<p>À répondre à une seule question, mais la plus urgente : quand une faille critique est publiée sur une bibliothèque, suis-je concerné, et où ?</p>
+<p>Sans elle, la réponse prend des jours d'inventaire manuel. Avec elle, elle prend une requête.</p>
+</details>
+<details>
+<summary>19. Pourquoi cumuler analyse statique, dynamique et de composition ?</summary>
+<p>Parce que leurs angles morts ne se recouvrent pas. La statique voit le code mais pas la configuration ni le comportement réel. La dynamique voit le comportement mais seulement sur les chemins effectivement empruntés. La composition voit les failles connues des dépendances mais rien de mon propre code.</p>
+<p>Aucune ne remplace les autres, et prétendre le contraire est un raccourci commercial.</p>
+</details>
+<h2 id="conteneurs-infrastructure-exploitation">Conteneurs, infrastructure, exploitation</h2>
+<details>
+<summary>20. Les secrets Kubernetes sont-ils chiffrés ?</summary>
+<p>Non, encodés en base64, ce qui n'est pas du chiffrement. Sans chiffrement au repos explicitement activé sur le magasin de configuration du cluster, un accès à ce magasin donne tous les secrets en clair.</p>
+<p>C'est une idée fausse très répandue, et elle conduit à des architectures où l'on croit protéger ce qu'on expose.</p>
+</details>
+<details>
+<summary>21. Pourquoi un conteneur sans privilège change-t-il quelque chose ?</summary>
+<p>Parce qu'un conteneur n'est pas une machine virtuelle : c'est un processus isolé par des espaces de noms, sur un noyau partagé. Une évasion donne accès à l'hôte, donc à tous les autres conteneurs.</p>
+<p>Exécuter sans utilisateur racine, avec un système de fichiers en lecture seule et sans capacité Linux superflue, ne supprime pas le risque d'évasion, mais réduit fortement ce que l'attaquant peut en faire.</p>
+</details>
+<details>
+<summary>22. Tu écris une politique réseau. Comment sais-tu qu'elle s'applique ?</summary>
+<p>Je la teste, depuis un conteneur temporaire, en vérifiant que les flux non autorisés échouent réellement.</p>
+<p>C'est nécessaire parce qu'une politique réseau n'est appliquée que si le greffon réseau du cluster la prend en charge. Sinon elle est acceptée sans effet, et l'on croit protégé un espace de noms entièrement ouvert.</p>
+</details>
+<details>
+<summary>23. Pourquoi raisonner en centiles plutôt qu'en moyenne ?</summary>
+<p>Parce que la moyenne masque précisément la population qui m'intéresse. Deux cents millisecondes de moyenne peuvent recouvrir quatre-vingt-quinze pour cent des appels à cinquante millisecondes et cinq pour cent à trois secondes.</p>
+<p>Ces cinq pour cent sont mes utilisateurs mécontents, et ils sont invisibles dans la moyenne.</p>
+</details>
+<h2 id="posture-et-architecture">Posture et architecture</h2>
+<details>
+<summary>24. Qu'est-ce qui casse si ta passerelle tombe ?</summary>
+<p>Tout. Un point de contrôle unique est aussi un point de défaillance unique, et c'est le prix assumé de la médiation.</p>
+<p>J'ai donc choisi le mode dégradé explicitement : refus de service plutôt que passage sans contrôle. Une passerelle qui laisse passer en cas de panne annule sa propre raison d'être. Je compense par de la redondance, des sondes correctement réglées et un objectif de disponibilité affiché.</p>
+</details>
+<details>
+<summary>25. Quel risque as-tu décidé de ne pas traiter ?</summary>
+<p>L'exfiltration par injection indirecte via un document fourni. Le coût d'un traitement fiable est disproportionné au regard du risque à ce stade.</p>
+<p>Compensation : journalisation intégrale et alerte sur volume de sortie anormal. Risque accepté et signé par le responsable désigné.</p>
+<p>C'est la question la plus révélatrice de la série. Un modèle de menace sans risque accepté est un modèle de menace que personne n'a vraiment terminé.</p>
+</details>
+<hr />
+</section><section class="chapitre" style="--teinte:#4A4A55"><h1 id="glossaire-francais-et-anglais">Glossaire français et anglais</h1>
+<p>La documentation technique et les entretiens en contexte international emploient les termes anglais. Tu dois tenir les deux.</p>
+<table>
+<thead>
+<tr>
+<th>Français</th>
+<th>Anglais</th>
+<th>À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Autorité de certification</td>
+<td>Certificate Authority</td>
+<td>Émet et signe les certificats</td>
+</tr>
+<tr>
+<td>Chaîne de confiance</td>
+<td>Chain of trust</td>
+<td>Racine, intermédiaire, feuille</td>
+</tr>
+<tr>
+<td>Nom alternatif du sujet</td>
+<td>Subject Alternative Name</td>
+<td>Le champ réellement vérifié ; le nom commun est obsolète</td>
+</tr>
+<tr>
+<td>Contraintes de base</td>
+<td>Basic Constraints</td>
+<td>Autorise ou non la signature d'autres certificats</td>
+</tr>
+<tr>
+<td>Liste de révocation</td>
+<td>Certificate Revocation List</td>
+<td>Approche historique, lourde</td>
+</tr>
+<tr>
+<td>Vérification en ligne</td>
+<td>OCSP</td>
+<td>Latence et fuite de confidentialité</td>
+</tr>
+<tr>
+<td>Durée de vie courte</td>
+<td>Short-lived certificates</td>
+<td>L'approche moderne</td>
+</tr>
+<tr>
+<td>TLS mutuel</td>
+<td>mutual TLS</td>
+<td>Le serveur exige aussi un certificat client</td>
+</tr>
+<tr>
+<td>Confidentialité persistante</td>
+<td>Forward secrecy</td>
+<td>Une clé compromise ne déchiffre pas le passé</td>
+</tr>
+<tr>
+<td>Module matériel de sécurité</td>
+<td>Hardware Security Module</td>
+<td>La clé ne sort jamais</td>
+</tr>
+<tr>
+<td>Service de gestion de clés</td>
+<td>Key Management Service</td>
+<td>Version gérée, adossée au matériel</td>
+</tr>
+<tr>
+<td>Empreinte</td>
+<td>Hash / digest</td>
+<td>Intégrité seule</td>
+</tr>
+<tr>
+<td>Jeton d'accès</td>
+<td>Access token</td>
+<td>Ce que je peux faire</td>
+</tr>
+<tr>
+<td>Jeton d'identité</td>
+<td>ID token</td>
+<td>Qui je suis</td>
+</tr>
+<tr>
+<td>Portée</td>
+<td>Scope</td>
+<td>Périmètre demandé</td>
+</tr>
+<tr>
+<td>Revendication</td>
+<td>Claim</td>
+<td>Champ du jeton</td>
+</tr>
+<tr>
+<td>Audience</td>
+<td>Audience</td>
+<td>À qui le jeton est destiné</td>
+</tr>
+<tr>
+<td>Émetteur</td>
+<td>Issuer</td>
+<td>Qui l'a émis</td>
+</tr>
+<tr>
+<td>Tolérance d'horloge</td>
+<td>Clock skew</td>
+<td>Quelques secondes, jamais plus</td>
+</tr>
+<tr>
+<td>Point de décision</td>
+<td>Policy Decision Point</td>
+<td>Évalue la politique</td>
+</tr>
+<tr>
+<td>Point d'application</td>
+<td>Policy Enforcement Point</td>
+<td>Applique la décision</td>
+</tr>
+<tr>
+<td>Moindre privilège</td>
+<td>Least privilege</td>
+<td>Le strict nécessaire</td>
+</tr>
+<tr>
+<td>Moindre capacité</td>
+<td>Least agency</td>
+<td>Limiter ce que le modèle peut faire</td>
+</tr>
+<tr>
+<td>Injection de prompt</td>
+<td>Prompt injection</td>
+<td>Directe ou indirecte</td>
+</tr>
+<tr>
+<td>Fenêtre de contexte</td>
+<td>Context window</td>
+<td>Instructions et données mélangées</td>
+</tr>
+<tr>
+<td>Masquage</td>
+<td>Redaction</td>
+<td>Remplacement par marqueurs</td>
+</tr>
+<tr>
+<td>Réidentification</td>
+<td>Re-identification</td>
+<td>Par recoupement, jamais éliminée</td>
+</tr>
+<tr>
+<td>Frontière de confiance</td>
+<td>Trust boundary</td>
+<td>Le niveau de confiance y change</td>
+</tr>
+<tr>
+<td>Modélisation de menaces</td>
+<td>Threat modeling</td>
+<td>STRIDE sur un diagramme de flux</td>
+</tr>
+<tr>
+<td>Risque résiduel</td>
+<td>Residual risk</td>
+<td>Accepté, compensé, signé</td>
+</tr>
+<tr>
+<td>Analyse statique</td>
+<td>SAST</td>
+<td>Le code</td>
+</tr>
+<tr>
+<td>Analyse dynamique</td>
+<td>DAST</td>
+<td>Le comportement</td>
+</tr>
+<tr>
+<td>Analyse de composition</td>
+<td>SCA</td>
+<td>Les dépendances</td>
+</tr>
+<tr>
+<td>Nomenclature logicielle</td>
+<td>SBOM</td>
+<td>Ce que contient le livrable</td>
+</tr>
+<tr>
+<td>Chaîne d'approvisionnement</td>
+<td>Supply chain</td>
+<td>D'où vient ce que je déploie</td>
+</tr>
+<tr>
+<td>Attestation</td>
+<td>Attestation</td>
+<td>Un fait prouvé sur l'artefact</td>
+</tr>
+<tr>
+<td>Portail qualité</td>
+<td>Quality gate</td>
+<td>Le point de blocage</td>
+</tr>
+<tr>
+<td>Dérogation</td>
+<td>Waiver / exception</td>
+<td>Tracée, nominative, datée</td>
+</tr>
+<tr>
+<td>Contrôle d'admission</td>
+<td>Admission control</td>
+<td>Le cluster refuse avant création</td>
+</tr>
+<tr>
+<td>Refus par défaut</td>
+<td>Default deny</td>
+<td>Tout est fermé, on ouvre au cas par cas</td>
+</tr>
+<tr>
+<td>Espace de noms</td>
+<td>Namespace</td>
+<td>Isolation logique</td>
+</tr>
+<tr>
+<td>Contexte de sécurité</td>
+<td>Security context</td>
+<td>Privilèges du conteneur</td>
+</tr>
+<tr>
+<td>Déplacement latéral</td>
+<td>Lateral movement</td>
+<td>De proche en proche après compromission</td>
+</tr>
+<tr>
+<td>Seau à jetons</td>
+<td>Token bucket</td>
+<td>Limitation de débit</td>
+</tr>
+<tr>
+<td>Disjoncteur</td>
+<td>Circuit breaker</td>
+<td>Coupe pour protéger</td>
+</tr>
+<tr>
+<td>Centile</td>
+<td>Percentile</td>
+<td>Jamais la moyenne</td>
+</tr>
+<tr>
+<td>Fatigue d'alerte</td>
+<td>Alert fatigue</td>
+<td>L'alerte ignorée puis désactivée</td>
+</tr>
+<tr>
+<td>Mode opératoire</td>
+<td>Runbook</td>
+<td>Quoi faire quand ça sonne</td>
+</tr>
+<tr>
+<td>Retour d'expérience</td>
+<td>Post-mortem</td>
+<td>Sans recherche de faute</td>
+</tr>
+<tr>
+<td>Registre de décision</td>
+<td>Architecture Decision Record</td>
+<td>Pourquoi on a écarté les autres options</td>
+</tr>
+</tbody>
+</table></section>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var barre=document.getElementById('progression');
+  function maj(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    barre.style.width=(h>0?(window.scrollY/h)*100:0)+'%';
+  }
+  window.addEventListener('scroll',maj,{passive:true});
+  window.addEventListener('resize',maj);maj();
+
+
+  var sections=[].slice.call(document.querySelectorAll('section.chapitre'));
+  function teinte(){
+    var pos=window.scrollY+140,t=null;
+    sections.forEach(function(s){if(s.offsetTop<=pos)t=s.style.getPropertyValue('--teinte');});
+    if(t)barre.style.background=t;
+  }
+  window.addEventListener('scroll',teinte,{passive:true});teinte();
+
+  var liens=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]'));
+  var cibles=liens.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function actif(){
+    var pos=window.scrollY+120,idx=-1;
+    cibles.forEach(function(c,i){if(c&&c.offsetTop<=pos)idx=i;});
+    liens.forEach(function(a,i){a.classList.toggle('actif',i===idx);});
+  }
+  window.addEventListener('scroll',actif,{passive:true});actif();
+
+  var cases=[].slice.call(document.querySelectorAll('ul.controle input'));
+  if(cases.length){
+    var c=document.createElement('p');c.className='compteur';
+    document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+    function compte(){
+      var n=cases.filter(function(i){return i.checked;}).length;
+      c.innerHTML='<b>'+n+'</b> / '+cases.length+(n===cases.length?' — prêt pour la technique.':' points maîtrisés.');
+    }
+    cases.forEach(function(i){i.addEventListener('change',compte);});compte();
+  }
+})();
+</script>
+</body>
+</html>

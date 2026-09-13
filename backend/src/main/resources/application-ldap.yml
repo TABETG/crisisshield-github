@@ -1,0 +1,19 @@
+# Profil "ldap" : valeurs issues des variables d'environnement (docker-compose), repli local sinon.
+# Jamais de "spring.config.activate.on-profile" ici : le suffixe -ldap suffit, et Spring Boot
+# refuse de demarrer si on le remet (InvalidConfigDataPropertyException).
+app:
+  ldap:
+    url: ${LDAP_URLS:ldap://localhost:389}
+    baseDn: ${LDAP_BASE_DN:dc=springframework,dc=org}
+    managerDn: ${LDAP_MANAGER_DN:cn=admin,dc=springframework,dc=org}
+    managerPassword: ${LDAP_MANAGER_PASSWORD:admin}
+    userDnPatterns:
+      - uid={0},ou=people
+    groupSearchBase: ${LDAP_GROUP_SEARCH_BASE:ou=groups}
+    # bootstrap.ldif cree des groupOfNames : l'attribut est "member" ({0} = DN complet de l'utilisateur)
+    groupSearchFilter: ${LDAP_GROUP_SEARCH_FILTER:(member={0})}
+
+logging:
+  level:
+    org.springframework.security: INFO
+    com.crisisshield: DEBUG

@@ -1,0 +1,91 @@
+# Chaine CI/CD CrisisShield — EP01-US05
+# Etapes : construction, tests, securite, image.
+# Les controles de securite bloquent sur critique. Les derogations se font par ticket, jamais en desactivant le job.
+
+stages:
+  - build
+  - test
+  - security
+  - image
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dfile.encoding=UTF-8"
+  MAVEN_CLI_OPTS: "-B -q --no-transfer-progress"
+
+cache:
+  key: maven
+  paths:
+    - .m2/repository
+
+backend:build:
+  stage: build
+  image: maven:3.9.9-eclipse-temurin-21
+  script:
+    - cd backend && mvn $MAVEN_CLI_OPTS -DskipTests package
+  artifacts:
+    paths:
+      - backend/target/*.jar
+    expire_in: 1 day
+
+backend:test:
+  stage: test
+  image: maven:3.9.9-eclipse-temurin-21
+  script:
+    - cd backend && mvn $MAVEN_CLI_OPTS test
+
+frontend:build:
+  stage: build
+  image: node:20-alpine
+  script:
+    - cd frontend && npm ci && npm run typecheck && npm run build
+
+# --- Securite ---
+
+secrets:gitleaks:
+  stage: security
+  image:
+    name: zricethezav/gitleaks:latest
+    entrypoint: [""]
+  script:
+    - gitleaks detect --source . --no-banner --redact --exit-code 1
+
+sast:semgrep:
+  stage: security
+  image: returntocorp/semgrep
+  script:
+    - semgrep ci --config p/owasp-top-ten --config p/java --config p/typescript --config .semgrep.yml
+  allow_failure: true   # a passer en bloquant une fois le bruit initial trie (EP19-US03)
+
+sca:trivy:
+  stage: security
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  script:
+    - trivy fs --scanners vuln,misconfig --severity CRITICAL --exit-code 1 --no-progress .
+    - trivy fs --scanners vuln --severity HIGH --exit-code 0 --no-progress .
+
+sbom:syft:
+  stage: security
+  image:
+    name: anchore/syft:latest
+    entrypoint: [""]
+  script:
+    - syft dir:backend -o cyclonedx-json=sbom-backend.cdx.json
+  artifacts:
+    paths:
+      - sbom-backend.cdx.json
+    expire_in: 30 days
+
+# --- Image ---
+
+image:backend:
+  stage: image
+  image: docker:27
+  services:
+    - docker:27-dind
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA" backend
+    - echo "Etiquette = empreinte de commit, jamais latest (EP01-US06)"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

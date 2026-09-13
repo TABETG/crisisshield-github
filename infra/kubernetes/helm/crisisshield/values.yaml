@@ -1,0 +1,26 @@
+image:
+  repository: crisisshield/backend
+  tag: "dev"          # en CI : empreinte de commit, jamais latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30080
+
+env:
+  SPRING_PROFILES_ACTIVE: "ldap"
+  APP_ASSISTANT_PROVIDER: "mock"
+
+# Les secrets viennent d'un Secret Kubernetes cree hors chart (EP09-US09)
+existingSecret: crisisshield-secrets
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi

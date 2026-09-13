@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backlog CrisisShield enrichi</title>
+<style>
+:root{
+  --fond:#F5F7F4;
+  --carte:#FFFFFF;
+  --encre:#141A20;
+  --encre-douce:#52606C;
+  --bleu:#2C4A78;
+  --ocre:#9E4E17;
+  --vert:#1C5C4C;
+  --trait:#DCE2DC;
+  --trait-fin:#E9EDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--fond);color:var(--encre);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px;line-height:1.72;
+  -webkit-text-size-adjust:100%;
+}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto;}
+@media(min-width:1040px){
+  .page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px;}
+}
+
+/* ---- sommaire ---- */
+nav.som{padding:24px 20px 0;}
+@media(min-width:1040px){
+  nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+    padding:56px 0 40px;border-right:1px solid var(--trait);padding-right:24px;}
+}
+nav.som .titre-som{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;letter-spacing:.02em;color:var(--encre-douce);
+  font-weight:600;margin:0 0 14px;}
+nav.som ul{list-style:none;margin:0;padding:0;}
+nav.som li{margin:0;}
+nav.som a{display:block;padding:4px 0;font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:13.5px;line-height:1.4;color:var(--encre-douce);text-decoration:none;
+  border-left:2px solid transparent;padding-left:12px;margin-left:-14px;}
+nav.som a:hover{color:var(--bleu);border-left-color:var(--bleu);}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px;}
+nav.som ul ul{margin-bottom:8px;}
+details.som-mob summary{cursor:pointer;font-family:ui-sans-serif,system-ui,sans-serif;
+  font-size:14px;font-weight:600;padding:14px 0;color:var(--bleu);}
+@media(min-width:1040px){details.som-mob{display:none}}
+@media(max-width:1039px){nav.som.bureau{display:none}}
+
+/* ---- contenu ---- */
+main{padding:0 20px 96px;min-width:0;}
+@media(min-width:1040px){main{padding:56px 0 140px;}}
+.enveloppe{max-width:69ch;}
+
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px;}
+.chapeau h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;
+  letter-spacing:-.022em;margin:0 0 14px;}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);line-height:1.7;}
+.chapeau .meta b{color:var(--encre);font-weight:600;}
+
+h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:clamp(23px,3.4vw,30px);line-height:1.2;font-weight:660;letter-spacing:-.02em;
+  margin:72px 0 6px;padding-top:26px;border-top:1px solid var(--trait);}
+h2{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:19px;line-height:1.3;font-weight:640;letter-spacing:-.01em;
+  margin:42px 0 10px;color:var(--bleu);}
+h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;
+  margin:30px 0 8px;}
+p{margin:0 0 16px;}
+main>.enveloppe>p:first-of-type{margin-top:18px;}
+strong{font-weight:660;}
+em{font-style:italic;}
+a{color:var(--bleu);}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86em;
+  background:#EBEFEA;padding:1.5px 5px;border-radius:3px;}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px;}
+pre code{background:none;padding:0;font-size:13px;}
+hr{border:0;border-top:1px solid var(--trait);margin:44px 0;}
+
+ul,ol{margin:0 0 18px;padding-left:22px;}
+li{margin:0 0 7px;}
+
+blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:3px solid var(--bleu);
+  color:var(--encre);font-size:17.5px;}
+blockquote p{margin:0 0 10px;}
+blockquote p:last-child{margin:0;}
+
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14px;line-height:1.55;}
+@media(max-width:700px){table{display:block;overflow-x:auto;white-space:normal;}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;
+  border-bottom:1.5px solid var(--encre);vertical-align:bottom;}
+tbody td{padding:10px 14px 10px 0;border-bottom:1px solid var(--trait-fin);vertical-align:top;}
+tbody tr:last-child td{border-bottom:1px solid var(--trait);}
+td:last-child,th:last-child{padding-right:0;}
+
+/* ---- encarts ---- */
+p.reflexe,p.piege,p.regle{
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:14.5px;line-height:1.65;padding:14px 16px;margin:20px 0 22px;
+  background:var(--carte);}
+p.reflexe{border-left:3px solid var(--vert);}
+p.reflexe strong:first-child{color:var(--vert);}
+p.piege{border-left:3px solid var(--ocre);}
+p.piege strong:first-child{color:var(--ocre);}
+p.regle{border-left:3px solid var(--bleu);}
+p.regle strong:first-child{color:var(--bleu);}
+p.fiche{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;
+  color:var(--encre-douce);margin:0 0 18px;}
+p.fiche strong{color:var(--encre);}
+
+/* ---- cases à cocher ---- */
+ul.controle{list-style:none;padding:0;}
+ul.controle li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid var(--trait-fin);font-size:16px;}
+ul.controle input{margin-top:7px;width:16px;height:16px;accent-color:var(--vert);flex-shrink:0;}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through;
+  text-decoration-color:#C3CCD1;}
+
+a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--bleu);outline-offset:3px;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- barre de progression ---- */
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);
+  width:0;z-index:50;transition:width .08s linear;}
+@media(prefers-reduced-motion:reduce){#progression{transition:none}}
+
+/* ---- sommaire actif ---- */
+nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu);font-weight:600;}
+
+/* ---- questions / reponses ---- */
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
+  margin:0 0 10px;padding:0;}
+details[open]{border-left-color:var(--vert);}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;font-weight:600;line-height:1.45;color:var(--encre);
+  display:flex;gap:12px;align-items:flex-start;}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--bleu);font-weight:700;
+  font-size:17px;line-height:1.3;flex-shrink:0;}
+details[open]>summary::before{content:"2";color:var(--vert);}
+details>summary:hover{background:#F2F5F1;}
+details>*:not(summary){padding:0 18px;}
+details>p:first-of-type{padding-top:2px;}
+details>p:last-child{padding-bottom:16px;margin-bottom:0;}
+details.som-mob{border:0;border-left:0;background:none;}
+details.som-mob>summary{padding:14px 0;}
+details.som-mob>*:not(summary){padding:0;}
+
+/* ---- compteur de controle ---- */
+.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+  color:var(--encre-douce);margin:14px 0 0;}
+.compteur b{color:var(--vert);font-size:16px;}
+
+
+/* ---- couleur par chapitre ---- */
+.chapitre{--teinte:var(--bleu);}
+.chapitre>h1{color:var(--teinte);border-top:0;padding-top:30px;position:relative;}
+.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;
+  background:var(--teinte);}
+.chapitre h2{color:var(--teinte);}
+.chapitre h3{color:var(--teinte);opacity:.92;}
+.chapitre blockquote{border-left-color:var(--teinte);background:var(--carte);
+  padding:14px 20px;}
+.chapitre thead th{border-bottom-color:var(--teinte);color:var(--teinte);}
+.chapitre pre{border-left-color:var(--teinte);}
+.chapitre details{border-left-color:var(--teinte);}
+.chapitre details>summary::before{color:var(--teinte);}
+.chapitre details[open]{border-left-color:var(--vert);}
+.chapitre details[open]>summary::before{color:var(--vert);}
+.chapitre code{background:color-mix(in srgb,var(--teinte) 11%,transparent);
+  color:color-mix(in srgb,var(--teinte) 78%,black);}
+.chapitre a{color:var(--teinte);}
+
+/* ---- bandeau spectre ---- */
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px;}
+.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;font-weight:560;color:var(--encre-douce);
+  background:var(--carte);border:1px solid var(--trait);
+  padding:5px 11px 5px 8px;border-radius:2px;}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px;flex-shrink:0;}
+.spectre a:hover{color:var(--teinte);border-color:var(--teinte);}
+
+/* ---- sommaire colore ---- */
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;
+  border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent);}
+nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item ul a:hover,nav.som li.ch-item ul a.actif{color:var(--teinte);
+  border-left-color:var(--teinte);}
+nav.som li.ch-item{margin-bottom:10px;}
+
+@media print{
+  nav.som,details.som-mob,#progression{display:none}
+  .spectre{display:none}
+  details{border:1px solid #ccc}
+  details>*:not(summary){display:block !important}
+  body{background:#fff;font-size:11pt}
+  .page{display:block;padding:0}
+  h1{break-after:avoid;page-break-after:avoid}
+  table,blockquote,p.reflexe,p.piege{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div id="progression"></div>
+<div class="page">
+<nav class="som bureau">
+  <p class="titre-som">Sommaire</p>
+  <div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ep01-foundation-architecture">EP01 — Foundation &amp; Architecture</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#ep02-identity-access-management">EP02 — Identity &amp; Access Management</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#ep03-organisations-multi-tenant">EP03 — Organisations &amp; Multi-Tenant</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#ep04-crisis-knowledge-base">EP04 — Crisis Knowledge Base</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#ep05-crisis-execution-war-room">EP05 — Crisis Execution &amp; War Room</a></li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#ep06-notifications-alertes">EP06 — Notifications &amp; Alertes</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#ep07-degraded-mode-emergency-kits">EP07 — Degraded Mode &amp; Emergency Kits</a></li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#ep08-audit-traceability">EP08 — Audit &amp; Traceability</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#ep09-security-cryptography">EP09 — Security &amp; Cryptography</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ep10-observability-sre">EP10 — Observability &amp; SRE</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#ep12-platform-administration">EP12 — Platform Administration</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#ep15-defense-secteurs-reglementes">EP15 — Défense &amp; Secteurs réglementés</a></li>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ep16-mco-exploitation">EP16 — MCO / Exploitation</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#ep17-governance">EP17 — Governance</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#ep18-assistant-ia-securise-nouvel-epic">EP18 — Assistant IA sécurisé (nouvel épic)</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#ep19-securite-applicative-continue-nouvel-epic">EP19 — Sécurité applicative continue (nouvel épic)</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#ordre-recommande">Ordre recommandé</a></li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#les-cinq-stories-qui-te-vendent">Les cinq stories qui te vendent</a></li>
+</ul>
+</div>
+
+</nav>
+<main>
+<div class="enveloppe">
+<header class="chapeau">
+  <h1>Backlog CrisisShield enrichi</h1>
+  <p class="meta">58 user stories ajoutées aux 17 épics, plus deux épics nouveaux : Assistant IA sécurisé et Sécurité applicative continue.<br><b>Domaines :</b> DevSecOps, IA et récupération augmentée, cryptographie, PKI et HSM, eIDAS, observabilité.</p>
+</header>
+<nav class="spectre"><a href="#ep01-foundation-architecture" style="--teinte:#3A4E8C" title="EP01 — Foundation &amp; Architecture"><span></span>01 Foundation &amp; Archi…</a><a href="#ep02-identity-access-management" style="--teinte:#6B4A8F" title="EP02 — Identity &amp; Access Management"><span></span>02 Identity &amp; Access…</a><a href="#ep03-organisations-multi-tenant" style="--teinte:#1F6E86" title="EP03 — Organisations &amp; Multi-Tenant"><span></span>03 Organisations &amp; Mu…</a><a href="#ep04-crisis-knowledge-base" style="--teinte:#1E6B57" title="EP04 — Crisis Knowledge Base"><span></span>04 Crisis Knowledge Base</a><a href="#ep05-crisis-execution-war-room" style="--teinte:#A8621A" title="EP05 — Crisis Execution &amp; War Room"><span></span>05 Crisis Execution &amp;…</a><a href="#ep06-notifications-alertes" style="--teinte:#A34434" title="EP06 — Notifications &amp; Alertes"><span></span>06 Notifications &amp; Al…</a><a href="#ep07-degraded-mode-emergency-kits" style="--teinte:#2D5F8F" title="EP07 — Degraded Mode &amp; Emergency Kits"><span></span>07 Degraded Mode &amp; Em…</a><a href="#ep08-audit-traceability" style="--teinte:#8C3F63" title="EP08 — Audit &amp; Traceability"><span></span>08 Audit &amp; Traceabili…</a><a href="#ep09-security-cryptography" style="--teinte:#7A6B1B" title="EP09 — Security &amp; Cryptography"><span></span>09 Security &amp; Cryptog…</a><a href="#ep10-observability-sre" style="--teinte:#3F6B2E" title="EP10 — Observability &amp; SRE"><span></span>10 Observability &amp; SRE</a><a href="#ep12-platform-administration" style="--teinte:#8A4E2A" title="EP12 — Platform Administration"><span></span>12 Platform Administration</a><a href="#ep15-defense-secteurs-reglementes" style="--teinte:#4A4A55" title="EP15 — Défense &amp; Secteurs réglementés"><span></span>15 Défense &amp; Secteurs…</a><a href="#ep16-mco-exploitation" style="--teinte:#3A4E8C" title="EP16 — MCO / Exploitation"><span></span>16 MCO / Exploitation</a><a href="#ep17-governance" style="--teinte:#6B4A8F" title="EP17 — Governance"><span></span>17 Governance</a><a href="#ep18-assistant-ia-securise-nouvel-epic" style="--teinte:#1F6E86" title="EP18 — Assistant IA sécurisé (nouvel épic)"><span></span>18 Assistant IA sécurisé…</a><a href="#ep19-securite-applicative-continue-nouvel-epic" style="--teinte:#1E6B57" title="EP19 — Sécurité applicative continue (nouvel épic)"><span></span>19 Sécurité applicative c…</a><a href="#ordre-recommande" style="--teinte:#A8621A" title="Ordre recommandé"><span></span>Ordre recommandé</a><a href="#les-cinq-stories-qui-te-vendent" style="--teinte:#A34434" title="Les cinq stories qui te vendent"><span></span>Les cinq stories qui te v…</a></nav>
+<details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ep01-foundation-architecture">EP01 — Foundation &amp; Architecture</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#ep02-identity-access-management">EP02 — Identity &amp; Access Management</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#ep03-organisations-multi-tenant">EP03 — Organisations &amp; Multi-Tenant</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#ep04-crisis-knowledge-base">EP04 — Crisis Knowledge Base</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#ep05-crisis-execution-war-room">EP05 — Crisis Execution &amp; War Room</a></li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#ep06-notifications-alertes">EP06 — Notifications &amp; Alertes</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#ep07-degraded-mode-emergency-kits">EP07 — Degraded Mode &amp; Emergency Kits</a></li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#ep08-audit-traceability">EP08 — Audit &amp; Traceability</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#ep09-security-cryptography">EP09 — Security &amp; Cryptography</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#ep10-observability-sre">EP10 — Observability &amp; SRE</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#ep12-platform-administration">EP12 — Platform Administration</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#ep15-defense-secteurs-reglementes">EP15 — Défense &amp; Secteurs réglementés</a></li>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ep16-mco-exploitation">EP16 — MCO / Exploitation</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#ep17-governance">EP17 — Governance</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#ep18-assistant-ia-securise-nouvel-epic">EP18 — Assistant IA sécurisé (nouvel épic)</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#ep19-securite-applicative-continue-nouvel-epic">EP19 — Sécurité applicative continue (nouvel épic)</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#ordre-recommande">Ordre recommandé</a></li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#les-cinq-stories-qui-te-vendent">Les cinq stories qui te vendent</a></li>
+</ul>
+</div>
+</details>
+<section class="chapitre" style="--teinte:#3A4E8C"><h1 id="ep01-foundation-architecture">EP01 — Foundation &amp; Architecture</h1>
+<p><strong>EP01-US05 — Chaîne CI/CD avec portail qualité — 5 SP</strong>
+En tant que développeur, je veux qu'aucune fusion ne soit possible sans analyse statique, analyse des dépendances et détection de secrets, afin que les défauts de sécurité soient bloqués avant la revue humaine.
+Techno : GitLab CI, Semgrep, Trivy, Gitleaks, Checkov. Critère : une dépendance vulnérable injectée volontairement fait échouer la chaîne.</p>
+<p><strong>EP01-US06 — Image Docker durcie — 3 SP</strong>
+En tant que développeur, je veux une image multi-étapes, sans utilisateur racine ni shell, étiquetée par empreinte de commit, afin qu'un conteneur compromis ne donne rien d'exploitable.
+Techno : Dockerfile multi-étapes, image distroless ou Alpine minimale. Critère : <code>latest</code> interdit, <code>whoami</code> dans le conteneur ne renvoie pas root.</p>
+<p><strong>EP01-US07 — Kubernetes local et chart Helm — 5 SP</strong>
+En tant que développeur, je veux déployer CrisisShield sur un cluster Kubernetes local avec un chart Helm paramétré, afin que l'environnement de développement soit identique à la cible de production.
+Techno : kind, Helm, contextes de sécurité. Critère : conteneur en lecture seule, capacités retirées, sondes de vivacité et de disponibilité distinctes.</p>
+<p><strong>EP01-US08 — Infrastructure AWS en code — 8 SP</strong>
+En tant que DevOps, je veux décrire l'intégralité de l'infrastructure de staging en Terraform, afin de pouvoir la détruire et la reconstruire sans intervention manuelle.
+Techno : Terraform, VPC, EKS, ECR, KMS, Secrets Manager, fédération OIDC GitLab vers AWS sans clé statique. Critère : <code>terraform destroy</code> puis <code>apply</code> reconstruit un environnement fonctionnel.</p>
+<p><strong>EP01-US09 — Signature des images et nomenclature logicielle — 5 SP</strong>
+En tant que responsable sécurité, je veux que chaque image soit signée et accompagnée de sa nomenclature, et que le cluster refuse toute image non signée, afin de garantir la provenance de ce qui tourne en production.
+Techno : Cosign, Syft, CycloneDX, Kyverno. Critère : une image non signée est rejetée à l'admission.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="ep02-identity-access-management">EP02 — Identity &amp; Access Management</h1>
+<p><strong>EP02-US06 — Signature asymétrique des jetons — 5 SP</strong>
+En tant que responsable sécurité, je veux que les jetons soient signés en RS256 ou ES256 avec une clé privée qui ne quitte jamais le module matériel, et que la clé publique soit exposée en JWKS, afin qu'aucun service ne puisse forger un jeton même s'il est compromis.
+Techno : jjwt, AWS KMS ou SoftHSM via PKCS#11. Critère : le secret partagé HS256 n'existe plus nulle part.</p>
+<p><strong>EP02-US07 — Keycloak en fédération LDAP — 8 SP</strong>
+En tant qu'architecte, je veux placer Keycloak devant l'annuaire LDAP et faire porter OpenID Connect par Keycloak, afin de sortir le JWT maison du code applicatif et d'ouvrir la porte à Azure AD et aux fournisseurs externes.
+Techno : Keycloak, fédération utilisateurs LDAP, export du realm versionné. Critère : la connexion LDAP existante fonctionne à l'identique via Keycloak.</p>
+<p><strong>EP02-US08 — Comptes de service et moindre privilège — 3 SP</strong>
+En tant que responsable sécurité, je veux une identité distincte par service appelant, avec le strict minimum de portées, afin qu'un incident sur un service soit attribuable et révocable sans toucher aux autres.
+Techno : flux d'identifiants client OAuth 2.0. Critère : aucun compte technique partagé.</p>
+<p><strong>EP02-US09 — Tests négatifs sur les jetons — 3 SP</strong>
+En tant que développeur, je veux une suite de tests qui vérifie le rejet des jetons expirés, à signature invalide, à audience étrangère et à algorithme falsifié, afin que la validation ne régresse jamais.
+Techno : JUnit, MockMvc. Critère : cinq tests négatifs verts, dont algorithme <code>none</code> et confusion d'algorithme.</p>
+<p><strong>EP02-US10 — Identité de niveau substantiel eIDAS — 8 SP</strong>
+En tant que responsable de crise d'un organisme public, je veux pouvoir m'authentifier avec une identité électronique de niveau substantiel, afin que les décisions prises en cellule de crise soient imputables à une personne identifiée avec un niveau de garantie réglementaire.
+Techno : OpenID Connect vers un fournisseur d'identité eIDAS (ProConnect ou équivalent), niveau substantiel. Critère : l'assurance de niveau est présente dans le jeton et vérifiée.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="ep03-organisations-multi-tenant">EP03 — Organisations &amp; Multi-Tenant</h1>
+<p><strong>EP03-US05 — Tests d'isolation automatisés — 5 SP</strong>
+En tant que responsable sécurité, je veux une suite de tests qui tente systématiquement d'accéder aux ressources d'une autre organisation, afin de prouver que le filtre par organisation ne laisse rien passer.
+Techno : tests d'intégration, deux organisations de test, référence directe non contrôlée à un objet. Critère : chaque point d'accès a son test d'isolation, tous verts.</p>
+<p><strong>EP03-US06 — Chiffrement par organisation — 8 SP</strong>
+En tant que responsable sécurité, je veux une clé de chiffrement distincte par organisation, gérée par le service de gestion de clés, afin que la compromission d'une clé n'expose qu'un seul client et que la révocation d'un client soit une destruction de clé.
+Techno : chiffrement par enveloppe, clé de données AES-GCM, clé maîtresse par organisation dans KMS. Critère : les données d'une organisation sont illisibles avec la clé d'une autre.</p>
+<p><strong>EP03-US07 — Isolation des conversations IA — 3 SP</strong>
+En tant qu'utilisateur, je veux que l'assistant IA n'ait accès qu'aux plans et crises de mon organisation, afin qu'aucune information d'un autre client ne puisse être restituée.
+Techno : réutilisation du filtre Hibernate <code>orgFilter</code> sur la couche de récupération. Critère : test d'isolation dédié à la récupération de contexte.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="ep04-crisis-knowledge-base">EP04 — Crisis Knowledge Base</h1>
+<p><strong>EP04-US06 — Indexation vectorielle des plans — 8 SP</strong>
+En tant que responsable sécurité, je veux que les plans publiés soient découpés et indexés sous forme de vecteurs, afin que l'assistant puisse les retrouver par similarité et non seulement par mot-clé.
+Techno : pgvector dans PostgreSQL, embeddings via la passerelle IA, index par organisation. Critère : une question en langage naturel retrouve le bon passage du bon plan.</p>
+<p><strong>EP04-US07 — Assistant de rédaction de plan — 5 SP</strong>
+En tant que responsable sécurité, je veux être aidé par l'assistant pour rédiger et compléter un plan à partir de modèles et de plans existants, afin de produire des procédures plus complètes en moins de temps.
+Techno : passerelle IA, récupération augmentée sur les plans de l'organisation. Critère : la suggestion cite le passage source et reste modifiable.</p>
+<p><strong>EP04-US08 — Cachet des versions publiées — 5 SP</strong>
+En tant qu'auditeur, je veux que chaque version publiée d'un plan porte un cachet électronique de l'organisation et un horodatage, afin de prouver qu'elle n'a pas été altérée depuis sa publication.
+Techno : signature via clé dans le module matériel, horodatage RFC 3161. Critère : la vérification échoue dès qu'un caractère du plan change.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="ep05-crisis-execution-war-room">EP05 — Crisis Execution &amp; War Room</h1>
+<p><strong>EP05-US06 — Copilote de crise — 8 SP</strong>
+En tant que responsable de crise, je veux que l'assistant me propose les prochaines actions à partir du plan activé et des événements déjà survenus, afin de ne rien oublier sous pression.
+Techno : récupération augmentée sur le plan actif et la chronologie, passerelle IA. Critère : chaque suggestion référence l'étape du plan dont elle découle ; aucune action n'est exécutée sans validation humaine.</p>
+<p><strong>EP05-US07 — Synthèse automatique de la chronologie — 5 SP</strong>
+En tant que responsable de crise, je veux une synthèse rédigée de la chronologie à tout moment, afin de communiquer rapidement avec la direction sans reconstituer les événements à la main.
+Techno : passerelle IA, masquage des données personnelles avant envoi. Critère : la synthèse ne contient aucune donnée personnelle non masquée dans le prompt.</p>
+<p><strong>EP05-US08 — Rapport de crise à valeur probante — 8 SP</strong>
+En tant que responsable de crise, je veux que le rapport de clôture soit signé électroniquement et horodaté selon eIDAS, afin qu'il puisse servir de preuve devant un assureur, un régulateur ou un tribunal.
+Techno : signature électronique avancée ou qualifiée (PAdES), horodatage qualifié RFC 3161, prestataire de confiance qualifié ou module matériel interne. Critère : le rapport est vérifiable par un outil tiers standard.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="ep06-notifications-alertes">EP06 — Notifications &amp; Alertes</h1>
+<p><strong>EP06-US05 — Webhooks signés et anti-rejeu — 3 SP</strong>
+En tant qu'administrateur, je veux que chaque webhook sortant soit signé et horodaté, afin que le système destinataire puisse en vérifier l'origine et rejeter une réémission.
+Techno : signature HMAC dans l'en-tête, horodatage, fenêtre de validité courte. Critère : un webhook rejoué hors fenêtre est rejeté.</p>
+<p><strong>EP06-US06 — Courriels authentifiés — 3 SP</strong>
+En tant que destinataire, je veux que les alertes par courriel soient authentifiables, afin de ne pas confondre une alerte réelle avec une tentative d'hameçonnage en pleine crise.
+Techno : DKIM, DMARC, SPF, optionnellement S/MIME. Critère : le courriel passe DMARC en politique stricte.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="ep07-degraded-mode-emergency-kits">EP07 — Degraded Mode &amp; Emergency Kits</h1>
+<p><strong>EP07-US04 — Chiffrement des kits par enveloppe — 8 SP</strong>
+En tant que responsable sécurité, je veux que chaque kit soit chiffré avec une clé de données unique, elle-même chiffrée par une clé maîtresse dans le module matériel, afin qu'un kit volé soit inexploitable et qu'un kit puisse être révoqué sans rechiffrer les autres.
+Techno : AES-256-GCM, clé maîtresse dans KMS ou SoftHSM via PKCS#11, Bouncy Castle. Critère : la clé maîtresse ne quitte jamais le module ; la révocation d'un kit est une destruction de sa clé de données enveloppée.</p>
+<p><strong>EP07-US05 — Ouverture hors ligne par quorum — 5 SP</strong>
+En tant que responsable de crise, je veux qu'un kit puisse être ouvert hors ligne par plusieurs personnes ensemble et jamais par une seule, afin d'éviter qu'un individu isolé accède aux informations les plus sensibles.
+Techno : partage de secret de Shamir, seuil m parmi n. Critère : deux parts sur trois ouvrent le kit, une seule ne l'ouvre pas.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="ep08-audit-traceability">EP08 — Audit &amp; Traceability</h1>
+<p><strong>EP08-US04 — Chaînage cryptographique des journaux — 8 SP</strong>
+En tant que responsable sécurité, je veux que chaque entrée d'audit contienne l'empreinte de la précédente, et que la chaîne soit ancrée périodiquement par un horodatage signé, afin que toute suppression ou modification soit détectable.
+Techno : chaîne d'empreintes SHA-256, ancrage horodaté RFC 3161, vérification à la demande. Critère : la suppression d'une seule ligne casse la vérification.</p>
+<p><strong>EP08-US05 — Journalisation des appels IA — 3 SP</strong>
+En tant qu'auditeur, je veux que chaque appel à l'assistant soit tracé avec l'utilisateur, l'organisation, le modèle, le verdict des filtres, le coût et la latence, afin de pouvoir répondre à « qui a demandé quoi à l'IA ».
+Techno : journalisation structurée, identifiant de corrélation. Critère : le contenu brut du prompt n'est jamais journalisé par défaut ; un mode d'audit tracé peut l'activer.</p>
+<p><strong>EP08-US06 — Export de preuves signé — 5 SP</strong>
+En tant qu'auditeur, je veux que l'export du journal d'audit soit signé et horodaté, afin qu'il puisse être remis à un tiers comme élément de preuve opposable.
+Techno : signature électronique avancée sur l'export, horodatage qualifié. Critère : le fichier exporté est vérifiable hors de CrisisShield.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="ep09-security-cryptography">EP09 — Security &amp; Cryptography</h1>
+<p><strong>EP09-US06 — Autorité de certification interne — 8 SP</strong>
+En tant que responsable sécurité, je veux une autorité racine hors ligne et une autorité intermédiaire en ligne, afin d'émettre les certificats des services sans jamais exposer la racine.
+Techno : step-ca, clé racine dans KMS, intermédiaire signant au quotidien. Critère : la racine n'est utilisée que pour signer l'intermédiaire ; contraintes de base et usages de clé corrects dans chaque certificat.</p>
+<p><strong>EP09-US07 — TLS mutuel entre composants — 5 SP</strong>
+En tant que responsable sécurité, je veux que le backend, l'annuaire et la base de données s'authentifient mutuellement par certificat, afin qu'un composant non autorisé soit rejeté au niveau du transport.
+Techno : TLS mutuel, autorisation par identité de certificat. Critère : un client sans certificat valide est refusé avant toute requête applicative.</p>
+<p><strong>EP09-US08 — Rotation automatique des certificats — 5 SP</strong>
+En tant qu'exploitant, je veux que les certificats de service vivent moins de trois jours et se renouvellent sans coupure, afin que l'expiration ne soit jamais un incident et que la révocation devienne inutile.
+Techno : cert-manager raccordé à l'intermédiaire. Critère : un renouvellement observé sans erreur ni redémarrage.</p>
+<p><strong>EP09-US09 — Gestion centralisée des secrets — 5 SP</strong>
+En tant que développeur, je veux qu'aucun secret ne figure dans le dépôt, l'image ou les journaux, et que la rotation soit possible sans redémarrage, afin de réduire à zéro la surface d'exposition des identifiants.
+Techno : AWS Secrets Manager ou HashiCorp Vault, injection au démarrage. Critère : une recherche du secret dans le dépôt, l'image et les journaux ne renvoie rien.</p>
+<p><strong>EP09-US10 — Cachet électronique d'organisation eIDAS — 8 SP</strong>
+En tant que responsable conformité, je veux que CrisisShield puisse apposer un cachet électronique au nom de l'organisation sur les documents qu'elle produit, afin que ces documents aient une valeur juridique reconnue dans l'Union européenne.
+Techno : certificat de cachet électronique qualifié ou avancé, module matériel qualifié ou prestataire de services de confiance, formats CAdES et PAdES. Critère : le cachet est vérifiable avec l'outil de référence de la Commission européenne.</p>
+<p><strong>EP09-US11 — Inventaire cryptographique et agilité — 3 SP</strong>
+En tant que responsable sécurité, je veux un inventaire de tous les algorithmes, tailles de clé et usages en production, afin de préparer la migration vers les algorithmes post-quantiques quand elle sera exigée.
+Techno : nomenclature cryptographique, revue trimestrielle. Critère : aucun algorithme n'est codé en dur ; chaque usage est paramétré.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="ep10-observability-sre">EP10 — Observability &amp; SRE</h1>
+<p><strong>EP10-US06 — Traçage distribué — 5 SP</strong>
+En tant qu'exploitant, je veux suivre une requête segment par segment à travers l'authentification, le métier et l'appel IA, afin d'identifier en secondes le composant qui ralentit.
+Techno : OpenTelemetry, Jaeger, conventions sémantiques pour l'IA générative. Critère : les erreurs sont toujours tracées, le trafic nominal est échantillonné.</p>
+<p><strong>EP10-US07 — Détection de comportements anormaux — 5 SP</strong>
+En tant qu'exploitant sécurité, je veux être alerté sur les pics d'échecs d'authentification, les volumes d'appels IA anormaux et les accès hors horaires, afin d'intervenir avant l'incident.
+Techno : Prometheus, Alertmanager, seuils calibrés sur données réelles. Critère : chaque alerte a un mode opératoire ; une simulation d'abus déclenche l'alerte attendue.</p>
+<p><strong>EP10-US08 — Tableau de bord de coût IA — 3 SP</strong>
+En tant qu'administrateur d'organisation, je veux voir la consommation et le coût de l'assistant pour mon organisation, afin de piloter mon budget.
+Techno : Grafana, métriques par organisation. Critère : le coût du mois est lisible en un coup d'œil et cohérent avec la facture du fournisseur.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8A4E2A"><h1 id="ep12-platform-administration">EP12 — Platform Administration</h1>
+<p><strong>EP12-US04 — Politique IA par organisation — 5 SP</strong>
+En tant qu'administrateur plateforme, je veux définir par organisation le modèle autorisé, le quota, le masquage obligatoire et la conservation des journaux IA, afin d'adapter le niveau de contrôle au secteur du client.
+Techno : configuration par organisation, appliquée par la passerelle. Critère : une organisation en mode strict ne peut pas contourner le masquage.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#4A4A55"><h1 id="ep15-defense-secteurs-reglementes">EP15 — Défense &amp; Secteurs réglementés</h1>
+<p><strong>EP15-US03 — Correspondance réglementaire étendue — 5 SP</strong>
+En tant que responsable conformité, je veux relier chaque fonctionnalité de sécurité aux exigences de NIS2, ISO 27001, SecNumCloud et eIDAS, afin de démontrer la couverture sans reconstruire l'analyse à chaque audit.
+Techno : matrice de conformité versionnée. Critère : chaque exigence pointe vers une story et une preuve.</p>
+<p><strong>EP15-US04 — Journal de conformité IA — 5 SP</strong>
+En tant que responsable conformité, je veux documenter l'usage de l'IA selon les obligations de transparence et de journalisation du règlement européen sur l'intelligence artificielle, afin d'être prêt pour un contrôle.
+Techno : registre des usages IA, information des utilisateurs, conservation des journaux. Critère : chaque fonctionnalité IA est décrite avec sa finalité, ses données et son niveau de supervision humaine.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="ep16-mco-exploitation">EP16 — MCO / Exploitation</h1>
+<p><strong>EP16-US06 — Gestion continue des vulnérabilités — 3 SP</strong>
+En tant qu'exploitant sécurité, je veux que les images et dépendances soient réanalysées chaque nuit, avec un mécanisme de dérogation tracé et daté, afin qu'une faille publiée après le déploiement soit détectée sans attendre la prochaine livraison.
+Techno : Trivy planifié, nomenclature logicielle. Critère : une faille critique publiée sur une dépendance en production remonte en moins de 24 heures.</p>
+<p><strong>EP16-US07 — Réponse à incident incluant l'IA — 3 SP</strong>
+En tant qu'exploitant, je veux des scénarios de réponse couvrant la fuite de données par prompt, la compromission d'une clé et l'abus interne de l'assistant, afin de savoir quoi faire avant que ça n'arrive.
+Techno : mode opératoire par scénario, exercice sur table. Critère : chaque scénario a été joué au moins une fois.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="ep17-governance">EP17 — Governance</h1>
+<p><strong>EP17-US05 — Modèle de menace vivant — 3 SP</strong>
+En tant que responsable sécurité, je veux un modèle de menace couvrant l'application et l'assistant IA, revu à chaque trimestre et à chaque changement d'architecture, afin que les risques acceptés restent des décisions et non des oublis.
+Techno : STRIDE, référentiel OWASP pour les modèles de langage. Critère : chaque risque accepté a un porteur nommé.</p>
+<p><strong>EP17-US06 — Registres de décision d'architecture — 2 SP</strong>
+En tant que Tech Lead, je veux consigner chaque décision structurante avec les options écartées et leurs raisons, afin que l'équipe ne rejoue pas les mêmes débats et qu'un nouvel arrivant comprenne le pourquoi.
+Techno : fichiers versionnés dans le dépôt. Critère : les décisions Bedrock contre fournisseur externe, JWT maison contre Keycloak, et module matériel contre service géré sont documentées.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="ep18-assistant-ia-securise-nouvel-epic">EP18 — Assistant IA sécurisé (nouvel épic)</h1>
+<p><strong>Objectif :</strong> offrir un assistant fondé sur les plans et crises de l'organisation, sans jamais laisser sortir une donnée ni laisser une injection produire un effet.</p>
+<p><strong>EP18-US01 — Passerelle IA unique — 5 SP</strong>
+En tant qu'architecte, je veux que tout appel à un modèle passe par un point d'accès unique du backend, et qu'aucun autre chemin réseau vers un fournisseur ne soit possible, afin que les contrôles soient obligatoires et non recommandés.
+Techno : module Spring Boot <code>/api/assistant</code>, politiques réseau Kubernetes. Critère : depuis un autre conteneur, aucune sortie vers le fournisseur n'aboutit.</p>
+<p><strong>EP18-US02 — Abstraction du fournisseur et décision documentée — 5 SP</strong>
+En tant qu'architecte, je veux une interface unique derrière laquelle Bedrock ou un fournisseur externe peuvent être branchés, et un registre de décision qui justifie le choix, afin de changer de modèle en modifiant une seule classe.
+Techno : interface <code>ModelProvider</code>, implémentation Bedrock, implémentation simulée pour les tests, flux continu dès le départ. Critère : le test d'intégration passe avec le fournisseur simulé.</p>
+<p><strong>EP18-US03 — Filtrage d'injection de prompt — 8 SP</strong>
+En tant que responsable sécurité, je veux une défense en couches contre l'injection directe et indirecte, mesurée sur un banc d'essai de trente charges utiles, afin de connaître le taux réel de détection et d'assumer ce qui passe encore.
+Techno : séparation stricte système et utilisateur, règles sur motifs connus, classifieur. Critère : taux de détection chiffré, liste documentée des contournements non couverts.</p>
+<p><strong>EP18-US04 — Masquage des données personnelles — 8 SP</strong>
+En tant que délégué à la protection des données, je veux que noms, courriels, téléphones, numéros d'astreinte et identifiants internes soient remplacés par des marqueurs stables avant tout envoi au modèle, puis restaurés dans la réponse, afin que le fournisseur ne voie jamais une donnée réelle.
+Techno : Presidio, reconnaisseurs personnalisés pour les formats de l'organisation. Critère : six types de données neutralisés ; dégradation de la qualité des réponses mesurée et acceptée.</p>
+<p><strong>EP18-US05 — Principe de moindre capacité — 5 SP</strong>
+En tant qu'architecte, je veux que le modèle n'ait aucun accès direct aux données et n'agisse qu'à travers des outils au périmètre étroit validés côté serveur, avec confirmation humaine pour toute action irréversible, afin qu'une injection réussie reste sans conséquence.
+Techno : outils explicites, autorisation par outil, confirmation dans l'interface. Critère : une injection qui demande la suppression d'un plan n'aboutit à rien.</p>
+<p><strong>EP18-US06 — Limitation de débit et plafond de coût — 3 SP</strong>
+En tant qu'administrateur, je veux un seau à jetons par utilisateur et par organisation, un plafond quotidien, et une coupure globale sur dépassement du budget, afin qu'aucune boucle ni aucun abus ne produise de facture surprise.
+Techno : Bucket4j, Redis pour l'état partagé. Critère : mille requêtes en boucle sont coupées proprement avec un code 429.</p>
+<p><strong>EP18-US07 — Contrôle de sortie — 3 SP</strong>
+En tant que responsable sécurité, je veux que la réponse du modèle soit traitée comme une donnée hostile, jamais interprétée ni insérée telle quelle, et que le prompt système ne puisse jamais être restitué, afin de fermer les attaques par la sortie.
+Techno : échappement systématique, détection de fuite du prompt système. Critère : une réponse contenant du code ou une balise est affichée en texte brut.</p>
+<p><strong>EP18-US08 — Récupération augmentée sécurisée — 8 SP</strong>
+En tant que responsable sécurité, je veux que la récupération de contexte soit filtrée par organisation avant la recherche vectorielle, et que tout document récupéré soit traité comme une source possible d'injection indirecte, afin que ni la confidentialité ni l'intégrité ne dépendent du modèle.
+Techno : pgvector avec filtre de tenant dans la requête, délimitation stricte des documents dans le prompt. Critère : un document contenant une instruction cachée ne modifie pas le comportement de l'assistant.</p>
+<p><strong>EP18-US09 — Provenance des réponses IA — 5 SP</strong>
+En tant qu'auditeur, je veux que chaque réponse de l'assistant porte une attestation signée indiquant le modèle, sa version, les documents sources et l'empreinte de la réponse, afin de pouvoir prouver a posteriori ce que l'IA a produit et à partir de quoi.
+Techno : attestation JSON signée avec la clé du module matériel. Critère : la vérification échoue si la réponse ou ses sources sont modifiées.</p>
+<p><strong>EP18-US10 — Serveur MCP CrisisShield — 8 SP</strong>
+En tant qu'architecte, je veux exposer les capacités de CrisisShield à un agent via un serveur MCP avec des outils explicites, des hooks d'autorisation avant chaque appel et une journalisation intégrale, afin d'intégrer proprement des agents externes sans leur donner un accès direct à la base.
+Techno : SDK MCP, outils <code>lire_plan</code>, <code>lister_crises</code>, <code>proposer_tache</code>, hooks de cycle de vie. Critère : un appel d'outil sans autorisation est refusé et tracé.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="ep19-securite-applicative-continue-nouvel-epic">EP19 — Sécurité applicative continue (nouvel épic)</h1>
+<p><strong>Objectif :</strong> transformer la sécurité applicative en pratique quotidienne mesurée, non en audit annuel.</p>
+<p><strong>EP19-US01 — Analyse dynamique authentifiée — 5 SP</strong>
+En tant que responsable sécurité, je veux une analyse dynamique lancée sur une instance éphémère avec un jeton valide, comparée à la référence précédente, afin de détecter les régressions de sécurité en fonctionnement réel.
+Techno : OWASP ZAP dans la chaîne. Critère : seules les nouveautés alertent ; l'analyse couvre les routes protégées.</p>
+<p><strong>EP19-US02 — Tests d'intrusion automatisés ciblés — 5 SP</strong>
+En tant que responsable sécurité, je veux des scénarios d'attaque rejoués à chaque livraison — accès inter-organisations, falsification de jeton, contournement d'autorisation, injection de prompt — afin que les failles déjà corrigées ne réapparaissent jamais.
+Techno : suite de tests dédiée, données de deux organisations. Critère : chaque faille historique a son test de non-régression.</p>
+<p><strong>EP19-US03 — Règles d'analyse statique propres au projet — 3 SP</strong>
+En tant que Tech Lead, je veux traduire les décisions d'architecture en règles automatiquement vérifiées — interdiction d'appel direct au fournisseur, interdiction de requête sans filtre de tenant — afin que l'architecture tienne quand je ne suis pas en revue.
+Techno : règles Semgrep maison. Critère : trois règles au moins, chacune détectant une violation réelle.</p>
+<p><strong>EP19-US04 — Référentiel de vérification ASVS — 3 SP</strong>
+En tant que responsable sécurité, je veux évaluer CrisisShield contre le niveau 2 du référentiel OWASP ASVS et suivre l'écart, afin d'avoir une mesure objective de la maturité et un plan d'amélioration.
+Techno : grille ASVS versionnée. Critère : chaque exigence de niveau 2 est notée couverte, partielle ou absente, avec la story associée.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="ordre-recommande">Ordre recommandé</h1>
+<ol>
+<li><strong>Faire tourner l'existant</strong> — les correctifs livrés, EP02-US05 terminé</li>
+<li><strong>EP03-US05</strong> — tests d'isolation, avant tout le reste : c'est la base de confiance</li>
+<li><strong>EP01-US05, US06</strong> — chaîne CI/CD et image durcie : tout ce qui suit passera par là</li>
+<li><strong>EP18-US01 à US07</strong> — l'assistant IA, cœur du projet vitrine</li>
+<li><strong>EP02-US06, EP09-US06 à US09</strong> — signature asymétrique, autorité de certification, TLS mutuel : ta PKI</li>
+<li><strong>EP07-US04, EP08-US04, EP05-US08</strong> — les trois usages cryptographiques concrets : kits, journaux, rapport eIDAS</li>
+<li><strong>EP18-US08 à US10</strong> — récupération augmentée, provenance, MCP</li>
+<li>Le reste</li>
+</ol>
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="les-cinq-stories-qui-te-vendent">Les cinq stories qui te vendent</h1>
+<p><strong>EP18-US03</strong> (injection), <strong>EP18-US04</strong> (masquage), <strong>EP09-US06</strong> (autorité de certification), <strong>EP05-US08</strong> (rapport eIDAS), <strong>EP08-US04</strong> (journaux chaînés).</p>
+<p>Ce sont celles qu'on te demandera de détailler. Sur elles, vise vingt minutes d'explication sans notes.</p></section>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var barre=document.getElementById('progression');
+  function maj(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    barre.style.width=(h>0?(window.scrollY/h)*100:0)+'%';
+  }
+  window.addEventListener('scroll',maj,{passive:true});
+  window.addEventListener('resize',maj);maj();
+
+
+  var sections=[].slice.call(document.querySelectorAll('section.chapitre'));
+  function teinte(){
+    var pos=window.scrollY+140,t=null;
+    sections.forEach(function(s){if(s.offsetTop<=pos)t=s.style.getPropertyValue('--teinte');});
+    if(t)barre.style.background=t;
+  }
+  window.addEventListener('scroll',teinte,{passive:true});teinte();
+
+  var liens=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]'));
+  var cibles=liens.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function actif(){
+    var pos=window.scrollY+120,idx=-1;
+    cibles.forEach(function(c,i){if(c&&c.offsetTop<=pos)idx=i;});
+    liens.forEach(function(a,i){a.classList.toggle('actif',i===idx);});
+  }
+  window.addEventListener('scroll',actif,{passive:true});actif();
+
+  var cases=[].slice.call(document.querySelectorAll('ul.controle input'));
+  if(cases.length){
+    var c=document.createElement('p');c.className='compteur';
+    document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+    function compte(){
+      var n=cases.filter(function(i){return i.checked;}).length;
+      c.innerHTML='<b>'+n+'</b> / '+cases.length+(n===cases.length?' — prêt pour la technique.':' points maîtrisés.');
+    }
+    cases.forEach(function(i){i.addEventListener('change',compte);});compte();
+  }
+})();
+</script>
+</body>
+</html>

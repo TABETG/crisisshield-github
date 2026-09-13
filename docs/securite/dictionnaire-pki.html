@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dictionnaire PKI & Cyber – TLS, HSM, API, DevOps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color-scheme: dark light;
+            --bg: #040712;
+            --bg-soft: #0b1020;
+            --bg-card: #101528;
+            --border-soft: #232b43;
+            --accent: #4f46e5;
+            --accent-soft: #6366f1;
+            --accent-strong: #22c55e;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --danger: #f97373;
+            --radius-lg: 16px;
+            --radius-sm: 10px;
+            --shadow-soft: 0 16px 32px rgba(15, 23, 42, 0.55);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1e293b 0, #020617 50%, #000 100%);
+            color: var(--text-main);
+        }
+
+        .layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 14px 40px;
+        }
+
+        /* Header */
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .tagline {
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 11px;
+            color: var(--accent-soft);
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: clamp(24px, 4vw, 30px);
+            margin: 0 0 4px;
+        }
+
+        .page-sub {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* TLS / mTLS recap */
+
+        .quick-block {
+            margin-top: 18px;
+            padding: 12px 14px 14px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.35), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(129, 140, 248, 0.5);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .quick-block h2 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 10px;
+        }
+
+        .quick-card {
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.55);
+            font-size: 12px;
+        }
+
+        .quick-card h3 {
+            margin: 0 0 4px;
+            font-size: 13px;
+        }
+
+        .quick-card ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .quick-card li {
+            margin-bottom: 3px;
+        }
+
+        .quick-one-liner {
+            margin: 10px 0 0;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        /* Toolbar */
+
+        .toolbar {
+            margin: 26px 0 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .search-group,
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: min(260px, 100%);
+        }
+
+        .search-group label,
+        .filter-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        input[type="text"],
+        select {
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-main);
+            padding: 7px 13px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        input::placeholder {
+            color: #6b7280;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--accent-soft);
+            box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
+        }
+
+        /* Dictionary */
+
+        .dictionary-section h2 {
+            margin: 10px 0 4px;
+            font-size: 18px;
+        }
+
+        .dictionary-hint {
+            margin: 0 0 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .term-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+            padding: 10px 11px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+        }
+
+        .term-card:hover {
+            transform: translateY(-1px);
+            border-color: rgba(129, 140, 248, 0.9);
+        }
+
+        .term-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .term-title {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .term-emoji {
+            font-size: 18px;
+        }
+
+        .term-category {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.9);
+            white-space: nowrap;
+        }
+
+        .term-short {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .term-details {
+            margin: 2px 0 0;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #e5e7eb;
+        }
+
+        .term-details.hidden {
+            display: none;
+        }
+
+        .term-details ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+        .term-details li {
+            margin-bottom: 3px;
+        }
+
+        .term-meta {
+            margin-top: 4px;
+            font-size: 10px;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .term-badge {
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.7);
+            color: var(--accent-strong);
+            font-size: 10px;
+        }
+
+        .term-toggle {
+            font-size: 10px;
+            opacity: 0.85;
+        }
+
+        .no-results {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--danger);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Interview tips */
+
+        .interview-tips {
+            margin-top: 24px;
+            padding: 12px 13px;
+            border-radius: var(--radius-lg);
+            border: 1px dashed rgba(148, 163, 184, 0.8);
+            background: rgba(15, 23, 42, 0.96);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .interview-tips h2 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        /* Footer */
+
+        .page-footer {
+            margin-top: 26px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .layout {
+                padding-inline: 10px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+
+    <header class="page-header">
+        <div>
+            <div class="tagline">PKI · TLS/mTLS · HSM · API · DevOps</div>
+            <h1 class="page-title">Dictionnaire PKI & Cybersécurité pour entretien 🔐</h1>
+            <p class="page-sub">
+                PKI, TLS/mTLS, HSM, signatures, certificats, API, JWT, DevOps, Java/Spring…<br>
+                Tout ce qu’il faut connaître pour une mission Trusty / PKI / Cyber et les entretiens.
+            </p>
+        </div>
+
+        <section class="quick-block">
+            <h2>⚡ TLS vs mTLS – résumé entretien</h2>
+
+            <div class="quick-grid">
+                <div class="quick-card">
+                    <h3>🔵 TLS – Transport Layer Security</h3>
+                    <ul>
+                        <li>🔒 Chiffre le trafic entre client et serveur.</li>
+                        <li>🧭 Le <strong>serveur prouve son identité</strong> via son certificat.</li>
+                        <li>🛡️ Garantit l’intégrité des données.</li>
+                        <li>➡️ Exemple : navigateur ↔️ site web (<code>https://</code>).</li>
+                    </ul>
+                </div>
+                <div class="quick-card">
+                    <h3>🟣 mTLS – Mutual TLS</h3>
+                    <ul>
+                        <li>Tout ce que fait TLS ✅</li>
+                        <li>+ le <strong>client présente aussi un certificat</strong>.</li>
+                        <li>🔐 Authentification <strong>serveur</strong> + <strong>client</strong>.</li>
+                        <li>➡️ Exemple : API internes, microservices, environnement bancaire/PKI.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="quick-one-liner">
+                🧠 <strong>Phrase entretien :</strong> « TLS = le serveur prouve qui il est, mTLS = le serveur et le client prouvent qui ils sont. »
+            </p>
+        </section>
+    </header>
+
+    <main>
+        <section class="toolbar">
+            <div class="search-group">
+                <label for="searchInput">🔎 Rechercher un terme :</label>
+                <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Ex : HSM, PKCS#11, JWT, Docker, Hexagonal, eIDAS…">
+            </div>
+            <div class="filter-group">
+                <label for="categoryFilter">Catégorie :</label>
+                <select id="categoryFilter">
+                    <option value="">Toutes les catégories</option>
+                    <option value="Protocoles & TLS">Protocoles & TLS</option>
+                    <option value="Clés & Crypto">Clés & Crypto</option>
+                    <option value="Certificats & PKI">Certificats & PKI</option>
+                    <option value="Keystores & formats">Keystores & formats</option>
+                    <option value="HSM & stockage des clés">HSM & stockage des clés</option>
+                    <option value="Réglementaire & formats de signature">Réglementaire & formats de signature</option>
+                    <option value="Opérations PKI">Opérations PKI</option>
+                    <option value="Suite Trusty (CS Group)">Suite Trusty (CS Group)</option>
+                    <option value="API & Sécurité">API & Sécurité</option>
+                    <option value="DevOps & Cloud">DevOps & Cloud</option>
+                    <option value="Sécurité applicative">Sécurité applicative</option>
+                    <option value="Java & Spring">Java & Spring</option>
+                    <option value="Cybersécurité avancée">Cybersécurité avancée</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="dictionary-section">
+            <h2>📚 Dictionnaire PKI / Cyber / DevOps</h2>
+            <p class="dictionary-hint">
+                Clique sur une carte pour afficher/masquer les détails. Utilise la recherche pour t’entraîner avant l’entretien.
+            </p>
+
+            <div id="dictionary-list" class="cards-grid">
+                <!-- rempli en JS -->
+            </div>
+
+            <p id="noResults" class="no-results hidden">
+                😶 Aucun résultat pour cette recherche. Essaie un autre terme (ex : « certificat », « JWT », « Docker », « eIDAS »).
+            </p>
+        </section>
+
+        <section class="interview-tips">
+            <h2>🎤 Phrase type : pourquoi SoftHSM2 en dev et HSM en prod ?</h2>
+            <p>
+                « En environnement de développement, nous utilisons <strong>SoftHSM2</strong> qui simule un HSM matériel via
+                <strong>PKCS#11</strong>. Le HSM physique est coûteux et réservé aux environnements de
+                <strong>pré-production/production</strong>, où il doit respecter des exigences de sécurité et de certification
+                (FIPS, eIDAS, RGS). SoftHSM2 nous permet de développer et tester sans manipuler de clés réellement sensibles,
+                avec le même code côté application. En production, les clés privées sont générées directement dans le HSM et
+                sont <strong>non-exportables</strong>. »
+            </p>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        Révisions PKI, API, DevOps & cybersécurité · Dictionnaire local HTML/CSS/JS · Prêt pour l’entretien 💼
+    </footer>
+
+</div>
+
+<script>
+    // ==========================
+    // Données du dictionnaire
+    // ==========================
+
+    const PKI_ENTRIES = [
+        // ---------- Protocoles & TLS ----------
+        {
+            id: "tls",
+            term: "TLS – Transport Layer Security",
+            emoji: "🔵",
+            category: "Protocoles & TLS",
+            short: "Chiffrement + authentification du serveur + intégrité.",
+            details: [
+                "Protocole qui sécurise les communications sur Internet.",
+                "Le client vérifie le certificat X.509 du serveur (CN/SAN, Issuer, dates…).",
+                "Protège contre les attaques de type Man-In-The-Middle (MITM).",
+                "Exemples : HTTPS pour les sites web, API publiques exposées sur Internet."
+            ]
+        },
+        {
+            id: "mtls",
+            term: "mTLS – Mutual TLS",
+            emoji: "🟣",
+            category: "Protocoles & TLS",
+            short: "TLS bidirectionnel : serveur et client présentent un certificat.",
+            details: [
+                "Le serveur s’authentifie auprès du client, comme en TLS classique.",
+                "Le client présente aussi un certificat X.509 pour prouver son identité.",
+                "Très utilisé pour sécuriser les microservices, API internes sensibles, environnements bancaires/PKI.",
+                "Approche Zero Trust : on ne fait confiance à aucune connexion sans certificat client."
+            ]
+        },
+        {
+            id: "https",
+            term: "HTTPS – HTTP sur TLS",
+            emoji: "🌐",
+            category: "Protocoles & TLS",
+            short: "HTTP + TLS = HTTPS (communication chiffrée).",
+            details: [
+                "Le protocole utilisé par les navigateurs pour accéder aux sites sécurisés.",
+                "Utilise un certificat X.509 côté serveur, parfois mTLS pour authentifier le client.",
+                "Affiché comme cadenas dans le navigateur."
+            ]
+        },
+        {
+            id: "cipher-suite",
+            term: "Cipher Suite TLS",
+            emoji: "🧊",
+            category: "Protocoles & TLS",
+            short: "Combo d’algos (échange de clés, chiffrement, MAC).",
+            details: [
+                "Définit comment le chiffrement est réalisé pendant une session TLS.",
+                "Exemple : TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384.",
+                "Inclut : échange de clés, chiffrement symétrique, fonction de hash."
+            ]
+        },
+        {
+            id: "tls-handshake",
+            term: "Handshake TLS",
+            emoji: "👋",
+            category: "Protocoles & TLS",
+            short: "Négociation de la connexion sécurisée.",
+            details: [
+                "Négociation de la version TLS, de la cipher suite, échange de clés.",
+                "Vérification des certificats (serveur et éventuellement client).",
+                "Une fois terminé, les données applicatives sont chiffrées."
+            ]
+        },
+        {
+            id: "tls-termination",
+            term: "TLS Termination",
+            emoji: "🧱",
+            category: "Protocoles & TLS",
+            short: "Point où le chiffrement TLS est terminé (souvent reverse proxy).",
+            details: [
+                "Souvent réalisé sur un Nginx/Traefik ou un load balancer (ALB, etc.).",
+                "En interne, le trafic peut être en HTTP simple ou re-chiffré.",
+                "Permet de centraliser la gestion des certificats."
+            ]
+        },
+
+        // ---------- Clés & Crypto ----------
+        {
+            id: "private-key",
+            term: "Clé privée",
+            emoji: "🗝️",
+            category: "Clés & Crypto",
+            short: "Clé secrète utilisée pour signer/déchiffrer.",
+            details: [
+                "Ne doit jamais sortir du HSM en production.",
+                "Utilisée pour signer des documents ou terminer un handshake TLS côté serveur.",
+                "En dev, peut être stockée dans un keystore ou SoftHSM2, mais doit rester protégée."
+            ]
+        },
+        {
+            id: "public-key",
+            term: "Clé publique",
+            emoji: "🔓",
+            category: "Clés & Crypto",
+            short: "Clé diffusée pour vérifier/chiffrer.",
+            details: [
+                "Généralement incluse dans un certificat X.509.",
+                "Utilisée pour vérifier une signature ou chiffrer des données vers un destinataire.",
+                "Peut être distribuée librement, mais liée à une identité via la PKI."
+            ]
+        },
+        {
+            id: "keypair",
+            term: "Paire de clés",
+            emoji: "🔐",
+            category: "Clés & Crypto",
+            short: "Clé privée + clé publique.",
+            details: [
+                "Couple mathématique indissociable utilisé en cryptographie asymétrique.",
+                "Algorithmes typiques : RSA (2048/4096 bits), ECC (P-256…)."
+            ]
+        },
+        {
+            id: "rsa-algo",
+            term: "RSA",
+            emoji: "🔁",
+            category: "Clés & Crypto",
+            short: "Algorithme asymétrique le plus utilisé.",
+            details: [
+                "Basé sur la difficulté de factoriser de grands nombres.",
+                "Utilisé pour TLS, signatures électroniques, certificats X.509.",
+                "Plus la clé est longue (2048, 3072, 4096), plus c’est sécurisé mais plus c’est lourd."
+            ]
+        },
+        {
+            id: "ecc-ecdsa",
+            term: "ECC / ECDSA",
+            emoji: "🧮",
+            category: "Clés & Crypto",
+            short: "Cryptographie à courbes elliptiques.",
+            details: [
+                "ECC : courbes elliptiques pour l’échange de clés et les signatures.",
+                "ECDSA : variante de signature basée sur ECC.",
+                "Permet des clés plus courtes pour un niveau de sécurité équivalent."
+            ]
+        },
+        {
+            id: "rsa-key-size",
+            term: "Taille de clé RSA (2048 / 4096 bits)",
+            emoji: "🔢",
+            category: "Clés & Crypto",
+            short: "Longueur de la clé = niveau de sécurité & coût CPU.",
+            details: [
+                "2048 bits : standard actuel pour beaucoup d’usages.",
+                "4096 bits : plus sécurisé mais plus coûteux en performance."
+            ]
+        },
+        {
+            id: "entropy",
+            term: "Entropy (entropie)",
+            emoji: "📉",
+            category: "Clés & Crypto",
+            short: "Niveau d’aléatoire pour générer des clés sûres.",
+            details: [
+                "Plus l’entropie est élevée, plus les clés sont difficiles à deviner.",
+                "Les générateurs de nombres aléatoires cryptographiques se basent sur des sources d’entropie."
+            ]
+        },
+
+        // ---------- Certificats & PKI ----------
+        {
+            id: "pki",
+            term: "PKI – Public Key Infrastructure",
+            emoji: "🏛️",
+            category: "Certificats & PKI",
+            short: "Système complet de gestion des certificats et des clés.",
+            details: [
+                "Comprend les CA, policies, CRL/OCSP, procédures.",
+                "Permet d’émettre, renouveler, révoquer, archiver les certificats X.509.",
+                "Cœur des solutions de signature électronique, TLS, authentification forte."
+            ]
+        },
+        {
+            id: "x509",
+            term: "Certificat X.509",
+            emoji: "🪪",
+            category: "Certificats & PKI",
+            short: "Carte d’identité numérique liée à une clé publique.",
+            details: [
+                "Contient : Subject (CN, SAN…), Issuer (CA), clé publique, périodes de validité, usages.",
+                "Signé par une CA pour garantir l’identité.",
+                "Utilisé pour TLS, signature électronique, authentification client, etc."
+            ]
+        },
+        {
+            id: "csr",
+            term: "CSR – Certificate Signing Request",
+            emoji: "🧾",
+            category: "Certificats & PKI",
+            short: "Demande de certificat envoyée à la CA.",
+            details: [
+                "Contient la clé publique et les infos du futur sujet (CN, SAN…).",
+                "Signé avec la clé privée correspondante pour prouver la possession de la clé."
+            ]
+        },
+        {
+            id: "cn",
+            term: "CN – Common Name",
+            emoji: "👤",
+            category: "Certificats & PKI",
+            short: "Nom principal du certificat.",
+            details: [
+                "Exemples : api.cs-group.com, John Doe.",
+                "Remplacé en pratique par SAN pour la vérification stricte."
+            ]
+        },
+        {
+            id: "san",
+            term: "SAN – Subject Alternative Name",
+            emoji: "🧩",
+            category: "Certificats & PKI",
+            short: "Liste d’identités alternatives (DNS, IP…).",
+            details: [
+                "Champ critique pour TLS moderne : les navigateurs vérifient SAN plutôt que CN.",
+                "Permet d’avoir plusieurs noms de domaine/IP dans un même certificat."
+            ]
+        },
+        {
+            id: "chain",
+            term: "Chaîne de certification",
+            emoji: "🪜",
+            category: "Certificats & PKI",
+            short: "Root CA → Intermediate → Certificat final.",
+            details: [
+                "Le client vérifie que le certificat présenté remonte à une racine de confiance.",
+                "Peut inclure plusieurs intermédiaires.",
+                "Indispensable pour TLS et la validation de signature."
+            ]
+        },
+        {
+            id: "ca",
+            term: "CA – Certificate Authority",
+            emoji: "🏢",
+            category: "Certificats & PKI",
+            short: "Autorité qui signe et émet les certificats.",
+            details: [
+                "Racine de confiance de la PKI.",
+                "Peut être publique (Let’s Encrypt, DigiCert…) ou interne."
+            ]
+        },
+        {
+            id: "crl",
+            term: "CRL – Certificate Revocation List",
+            emoji: "🗑️",
+            category: "Certificats & PKI",
+            short: "Liste des certificats révoqués.",
+            details: [
+                "Permet de savoir si un certificat a été invalidé avant sa date d’expiration.",
+                "Les clients doivent télécharger régulièrement les CRL."
+            ]
+        },
+        {
+            id: "ocsp",
+            term: "OCSP – Online Certificate Status Protocol",
+            emoji: "⚡",
+            category: "Certificats & PKI",
+            short: "Vérification en ligne de l’état d’un certificat.",
+            details: [
+                "Alternative temps réel à la CRL.",
+                "Le client interroge un responder OCSP pour savoir si le certificat est bon, révoqué ou inconnu."
+            ]
+        },
+        {
+            id: "validity",
+            term: "Validité (NotBefore / NotAfter)",
+            emoji: "🕒",
+            category: "Certificats & PKI",
+            short: "Période de validité du certificat.",
+            details: [
+                "NotBefore : date à partir de laquelle le certificat est valide.",
+                "NotAfter : date d’expiration.",
+                "Un certificat expiré est refusé par les clients."
+            ]
+        },
+        {
+            id: "keyusage-extkeyusage",
+            term: "KeyUsage / ExtKeyUsage",
+            emoji: "🔐",
+            category: "Certificats & PKI",
+            short: "Usages autorisés du certificat.",
+            details: [
+                "KeyUsage : signature, chiffrement, key encipherment, etc.",
+                "ExtKeyUsage : TLS Web Server Auth, Client Auth, etc."
+            ]
+        },
+        {
+            id: "rotation-cle",
+            term: "Rotation de clé",
+            emoji: "🔁",
+            category: "Certificats & PKI",
+            short: "Générer une nouvelle clé privée à chaque renouvellement.",
+            details: [
+                "Bonne pratique pour limiter l’impact d’une compromission.",
+                "Souvent imposée par les politiques de sécurité."
+            ]
+        },
+
+        // ---------- Keystores & formats ----------
+        {
+            id: "pkcs12",
+            term: "PKCS#12 (.p12 / .pfx)",
+            emoji: "📦",
+            category: "Keystores & formats",
+            short: "Conteneur clé privée + certificat.",
+            details: [
+                "Format binaire protégé par mot de passe.",
+                "Très utilisé pour importer une identité dans une application.",
+                "Ne doit pas être versionné dans Git."
+            ]
+        },
+        {
+            id: "jks",
+            term: "JKS – Java KeyStore",
+            emoji: "☕",
+            category: "Keystores & formats",
+            short: "Ancien format de keystore Java.",
+            details: [
+                "Toujours utilisé mais PKCS#12 est recommandé.",
+                "Contient clés privées, certificats, chaînes."
+            ]
+        },
+        {
+            id: "keystore-truststore",
+            term: "KeyStore & TrustStore",
+            emoji: "🧰",
+            category: "Keystores & formats",
+            short: "KeyStore = clés privées; TrustStore = CA de confiance.",
+            details: [
+                "KeyStore : s’authentifier (clés privées + certs).",
+                "TrustStore : vérifier (CA racines/intermédiaires)."
+            ]
+        },
+        {
+            id: "keytool",
+            term: "keytool (Java)",
+            emoji: "🔧",
+            category: "Keystores & formats",
+            short: "Outil pour gérer keystores et certificats.",
+            details: [
+                "Permet de générer des paires de clés, CSR, importer/exporter des certs.",
+                "Utilisé dans les projets Java/Spring."
+            ]
+        },
+
+        // ---------- HSM & stockage des clés ----------
+        {
+            id: "pkcs11",
+            term: "PKCS#11",
+            emoji: "🔌",
+            category: "HSM & stockage des clés",
+            short: "API standard pour dialoguer avec un HSM.",
+            details: [
+                "Interface normalisée pour générer des clés, signer, chiffrer dans un module matériel.",
+                "Permet d’utiliser le même code avec SoftHSM2 en dev et HSM matériel en prod."
+            ]
+        },
+        {
+            id: "pkcs7",
+            term: "PKCS#7",
+            emoji: "📜",
+            category: "HSM & stockage des clés",
+            short: "Format CMS pour signatures/enveloppes chiffrées.",
+            details: [
+                "Base de CAdES (signatures électroniques CMS).",
+                "Permet de transporter données + signatures + certificats."
+            ]
+        },
+        {
+            id: "softhsm2",
+            term: "SoftHSM / SoftHSM2",
+            emoji: "💾",
+            category: "HSM & stockage des clés",
+            short: "Simulateur logiciel de HSM, gratuit.",
+            details: [
+                "Utilisé en dev/intégration pour tester PKCS#11 sans HSM physique.",
+                "Permet de valider génération de clés, signatures, vérifications."
+            ]
+        },
+        {
+            id: "hsm-hardware",
+            term: "HSM matériel",
+            emoji: "📦",
+            category: "HSM & stockage des clés",
+            short: "Coffre-fort cryptographique physique, certifié et payant.",
+            details: [
+                "Marques : Thales, Utimaco, Safenet, Gemalto…",
+                "Clés générées dans le module, non-exportables.",
+                "Conforme à FIPS 140-2/3, eIDAS, RGS, etc."
+            ]
+        },
+        {
+            id: "non-exportable",
+            term: "Clé non-exportable / signature non-exportable",
+            emoji: "🚫",
+            category: "HSM & stockage des clés",
+            short: "Clé privée qui ne peut jamais sortir du HSM.",
+            details: [
+                "On ne peut l’utiliser qu’au travers de l’API du HSM (PKCS#11…).",
+                "Clé pour les signatures qualifiées/probatoires."
+            ]
+        },
+
+        // ---------- Réglementaire & signatures ----------
+        {
+            id: "eidas",
+            term: "eIDAS – Règlement européen",
+            emoji: "🇪🇺",
+            category: "Réglementaire & formats de signature",
+            short: "Cadre légal européen pour la signature électronique.",
+            details: [
+                "Définit signature simple, avancée, qualifiée.",
+                "Cadre de référence pour les prestataires de services de confiance."
+            ]
+        },
+        {
+            id: "rgs",
+            term: "RGS – Référentiel Général de Sécurité",
+            emoji: "🇫🇷",
+            category: "Réglementaire & formats de signature",
+            short: "Référentiel français pour la sécurité des SI publics.",
+            details: [
+                "Complète eIDAS dans le contexte français.",
+                "Fixe des exigences sur certificats, signature, authentification."
+            ]
+        },
+        {
+            id: "pades-xades-cades",
+            term: "PAdES / XAdES / CAdES",
+            emoji: "📄",
+            category: "Réglementaire & formats de signature",
+            short: "Formats de signatures électroniques.",
+            details: [
+                "PAdES : PDF signé.",
+                "XAdES : XML signé.",
+                "CAdES : CMS/PKCS#7 (fichiers binaires)."
+            ]
+        },
+        {
+            id: "timestamp-rfc3161",
+            term: "Timestamp qualifié – RFC3161",
+            emoji: "🕒",
+            category: "Réglementaire & formats de signature",
+            short: "Horodatage signé qui prouve date et heure.",
+            details: [
+                "Fourni par un service d’horodatage (ex : TrustyTime).",
+                "Permet de prouver qu’une signature existait à un moment donné."
+            ]
+        },
+        {
+            id: "evidence-record",
+            term: "Evidence Record (ERS)",
+            emoji: "📬",
+            category: "Réglementaire & formats de signature",
+            short: "Preuve d’intégrité archivable à long terme.",
+            details: [
+                "Combine hash, signatures, horodatages et renouvellements d’algos.",
+                "Utilisé pour les archives probatoires."
+            ]
+        },
+
+        // ---------- Opérations PKI ----------
+        {
+            id: "key-generation",
+            term: "Génération de clé",
+            emoji: "🧬",
+            category: "Opérations PKI",
+            short: "Création d’une paire de clés privée/publique.",
+            details: [
+                "Peut se faire dans un HSM ou en logiciel.",
+                "En environnement critique, on privilégie la génération dans le HSM."
+            ]
+        },
+        {
+            id: "signature",
+            term: "Signature électronique",
+            emoji: "✍️",
+            category: "Opérations PKI",
+            short: "Prouve intégrité + identité du signataire.",
+            details: [
+                "Hash du document + chiffrement du hash avec la clé privée.",
+                "Vérification avec la clé publique (certificat X.509)."
+            ]
+        },
+        {
+            id: "verification",
+            term: "Vérification de signature",
+            emoji: "🔍",
+            category: "Opérations PKI",
+            short: "Contrôle que la signature est valide.",
+            details: [
+                "On utilise la clé publique du signataire.",
+                "On vérifie aussi la validité du certificat (dates, révocation, chaîne)."
+            ]
+        },
+        {
+            id: "renewal",
+            term: "Renouvellement de certificat",
+            emoji: "🔁",
+            category: "Opérations PKI",
+            short: "Remplacement d’un certificat proche de l’expiration.",
+            details: [
+                "Peut impliquer une nouvelle paire de clés.",
+                "Important pour éviter les coupures de service."
+            ]
+        },
+        {
+            id: "revocation",
+            term: "Révocation de certificat",
+            emoji: "🛑",
+            category: "Opérations PKI",
+            short: "Invalidation anticipée d’un certificat.",
+            details: [
+                "Clé compromise, identité changée, erreur d’émission…",
+                "Propagé via CRL et/ou OCSP."
+            ]
+        },
+        {
+            id: "probatory-archive",
+            term: "Archivage probatoire",
+            emoji: "🗄️",
+            category: "Opérations PKI",
+            short: "Conservation légale des preuves.",
+            details: [
+                "Conserve signatures, horodatages, journaux pendant plusieurs années.",
+                "Ex : TrustyArchive."
+            ]
+        },
+        {
+            id: "fips",
+            term: "FIPS 140-2",
+            emoji: "🏗️",
+            category: "Opérations PKI",
+            short: "Norme de sécurité pour modules cryptographiques.",
+            details: [
+                "Référence pour certifier les HSM.",
+                "Plusieurs niveaux selon la protection matériel/logiciel."
+            ]
+        },
+
+        // ---------- Suite Trusty ----------
+        {
+            id: "trustysign",
+            term: "TrustySign",
+            emoji: "✍️",
+            category: "Suite Trusty (CS Group)",
+            short: "Module de signature électronique (PDF, XML, JSON…).",
+            details: [
+                "Utilise des certificats X.509 et un HSM/SoftHSM via PKCS#11.",
+                "Gère PAdES, XAdES, CAdES selon les besoins.",
+                "Aligné eIDAS/RGS."
+            ]
+        },
+        {
+            id: "trustyserver",
+            term: "TrustyServer",
+            emoji: "🌐",
+            category: "Suite Trusty (CS Group)",
+            short: "API/serveur d’orchestration des services Trusty.",
+            details: [
+                "Expose des API pour intégrer TrustySign, TrustyTime, TrustyArchive.",
+                "Gère certificats serveurs, accès, authentification."
+            ]
+        },
+        {
+            id: "trustytime",
+            term: "TrustyTime",
+            emoji: "🕒",
+            category: "Suite Trusty (CS Group)",
+            short: "Service d’horodatage qualifié (RFC3161).",
+            details: [
+                "Fournit des jetons d’horodatage pour les signatures.",
+                "Indispensable pour signatures à long terme (LTV)."
+            ]
+        },
+        {
+            id: "trustyarchive",
+            term: "TrustyArchive",
+            emoji: "🗄️",
+            category: "Suite Trusty (CS Group)",
+            short: "Archivage probatoire des documents signés.",
+            details: [
+                "Conserve signatures, horodatages et métadonnées.",
+                "Garantit l’intégrité sur le long terme."
+            ]
+        },
+        {
+            id: "trustykey",
+            term: "TrustyKey (ex RustyKey)",
+            emoji: "🔐",
+            category: "Suite Trusty (CS Group)",
+            short: "Gestion des clés et certificats Trusty.",
+            details: [
+                "Centralise les paires de clés, certificats, politiques de rotation.",
+                "S’intègre avec HSM/SoftHSM."
+            ]
+        },
+
+        // ---------- API & Sécurité ----------
+        {
+            id: "api-rest",
+            term: "API REST",
+            emoji: "🧱",
+            category: "API & Sécurité",
+            short: "Style d’API basé sur HTTP, ressources et verbes.",
+            details: [
+                "Très utilisé pour microservices et exposer des services métier.",
+                "Doit être sécurisée (TLS/mTLS, JWT, OAuth2/OIDC, rate limiting…)."
+            ]
+        },
+        {
+            id: "jwt",
+            term: "JWT – JSON Web Token",
+            emoji: "🔐",
+            category: "API & Sécurité",
+            short: "Token d’authentification signé.",
+            details: [
+                "Contient des claims (sub, roles, exp…).",
+                "Signé (HS256/RSA…) pour garantir l’intégrité.",
+                "Utilisé dans le header Authorization (Bearer)."
+            ]
+        },
+        {
+            id: "oauth2-oidc",
+            term: "OAuth2 / OIDC",
+            emoji: "🧩",
+            category: "API & Sécurité",
+            short: "Protocoles d’authentification/autorisation modernes.",
+            details: [
+                "OAuth2 : délégation d’autorisation.",
+                "OIDC : couche identité (id_token, profil utilisateur)."
+            ]
+        },
+        {
+            id: "scopes",
+            term: "Scopes",
+            emoji: "🔒",
+            category: "API & Sécurité",
+            short: "Permissions associées à un token.",
+            details: [
+                "Ex : read:users, write:invoices.",
+                "Contrôlées côté API pour limiter les actions."
+            ]
+        },
+        {
+            id: "access-token",
+            term: "Access Token",
+            emoji: "🔑",
+            category: "API & Sécurité",
+            short: "Token court terme d’accès à l’API.",
+            details: [
+                "Généralement un JWT.",
+                "Délai de vie court pour limiter l’impact en cas de fuite."
+            ]
+        },
+        {
+            id: "refresh-token",
+            term: "Refresh Token",
+            emoji: "🔑",
+            category: "API & Sécurité",
+            short: "Token long terme pour régénérer un access token.",
+            details: [
+                "Jamais envoyé sur chaque requête API.",
+                "Stocké plus soigneusement (httpOnly, serveur…)."
+            ]
+        },
+        {
+            id: "reverse-proxy",
+            term: "Reverse Proxy (Nginx / Traefik)",
+            emoji: "🧱",
+            category: "API & Sécurité",
+            short: "Point d’entrée qui route vers les services.",
+            details: [
+                "Fait souvent TLS termination, authent, rate limiting, WAF.",
+                "Très utilisé devant les microservices."
+            ]
+        },
+        {
+            id: "rate-limiting",
+            term: "Rate Limiting",
+            emoji: "🔥",
+            category: "API & Sécurité",
+            short: "Limiter le nombre de requêtes par client/temps.",
+            details: [
+                "Protège contre abus et DDoS applicatifs.",
+                "Implémenté dans API Gateway / reverse proxy."
+            ]
+        },
+        {
+            id: "cors",
+            term: "CORS",
+            emoji: "🌍",
+            category: "API & Sécurité",
+            short: "Contrôle d’accès entre domaines.",
+            details: [
+                "Règles qui autorisent/filtrent les requêtes cross-origin.",
+                "Clé pour sécuriser les SPA (React, Angular…) qui appellent des API."
+            ]
+        },
+        {
+            id: "waf",
+            term: "WAF – Web Application Firewall",
+            emoji: "🧱",
+            category: "API & Sécurité",
+            short: "Firewall applicatif HTTP.",
+            details: [
+                "Filtre les patterns d’attaque (SQLi, XSS, etc.).",
+                "Souvent intégré aux reverse proxies/load balancers."
+            ]
+        },
+
+        // ---------- DevOps & Cloud ----------
+        {
+            id: "docker",
+            term: "Docker",
+            emoji: "🐳",
+            category: "DevOps & Cloud",
+            short: "Conteneurisation des applications.",
+            details: [
+                "Embarque app + dépendances dans une image.",
+                "Standard de facto en DevOps."
+            ]
+        },
+        {
+            id: "docker-compose",
+            term: "Docker Compose",
+            emoji: "📦",
+            category: "DevOps & Cloud",
+            short: "Orchestration locale de plusieurs services.",
+            details: [
+                "Décrit backend, DB, frontend, SoftHSM… dans un fichier YAML.",
+                "Une seule commande pour tout lancer."
+            ]
+        },
+        {
+            id: "cloud-providers",
+            term: "AWS / OVH Cloud",
+            emoji: "☁️",
+            category: "DevOps & Cloud",
+            short: "Fournisseurs cloud.",
+            details: [
+                "AWS : ultra complet, standard marché.",
+                "OVH : souvent choisi pour souveraineté/prix en Europe."
+            ]
+        },
+        {
+            id: "ci-cd",
+            term: "CI/CD",
+            emoji: "⚙️",
+            category: "DevOps & Cloud",
+            short: "Intégration & déploiement continus.",
+            details: [
+                "Automatise build, tests, analyse qualité, déploiement.",
+                "Outils : GitLab CI, GitHub Actions, Jenkins…"
+            ]
+        },
+        {
+            id: "terraform",
+            term: "Terraform",
+            emoji: "🧱",
+            category: "DevOps & Cloud",
+            short: "Infrastructure as Code (IaC).",
+            details: [
+                "Décrit VPC, ECS, ALB, DB, etc. dans du code.",
+                "Permet de versionner et rejouer l’infra."
+            ]
+        },
+        {
+            id: "gitlab-github-ci",
+            term: "GitLab CI / GitHub Actions",
+            emoji: "🐙",
+            category: "DevOps & Cloud",
+            short: "Pipelines d’automatisation.",
+            details: [
+                "Déclenchés à chaque push/merge.",
+                "Peuvent inclure tests, build Docker, scans SAST/DAST."
+            ]
+        },
+        {
+            id: "ecs-alb",
+            term: "ECS / ALB (AWS)",
+            emoji: "📡",
+            category: "DevOps & Cloud",
+            short: "ECS = conteneurs, ALB = load balancer.",
+            details: [
+                "ECS exécute les containers (services).",
+                "ALB répartit le trafic et termine souvent TLS."
+            ]
+        },
+        {
+            id: "secrets-manager",
+            term: "Secrets Manager",
+            emoji: "🔐",
+            category: "DevOps & Cloud",
+            short: "Stockage sécurisé des secrets.",
+            details: [
+                "Évite de mettre les secrets dans le code ou les fichiers.",
+                "Intégration avec les apps via IAM/roles."
+            ]
+        },
+
+        // ---------- Sécurité applicative ----------
+        {
+            id: "owasp-top10",
+            term: "OWASP Top 10",
+            emoji: "🛡️",
+            category: "Sécurité applicative",
+            short: "Top 10 des failles web critiques.",
+            details: [
+                "Inclut injections, XSS, CSRF, mauvaise gestion des identités, etc.",
+                "Référence incontournable en entretien sécurité."
+            ]
+        },
+        {
+            id: "hashing-passwords",
+            term: "Hashing (bcrypt, Argon2)",
+            emoji: "🔒",
+            category: "Sécurité applicative",
+            short: "Hashage sécurisé des mots de passe.",
+            details: [
+                "On ne stocke jamais les mots de passe en clair.",
+                "On utilise des fonctions de dérivation lentes (bcrypt, Argon2, PBKDF2…)."
+            ]
+        },
+        {
+            id: "rbac",
+            term: "RBAC – Role-Based Access Control",
+            emoji: "🪪",
+            category: "Sécurité applicative",
+            short: "Contrôle d’accès basé sur les rôles.",
+            details: [
+                "Ex : ROLE_USER, ROLE_ADMIN, ROLE_SIGNER.",
+                "Permet d’autoriser ou non certaines actions."
+            ]
+        },
+        {
+            id: "zero-trust",
+            term: "Zero Trust",
+            emoji: "🧩",
+            category: "Sécurité applicative",
+            short: "On ne fait confiance à rien par défaut.",
+            details: [
+                "Chaque requête doit être authentifiée/autorisée.",
+                "mTLS, tokens courts, segmentation réseau…"
+            ]
+        },
+        {
+            id: "audit-logging",
+            term: "Audit Logging",
+            emoji: "🔄",
+            category: "Sécurité applicative",
+            short: "Journalisation des actions sensibles.",
+            details: [
+                "Création/suppression de certificats, signatures, accès HSM…",
+                "Indispensable pour enquêtes et conformité."
+            ]
+        },
+        {
+            id: "siem",
+            term: "SIEM",
+            emoji: "🧰",
+            category: "Sécurité applicative",
+            short: "Centralisation & corrélation des logs de sécurité.",
+            details: [
+                "Permet de détecter des patterns d’attaque sur l’ensemble du SI.",
+                "Ex : Splunk, QRadar, ELK + X-Pack."
+            ]
+        },
+        {
+            id: "pentest",
+            term: "Pentest",
+            emoji: "🧪",
+            category: "Sécurité applicative",
+            short: "Test d’intrusion.",
+            details: [
+                "Évalue le niveau réel de sécurité.",
+                "Résultats utilisés pour un plan de remédiation."
+            ]
+        },
+
+        // ---------- Java & Spring ----------
+        {
+            id: "ioc-di",
+            term: "IoC / DI – Inversion of Control / Dependency Injection",
+            emoji: "🧩",
+            category: "Java & Spring",
+            short: "Principe central de Spring.",
+            details: [
+                "Le framework injecte les dépendances (services, repos…).",
+                "Facilite tests, découplage, lisibilité."
+            ]
+        },
+        {
+            id: "spring-boot",
+            term: "Spring Boot",
+            emoji: "🚀",
+            category: "Java & Spring",
+            short: "Framework Java moderne pour microservices.",
+            details: [
+                "Auto-configuration, starters, Actuator.",
+                "Très utilisé pour les API REST sécurisées."
+            ]
+        },
+        {
+            id: "spring-security",
+            term: "Spring Security",
+            emoji: "🍃",
+            category: "Java & Spring",
+            short: "Framework de sécurité Spring.",
+            details: [
+                "Gère authentification, autorisation, filtres, CSRF, etc.",
+                "S’intègre avec JWT, OAuth2/OIDC, mTLS."
+            ]
+        },
+        {
+            id: "spring-data-jpa",
+            term: "Spring Data JPA",
+            emoji: "🍃",
+            category: "Java & Spring",
+            short: "Abstraction pour bases relationnelles.",
+            details: [
+                "Repositories, requêtes dérivées, pagination.",
+                "S’appuie sur JPA/Hibernate."
+            ]
+        },
+        {
+            id: "acid-transactions",
+            term: "Transactions ACID",
+            emoji: "🔁",
+            category: "Java & Spring",
+            short: "Atomicité, Cohérence, Isolation, Durabilité.",
+            details: [
+                "En Spring : @Transactional sur les services.",
+                "Clé pour cohérence des signatures, certificats, logs…"
+            ]
+        },
+        {
+            id: "thread-safety",
+            term: "Thread-safety",
+            emoji: "🧵",
+            category: "Java & Spring",
+            short: "Code correct en concurrence.",
+            details: [
+                "Attention aux états partagés, singletons.",
+                "Utiliser structures thread-safe ou limiter le partage d’état."
+            ]
+        },
+        {
+            id: "hexagonal-architecture",
+            term: "Architecture Hexagonale",
+            emoji: "🧱",
+            category: "Java & Spring",
+            short: "Domain / application / infrastructure.",
+            details: [
+                "Domain pur (sans dépendance framework).",
+                "Adaptateurs d’entrées/sorties (REST, HSM, DB…).",
+                "Très adapté à un projet Trusty / PKI."
+            ]
+        },
+
+        // ---------- Cybersécurité avancée ----------
+        {
+            id: "tls-offloading",
+            term: "TLS Offloading",
+            emoji: "🧱",
+            category: "Cybersécurité avancée",
+            short: "Déléguer TLS à un composant spécialisé.",
+            details: [
+                "Load balancer/Reverse proxy gère TLS.",
+                "Les services derrière parlent souvent HTTP simple."
+            ]
+        },
+        {
+            id: "forward-secrecy",
+            term: "Forward Secrecy (ECDHE)",
+            emoji: "🔐",
+            category: "Cybersécurité avancée",
+            short: "Une clé de session compromise ne casse pas le passé.",
+            details: [
+                "Utilise des échanges éphémères (ECDHE).",
+                "Recommandé sur TLS moderne."
+            ]
+        },
+        {
+            id: "hsts",
+            term: "HSTS",
+            emoji: "🔐",
+            category: "Cybersécurité avancée",
+            short: "HTTP Strict Transport Security.",
+            details: [
+                "Force le navigateur à utiliser HTTPS pour un domaine.",
+                "Protège contre certains downgrade/strip TLS."
+            ]
+        },
+        {
+            id: "certificate-pinning",
+            term: "Certificate Pinning",
+            emoji: "📌",
+            category: "Cybersécurité avancée",
+            short: "Le client n’accepte qu’un cert/CA spécifique.",
+            details: [
+                "Réduit le risque de MITM même si une CA externe est compromise.",
+                "Souvent utilisé côté mobile."
+            ]
+        },
+        {
+            id: "replay-attack",
+            term: "Replay Attack",
+            emoji: "🔁",
+            category: "Cybersécurité avancée",
+            short: "Réutilisation d’une requête légitime capturée.",
+            details: [
+                "Mitigée par nonces, timestamps, tokens à usage unique.",
+                "Important pour les API sensibles."
+            ]
+        },
+        {
+            id: "mitm",
+            term: "Man-in-the-Middle (MITM)",
+            emoji: "🔍",
+            category: "Cybersécurité avancée",
+            short: "Attaquant entre client et serveur.",
+            details: [
+                "TLS/mTLS, HSTS, pinning limitent ce risque.",
+                "Cas d’école pour justifier TLS en entretien."
+            ]
+        },
+        {
+            id: "ddos-waf-cdn",
+            term: "DDoS / WAF / CDN",
+            emoji: "🔥",
+            category: "Cybersécurité avancée",
+            short: "Protection volumétrique et applicative.",
+            details: [
+                "DDoS : saturer les ressources.",
+                "WAF : filtrer les attaques HTTP.",
+                "CDN : absorber du trafic et rapprocher le contenu."
+            ]
+        },
+        {
+            id: "ocsp-stapling",
+            term: "OCSP Stapling",
+            emoji: "📎",
+            category: "Cybersécurité avancée",
+            short: "Le serveur fournit la preuve OCSP au client.",
+            details: [
+                "Améliore perf et confidentialité par rapport à OCSP classique.",
+                "Réduit la charge sur les serveurs OCSP."
+            ]
+        }
+    ];
+
+    // ==========================
+    // Rendu & interactions
+    // ==========================
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const listEl = document.getElementById("dictionary-list");
+        const searchInput = document.getElementById("searchInput");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const noResults = document.getElementById("noResults");
+
+        let currentSearch = "";
+        let currentCategory = "";
+
+        const normalize = (str) => str.toLowerCase();
+
+        function filterEntries() {
+            const search = normalize(currentSearch.trim());
+            const category = currentCategory;
+
+            const filtered = PKI_ENTRIES.filter((entry) => {
+                const matchesCategory = !category || entry.category === category;
+                const haystack = normalize(
+                    `${entry.term} ${entry.short} ${entry.details.join(" ")}`
+                );
+                const matchesSearch = !search || haystack.includes(search);
+                return matchesCategory && matchesSearch;
+            });
+
+            renderEntries(filtered);
+        }
+
+        function renderEntries(entries) {
+            listEl.innerHTML = "";
+
+            if (entries.length === 0) {
+                noResults.classList.remove("hidden");
+                return;
+            }
+
+            noResults.classList.add("hidden");
+
+            entries.forEach((entry) => {
+                const card = document.createElement("article");
+                card.className = "term-card";
+                card.dataset.entryId = entry.id;
+
+                const detailsHtml = entry.details
+                    .map((line) => `<li>${line}</li>`)
+                    .join("");
+
+                card.innerHTML = `
+                    <div class="term-card__header">
+                      <div class="term-title">
+                        <span class="term-emoji">${entry.emoji}</span>
+                        <span>${entry.term}</span>
+                      </div>
+                      <span class="term-category">${entry.category}</span>
+                    </div>
+                    <div class="term-short">${entry.short}</div>
+                    <div class="term-details">
+                      <ul>${detailsHtml}</ul>
+                    </div>
+                    <div class="term-meta">
+                      <span class="term-badge">À connaître par cœur</span>
+                      <span class="term-toggle">Cliquer pour plier / déplier</span>
+                    </div>
+                `;
+
+                const detailsEl = card.querySelector(".term-details");
+                card.addEventListener("click", () => {
+                    detailsEl.classList.toggle("hidden");
+                });
+
+                listEl.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener("input", (e) => {
+            currentSearch = e.target.value;
+            filterEntries();
+        });
+
+        categoryFilter.addEventListener("change", (e) => {
+            currentCategory = e.target.value;
+            filterEntries();
+        });
+
+        // premier rendu
+        renderEntries(PKI_ENTRIES);
+    });
+</script>
+</body>
+</html>

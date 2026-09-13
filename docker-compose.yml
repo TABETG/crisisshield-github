@@ -1,0 +1,111 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: crisisshield-db
+    environment:
+      POSTGRES_DB: crisisshield_db
+      POSTGRES_USER: crisisshield_user
+      POSTGRES_PASSWORD: crisisshield_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crisisshield_user -d crisisshield_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - crisisshield
+
+  openldap:
+    build: ./infra/ldap
+    container_name: crisisshield-openldap
+    hostname: openldap
+    restart: unless-stopped
+    ports:
+      - "389:389"
+    environment:
+      LDAP_ORGANISATION: "Spring Framework"
+      LDAP_DOMAIN: "springframework.org"
+      LDAP_BASE_DN: "dc=springframework,dc=org"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_TLS: "false"
+    volumes:
+      - ldap_data:/var/lib/ldap
+      - ldap_config:/etc/ldap/slapd.d
+    healthcheck:
+      test: ["CMD-SHELL", "ldapsearch -x -H ldap://localhost:389 -b \"dc=springframework,dc=org\" -D \"cn=admin,dc=springframework,dc=org\" -w \"admin\" >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks:
+      - crisisshield
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: crisisshield-phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8081:80"
+    depends_on:
+      openldap:
+        condition: service_healthy
+    networks:
+      - crisisshield
+
+  backend:
+    build: ./backend
+    container_name: crisisshield-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "ldap"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/crisisshield_db"
+      SPRING_DATASOURCE_USERNAME: "crisisshield_user"
+      SPRING_DATASOURCE_PASSWORD: "crisisshield_password"
+      # Plus de secret partage : RS256, paire generee au demarrage en developpement (EP02-US06)
+      JWT_EXPIRATION: "900000"
+      APP_DEV_DATA_ENABLED: "true"
+      APP_ASSISTANT_PROVIDER: "mock"
+      LDAP_URLS: "ldap://openldap:389"
+      LDAP_BASE_DN: "dc=springframework,dc=org"
+      LDAP_MANAGER_DN: "cn=admin,dc=springframework,dc=org"
+      LDAP_MANAGER_PASSWORD: "admin"
+      LDAP_GROUP_SEARCH_BASE: "ou=groups"
+      LDAP_GROUP_SEARCH_FILTER: "(member={0})"
+    depends_on:
+      db:
+        condition: service_healthy
+      openldap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    networks:
+      - crisisshield
+
+  frontend:
+    build: ./frontend
+    container_name: crisisshield-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - crisisshield
+
+volumes:
+  db_data:
+  ldap_data:
+  ldap_config:
+
+networks:
+  crisisshield:
+    driver: bridge

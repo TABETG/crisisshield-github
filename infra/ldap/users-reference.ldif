@@ -1,0 +1,48 @@
+# =========================
+# Base
+# =========================
+dn: dc=springframework,dc=org
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: springframework
+o: Spring Framework
+
+# =========================
+# People OU
+# =========================
+dn: ou=people,dc=springframework,dc=org
+objectClass: organizationalUnit
+ou: people
+
+# =========================
+# Groups OU
+# =========================
+dn: ou=groups,dc=springframework,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+# =========================
+# User
+# password = "password"
+# =========================
+dn: uid=user,ou=people,dc=springframework,dc=org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: user
+sn: user
+uid: user
+uidNumber: 1000
+gidNumber: 500
+homeDirectory: /home/user
+loginShell: /bin/bash
+userPassword: {SSHA}W6ph5Mm5Pz8GgiULbPgzG37mj9g=   # password
+
+# =========================
+# Group
+# =========================
+dn: cn=users,ou=groups,dc=springframework,dc=org
+objectClass: posixGroup
+cn: users
+gidNumber: 500
+memberUid: user

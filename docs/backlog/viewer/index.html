@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Backlog Viewer — EPIC / User Stories</title>
+  <meta name="description" content="Viewer backlog EPIC/User Stories (HTML + CSS + JS + CSV)." />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="wrap" id="app">
+    <header>
+      <div class="brand">
+        <div class="title">
+          Backlog Viewer
+          <span class="badge">Multi-file · HTML + CSS + JS + CSV</span>
+        </div>
+        <div class="subtitle">
+          Recherche, filtres, tri, stats, export CSV, copie JSON, et mode clair/sombre.
+          <span class="muted">Données chargées depuis <span class="kbd">backlog.csv</span>.</span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn" id="btnTheme" title="Basculer thème (clair/sombre)">🌓 Thème</button>
+        <button class="btn good" id="btnExportCsv" title="Exporter les items filtrés en CSV">⬇️ Export CSV</button>
+        <button class="btn primary" id="btnCopyJson" title="Copier le JSON (items filtrés) dans le presse-papiers">📋 Copier JSON</button>
+        <button class="btn danger" id="btnReset" title="Réinitialiser filtres">↩️ Reset</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="controls">
+        <label>
+          Recherche (ID / titre / user story / AC / epic)
+          <input id="q" type="text" placeholder="Ex: JWT, PKCS#11, audit, EP09, /sign..." autocomplete="off" />
+        </label>
+
+        <label>
+          Epic
+          <select id="epicSelect"></select>
+        </label>
+
+        <label>
+          Min SP
+          <select id="minSp">
+            <option value="">—</option>
+            <option>2</option><option>3</option><option>5</option><option>8</option><option>13</option>
+          </select>
+        </label>
+
+        <label>
+          Tri
+          <select id="sortBy">
+            <option value="epic_then_id">Epic → US_ID</option>
+            <option value="sp_desc">Story points ↓</option>
+            <option value="sp_asc">Story points ↑</option>
+            <option value="title_asc">Titre A→Z</option>
+            <option value="title_desc">Titre Z→A</option>
+          </select>
+        </label>
+
+        <label>
+          Affichage
+          <select id="viewMode">
+            <option value="grouped">Groupé par Epic</option>
+            <option value="flat">Liste simple</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="content" id="content">
+        <div class="muted">Chargement du CSV…</div>
+      </div>
+
+      <div class="footer">
+        <div>
+          Raccourcis :
+          <span class="kbd">/</span> focus recherche ·
+          <span class="kbd">Esc</span> clear recherche ·
+          <span class="kbd">Ctrl</span>+<span class="kbd">K</span> focus recherche
+        </div>
+        <div class="muted">
+          Dernière génération : <span id="generatedAt"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panelAlt" id="csvHelp" aria-label="Aide chargement CSV">
+      <div class="help">
+        <div class="helpTitle">📄 Chargement CSV</div>
+        <div class="helpText">
+          Si la page est ouverte en <span class="kbd">file://</span>, le navigateur peut bloquer <span class="kbd">fetch</span>.
+          Dans ce cas : lance un petit serveur local (voir README) ou charge le fichier manuellement ci-dessous.
+        </div>
+        <div class="helpRow">
+          <input type="file" id="csvFile" accept=".csv,text/csv" />
+          <button class="btn" id="btnReloadCsv" title="Recharger backlog.csv via fetch">🔄 Recharger</button>
+        </div>
+        <div class="helpHint muted" id="csvStatus"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg"></span>
+    <span class="pill" id="toastPill"></span>
+  </div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

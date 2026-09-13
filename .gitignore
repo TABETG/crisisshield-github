@@ -1,0 +1,28 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Java / Maven
+backend/target/
+*.class
+*.log
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Exports et dumps locaux
+local.txt
+security_bundle.txt
+*_dump.txt
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate*
+
+# Secrets locaux
+.env
+*.pem
+*.p12
+*.jks

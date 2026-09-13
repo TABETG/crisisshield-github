@@ -1,0 +1,9 @@
+export { HomePage } from './HomePage';
+export { FeaturesPage } from './FeaturesPage';
+export { PricingPage } from './PricingPage';
+export { SolutionsPage } from './SolutionsPage';
+export { SecurityPage } from './SecurityPage';
+export { AboutPage } from './AboutPage';
+export { ContactPage } from './ContactPage';
+export { PrivacyPage } from './PrivacyPage';
+export { TermsPage } from './TermsPage';
