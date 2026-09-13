@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn -B -q -DskipTests clean package
 
 # --- Etape 2 : execution, sans utilisateur racine ---
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 RUN addgroup -S crisisshield && adduser -S crisisshield -G crisisshield
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
