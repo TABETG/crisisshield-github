@@ -10,7 +10,7 @@
 
 > CrisisShield est une plateforme de gestion de crise cyber, multi-organisations, avec un assistant IA. Chaque organisation ne voit que ses données, l'identité vient de l'annuaire d'entreprise, les jetons sont signés en asymétrique, et l'assistant ne laisse jamais sortir une donnée personnelle ni ne répond à une injection de prompt. Tout tourne dans Docker, la chaîne CI bloque sur les failles critiques.
 
-C'est ton pitch. Chaque phrase renvoie à un chapitre de ce cours. Si on te demande « c'est-à-dire ? » sur l'une d'elles, tu dois pouvoir descendre d'un niveau.
+C'est ton pitch. Chaque phrase renvoie à un chapitre de ce cours. Et `scripts/demo.sh` le prouve en deux minutes : clé publique, connexion LDAP, courriel masqué, injection refusée. Lance-le devant l'interlocuteur plutôt que de le raconter. Si on te demande « c'est-à-dire ? » sur l'une d'elles, tu dois pouvoir descendre d'un niveau.
 
 ## 1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps
 
@@ -272,9 +272,26 @@ Tout cela est écrit et cohérent, mais **pas encore déployé** sur un cluster.
 - **Kubernetes et Terraform sont écrits, pas exécutés.** Le chart est cohérent, le plan AWS est un document.
 - **La clé JWT est générée au démarrage.** Pas encore de KMS ni de fichier de clé monté.
 - **La PKI interne n'existe pas encore.** Bouncy Castle est dans le `pom`, `CertificateRecord` attend son service. Tout l'épic EP09 est devant toi.
-- **44 tests, tous unitaires ou d'intégration légère.** Aucun test de bout en bout par HTTP.
+- **44 tests, tous unitaires ou d'intégration légère.** Aucun test de bout en bout automatisé par HTTP — la démonstration du chapitre 8 bis le fait à la main.
 
 Ce sont exactement les tickets du backlog enrichi. Quand on te demande « et ensuite ? », tu as la réponse.
+
+---
+
+# Chapitre 8 bis — La démonstration de deux minutes
+
+Ces quatre commandes ont été exécutées le 13 septembre 2026 contre le projet en marche. Elles sont dans le README. Apprends-les : c'est ce que tu montres quand on te dit « fais-nous voir ».
+
+| Commande | Ce qu'elle prouve | Résultat obtenu |
+|---|---|---|
+| `curl /.well-known/jwks.json` | La clé publique est publiée ; n'importe quel service peut vérifier un jeton sans secret | une clé RSA avec son `kid` |
+| `curl -X POST /api/auth/login` | Le bind LDAP fonctionne, le jeton est émis en RS256 | `eyJraWQiOi...` |
+| `curl -X POST /api/assistant/ask` avec un courriel | Le masquage fonctionne de bout en bout | `"maskedEntities":1` |
+| `curl -X POST /api/assistant/ask` avec une injection | Le filtrage refuse avant tout appel au modèle | `"code":"REFUSED_GUARD"` |
+
+**Comment la présenter.** Ne lance pas les quatre d'un coup. Annonce chacune, lance-la, commente le résultat en une phrase. La troisième est la plus forte : montre le `[mock]` dans la réponse — le fournisseur a vu `[[EMAIL_1]]`, jamais `alice@a.test` — et dis que le test `AssistantServiceTest` le prouve en continu.
+
+**Ce que la démo ne montre pas, à dire avant qu'on te le demande :** le modèle est simulé. Le pipeline de sécurité est réel, le cerveau derrière ne l'est pas encore.
 
 ---
 
@@ -397,11 +414,11 @@ Un identifiant unique par requête, repris de l'appelant s'il en fournit un, pro
 Il est posé par un filtre de servlet en tout premier, pour couvrir aussi les requêtes refusées par l'authentification.
 </details>
 
-<details><summary>18. Ton projet ne tournait pas pendant neuf mois. Pourquoi ?</summary>
+<details><summary>18. Ton projet ne tournait pas pendant neuf mois. Pourquoi, et comment as-tu débloqué ?</summary>
 
 Cinq causes cumulées, dont trois qui plantaient avant le premier bean : une propriété interdite dans un fichier de profil, deux chaînes de sécurité attrape-tout, un script SQL sur une table inexistante. Puis deux qui empêchaient la connexion. Corriger l'une ne changeait rien, ce qui rendait le diagnostic difficile.
 
-Ce que j'en retiens : lire le premier message d'erreur, pas le dernier, et ne jamais accumuler des correctifs sans vérifier lequel a un effet.
+Ce que j'en retiens : lire le premier message d'erreur, pas le dernier, et ne jamais accumuler des correctifs sans vérifier lequel a un effet. Il a démarré le 13 septembre 2026, et la démonstration en quatre commandes date de ce jour-là.
 </details>
 
 <details><summary>19. Pourquoi Spring Boot et pas Quarkus ?</summary>
