@@ -1,252 +1,65 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CrisisShield — ce qui est construit et pourquoi</title>
-<style>
-:root{
-  --fond:#F5F7F4;
-  --carte:#FFFFFF;
-  --encre:#141A20;
-  --encre-douce:#52606C;
-  --bleu:#2C4A78;
-  --ocre:#9E4E17;
-  --vert:#1C5C4C;
-  --trait:#DCE2DC;
-  --trait-fin:#E9EDE8;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--fond);color:var(--encre);
-  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  font-size:17px;line-height:1.72;
-  -webkit-text-size-adjust:100%;
-}
-.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto;}
-@media(min-width:1040px){
-  .page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px;}
-}
-
-/* ---- sommaire ---- */
-nav.som{padding:24px 20px 0;}
-@media(min-width:1040px){
-  nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
-    padding:56px 0 40px;border-right:1px solid var(--trait);padding-right:24px;}
-}
-nav.som .titre-som{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:12.5px;letter-spacing:.02em;color:var(--encre-douce);
-  font-weight:600;margin:0 0 14px;}
-nav.som ul{list-style:none;margin:0;padding:0;}
-nav.som li{margin:0;}
-nav.som a{display:block;padding:4px 0;font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:13.5px;line-height:1.4;color:var(--encre-douce);text-decoration:none;
-  border-left:2px solid transparent;padding-left:12px;margin-left:-14px;}
-nav.som a:hover{color:var(--bleu);border-left-color:var(--bleu);}
-nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px;}
-nav.som ul ul{margin-bottom:8px;}
-details.som-mob summary{cursor:pointer;font-family:ui-sans-serif,system-ui,sans-serif;
-  font-size:14px;font-weight:600;padding:14px 0;color:var(--bleu);}
-@media(min-width:1040px){details.som-mob{display:none}}
-@media(max-width:1039px){nav.som.bureau{display:none}}
-
-/* ---- contenu ---- */
-main{padding:0 20px 96px;min-width:0;}
-@media(min-width:1040px){main{padding:56px 0 140px;}}
-.enveloppe{max-width:69ch;}
-
-.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px;}
-.chapeau h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;
-  letter-spacing:-.022em;margin:0 0 14px;}
-.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
-  color:var(--encre-douce);line-height:1.7;}
-.chapeau .meta b{color:var(--encre);font-weight:600;}
-
-h1{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:clamp(23px,3.4vw,30px);line-height:1.2;font-weight:660;letter-spacing:-.02em;
-  margin:72px 0 6px;padding-top:26px;border-top:1px solid var(--trait);}
-h2{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:19px;line-height:1.3;font-weight:640;letter-spacing:-.01em;
-  margin:42px 0 10px;color:var(--bleu);}
-h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;
-  margin:30px 0 8px;}
-p{margin:0 0 16px;}
-main>.enveloppe>p:first-of-type{margin-top:18px;}
-strong{font-weight:660;}
-em{font-style:italic;}
-a{color:var(--bleu);}
-code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86em;
-  background:#EBEFEA;padding:1.5px 5px;border-radius:3px;}
-pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
-  padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px;}
-pre code{background:none;padding:0;font-size:13px;}
-hr{border:0;border-top:1px solid var(--trait);margin:44px 0;}
-
-ul,ol{margin:0 0 18px;padding-left:22px;}
-li{margin:0 0 7px;}
-
-blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:3px solid var(--bleu);
-  color:var(--encre);font-size:17.5px;}
-blockquote p{margin:0 0 10px;}
-blockquote p:last-child{margin:0;}
-
-table{width:100%;border-collapse:collapse;margin:20px 0 26px;
-  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:14px;line-height:1.55;}
-@media(max-width:700px){table{display:block;overflow-x:auto;white-space:normal;}}
-thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;
-  border-bottom:1.5px solid var(--encre);vertical-align:bottom;}
-tbody td{padding:10px 14px 10px 0;border-bottom:1px solid var(--trait-fin);vertical-align:top;}
-tbody tr:last-child td{border-bottom:1px solid var(--trait);}
-td:last-child,th:last-child{padding-right:0;}
-
-/* ---- encarts ---- */
-p.reflexe,p.piege,p.regle{
-  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:14.5px;line-height:1.65;padding:14px 16px;margin:20px 0 22px;
-  background:var(--carte);}
-p.reflexe{border-left:3px solid var(--vert);}
-p.reflexe strong:first-child{color:var(--vert);}
-p.piege{border-left:3px solid var(--ocre);}
-p.piege strong:first-child{color:var(--ocre);}
-p.regle{border-left:3px solid var(--bleu);}
-p.regle strong:first-child{color:var(--bleu);}
-p.fiche{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;
-  color:var(--encre-douce);margin:0 0 18px;}
-p.fiche strong{color:var(--encre);}
-
-/* ---- cases à cocher ---- */
-ul.controle{list-style:none;padding:0;}
-ul.controle li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;
-  border-bottom:1px solid var(--trait-fin);font-size:16px;}
-ul.controle input{margin-top:7px;width:16px;height:16px;accent-color:var(--vert);flex-shrink:0;}
-ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through;
-  text-decoration-color:#C3CCD1;}
-
-a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--bleu);outline-offset:3px;}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-/* ---- barre de progression ---- */
-#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);
-  width:0;z-index:50;transition:width .08s linear;}
-@media(prefers-reduced-motion:reduce){#progression{transition:none}}
-
-/* ---- sommaire actif ---- */
-nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu);font-weight:600;}
-
-/* ---- questions / reponses ---- */
-details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--bleu);
-  margin:0 0 10px;padding:0;}
-details[open]{border-left-color:var(--vert);}
-details>summary{cursor:pointer;list-style:none;padding:14px 18px;
-  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:15px;font-weight:600;line-height:1.45;color:var(--encre);
-  display:flex;gap:12px;align-items:flex-start;}
-details>summary::-webkit-details-marker{display:none}
-details>summary::before{content:"+";color:var(--bleu);font-weight:700;
-  font-size:17px;line-height:1.3;flex-shrink:0;}
-details[open]>summary::before{content:"2";color:var(--vert);}
-details>summary:hover{background:#F2F5F1;}
-details>*:not(summary){padding:0 18px;}
-details>p:first-of-type{padding-top:2px;}
-details>p:last-child{padding-bottom:16px;margin-bottom:0;}
-details.som-mob{border:0;border-left:0;background:none;}
-details.som-mob>summary{padding:14px 0;}
-details.som-mob>*:not(summary){padding:0;}
-
-/* ---- compteur de controle ---- */
-.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
-  color:var(--encre-douce);margin:14px 0 0;}
-.compteur b{color:var(--vert);font-size:16px;}
-
-
-/* ---- couleur par chapitre ---- */
-.chapitre{--teinte:var(--bleu);}
-.chapitre>h1{color:var(--teinte);border-top:0;padding-top:30px;position:relative;}
-.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;
-  background:var(--teinte);}
-.chapitre h2{color:var(--teinte);}
-.chapitre h3{color:var(--teinte);opacity:.92;}
-.chapitre blockquote{border-left-color:var(--teinte);background:var(--carte);
-  padding:14px 20px;}
-.chapitre thead th{border-bottom-color:var(--teinte);color:var(--teinte);}
-.chapitre pre{border-left-color:var(--teinte);}
-.chapitre details{border-left-color:var(--teinte);}
-.chapitre details>summary::before{color:var(--teinte);}
-.chapitre details[open]{border-left-color:var(--vert);}
-.chapitre details[open]>summary::before{color:var(--vert);}
-.chapitre code{background:color-mix(in srgb,var(--teinte) 11%,transparent);
-  color:color-mix(in srgb,var(--teinte) 78%,black);}
-.chapitre a{color:var(--teinte);}
-
-/* ---- bandeau spectre ---- */
-.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px;}
-.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;
-  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-  font-size:12.5px;font-weight:560;color:var(--encre-douce);
-  background:var(--carte);border:1px solid var(--trait);
-  padding:5px 11px 5px 8px;border-radius:2px;}
-.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px;flex-shrink:0;}
-.spectre a:hover{color:var(--teinte);border-color:var(--teinte);}
-
-/* ---- sommaire colore ---- */
-nav.som li.ch-item>a{color:var(--encre);font-weight:600;
-  border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent);}
-nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);
-  border-left-color:var(--teinte);}
-nav.som li.ch-item ul a:hover,nav.som li.ch-item ul a.actif{color:var(--teinte);
-  border-left-color:var(--teinte);}
-nav.som li.ch-item{margin-bottom:10px;}
-
-@media print{
-  nav.som,details.som-mob,#progression{display:none}
-  .spectre{display:none}
-  details{border:1px solid #ccc}
-  details>*:not(summary){display:block !important}
-  body{background:#fff;font-size:11pt}
-  .page{display:block;padding:0}
-  h1{break-after:avoid;page-break-after:avoid}
-  table,blockquote,p.reflexe,p.piege{break-inside:avoid}
-}
-</style>
-</head>
-<body>
-<div id="progression"></div>
-<div class="page">
-<nav class="som bureau">
-  <p class="titre-som">Sommaire</p>
-  <div class="toc">
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CrisisShield — ce qui est construit et pourquoi</title><style>
+:root{--fond:#F5F7F4;--carte:#fff;--encre:#141A20;--douce:#52606C;--bleu:#2C4A78;--vert:#1C5C4C;--ocre:#9E4E17;--trait:#DCE2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--fond);color:var(--encre);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:17px;line-height:1.72}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto}@media(min-width:1040px){.page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px}}
+nav.som{padding:24px 20px 0}@media(min-width:1040px){nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:56px 24px 40px 0;border-right:1px solid var(--trait)}}
+nav.som ul{list-style:none;margin:0;padding:0}nav.som a{display:block;padding:4px 0 4px 12px;margin-left:-14px;border-left:2px solid transparent;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce);text-decoration:none}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px}nav.som a:hover,nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu)}
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent)}nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);border-left-color:var(--teinte)}nav.som li.ch-item{margin-bottom:10px}
+@media(max-width:1039px){nav.som.bureau{display:none}}@media(min-width:1040px){details.som-mob{display:none}}
+main{padding:0 20px 96px;min-width:0}@media(min-width:1040px){main{padding:56px 0 140px}}.enveloppe{max-width:69ch}
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px}.chapeau h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;letter-spacing:-.022em;margin:0 0 14px}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}
+h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3.4vw,30px);font-weight:660;letter-spacing:-.02em;margin:72px 0 6px;padding-top:30px;position:relative}
+.chapitre>h1{color:var(--teinte)}.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;background:var(--teinte)}
+h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:19px;font-weight:640;margin:42px 0 10px;color:var(--teinte,var(--bleu))}h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;margin:30px 0 8px}
+p{margin:0 0 16px}strong{font-weight:660}a{color:var(--bleu)}code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#EBEFEA;padding:1.5px 5px;border-radius:3px}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px}pre code{background:none;padding:0}
+ul,ol{margin:0 0 18px;padding-left:22px}li{margin:0 0 7px}blockquote{margin:22px 0;padding:14px 20px;border-left:3px solid var(--teinte,var(--bleu));background:var(--carte)}blockquote p:last-child{margin:0}
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.55}@media(max-width:700px){table{display:block;overflow-x:auto}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;border-bottom:1.5px solid var(--teinte,var(--encre));color:var(--teinte,var(--encre))}tbody td{padding:10px 14px 10px 0;border-bottom:1px solid #E9EDE8;vertical-align:top}
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));margin:0 0 10px}details[open]{border-left-color:var(--vert)}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px;font-weight:600;display:flex;gap:12px}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--teinte,var(--bleu));font-weight:700}details[open]>summary::before{content:"\2212";color:var(--vert)}details>*:not(summary){padding:0 18px}details>p:last-child{padding-bottom:16px;margin-bottom:0}
+details.som-mob{border:0;background:none}details.som-mob>summary{padding:14px 0}details.som-mob>*:not(summary){padding:0}
+ul.controle{list-style:none;padding:0}ul.controle li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #E9EDE8}ul.controle input{margin-top:7px;accent-color:var(--vert)}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through}.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}.compteur b{color:var(--vert);font-size:16px}
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);width:0;z-index:50}
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px}.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;font-weight:560;color:var(--douce);background:var(--carte);border:1px solid var(--trait);padding:5px 11px 5px 8px;border-radius:2px}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px}.spectre a:hover{color:var(--teinte);border-color:var(--teinte)}
+@media print{nav.som,details.som-mob,#progression,.spectre{display:none}body{background:#fff;font-size:11pt}.page{display:block}details>*:not(summary){display:block!important}}
+</style></head>
+<body><div id="progression"></div><div class="page"><nav class="som bureau"><p class="titre-som">Sommaire</p><div class="toc">
 <ul>
-<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#cours-crisisshield-ce-qui-est-construit-et-pourquoi">Cours — CrisisShield, ce qui est construit et pourquoi</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
 <li><a href="#11-pourquoi-ce-projet-est-pertinent-pour-un-poste-devsecops">1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
 <li><a href="#21-les-briques">2.1 Les briques</a></li>
 <li><a href="#22-lorganisation-du-backend">2.2 L'organisation du backend</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
 <li><a href="#31-la-connexion">3.1 La connexion</a></li>
 <li><a href="#32-une-requete-protegee">3.2 Une requête protégée</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
 <li><a href="#41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</a></li>
 <li><a href="#42-les-cinq-verifications">4.2 Les cinq vérifications</a></li>
 <li><a href="#43-les-tests-negatifs">4.3 Les tests négatifs</a></li>
 <li><a href="#44-pourquoi-deux-chaines-de-securite">4.4 Pourquoi deux chaînes de sécurité</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
 <li><a href="#51-le-mecanisme">5.1 Le mécanisme</a></li>
 <li><a href="#52-la-limite-a-connaitre-absolument">5.2 La limite, à connaître absolument</a></li>
 <li><a href="#53-la-preuve">5.3 La preuve</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
 <li><a href="#61-le-principe">6.1 Le principe</a></li>
 <li><a href="#62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</a></li>
 <li><a href="#63-ce-que-le-fournisseur-ne-voit-jamais">6.3 Ce que le fournisseur ne voit jamais</a></li>
@@ -254,58 +67,51 @@ nav.som li.ch-item{margin-bottom:10px;}
 <li><a href="#65-labstraction-du-fournisseur">6.5 L'abstraction du fournisseur</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
 <li><a href="#71-limage">7.1 L'image</a></li>
 <li><a href="#72-la-chaine">7.2 La chaîne</a></li>
 <li><a href="#73-les-regles-maison">7.3 Les règles maison</a></li>
 <li><a href="#74-kubernetes">7.4 Kubernetes</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
-<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</a></li>
-<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
-<li class="ch-item" style="--teinte:#8A4E2A"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
 </ul>
 </div>
-
-</nav>
-<main>
-<div class="enveloppe">
-<header class="chapeau">
-  <h1>CrisisShield — ce qui est construit et pourquoi</h1>
-  <p class="meta">Cours orient&eacute; entretien : chaque brique, le pourquoi de chaque choix, ce qui manque, et 25 questions avec r&eacute;ponses mod&egrave;les.<br><b>Lecture :</b> 45 minutes, puis les questions &agrave; voix haute.</p>
-</header>
-<nav class="spectre"><a href="#chapitre-1-le-projet-en-trente-secondes" style="--teinte:#3A4E8C" title="Chapitre 1 — Le projet en trente secondes"><span></span>1 Le projet en trente sec…</a><a href="#chapitre-2-larchitecture" style="--teinte:#6B4A8F" title="Chapitre 2 — L'architecture"><span></span>2 L'architecture</a><a href="#chapitre-3-le-parcours-dune-requete" style="--teinte:#1F6E86" title="Chapitre 3 — Le parcours d'une requête"><span></span>3 Le parcours d'une requê…</a><a href="#chapitre-4-lidentite-et-les-jetons" style="--teinte:#1E6B57" title="Chapitre 4 — L'identité et les jetons"><span></span>4 L'identité et les jetons</a><a href="#chapitre-5-le-multi-locataire" style="--teinte:#A8621A" title="Chapitre 5 — Le multi-locataire"><span></span>5 Le multi-locataire</a><a href="#chapitre-6-lassistant-ia" style="--teinte:#A34434" title="Chapitre 6 — L'assistant IA"><span></span>6 L'assistant IA</a><a href="#chapitre-7-devsecops" style="--teinte:#2D5F8F" title="Chapitre 7 — DevSecOps"><span></span>7 DevSecOps</a><a href="#chapitre-8-ce-qui-nest-pas-fait" style="--teinte:#8C3F63" title="Chapitre 8 — Ce qui n'est pas fait"><span></span>8 Ce qui n'est pas fait</a><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes" style="--teinte:#7A6B1B" title="Chapitre 8 bis — La démonstration de deux minutes"><span></span>8 La démonstration de deu…</a><a href="#chapitre-9-simulation-dentretien" style="--teinte:#3F6B2E" title="Chapitre 9 — Simulation d'entretien"><span></span>9 Simulation d'entretien</a><a href="#ce-que-tu-dois-savoir-refaire-sans-notes" style="--teinte:#8A4E2A" title="Ce que tu dois savoir refaire sans notes"><span></span>Ce que tu dois savoir ref…</a></nav>
-<details class="som-mob"><summary>Sommaire</summary><div class="toc">
+</nav><main><div class="enveloppe">
+<header class="chapeau"><h1>CrisisShield — ce qui est construit et pourquoi</h1><p class="meta">Cours orienté entretien : chaque brique, le pourquoi de chaque choix, ce qui manque, et 25 questions avec réponses modèles.</p></header><nav class="spectre"><a href="#cours-crisisshield-ce-qui-est-construit-et-pourquoi" style="--teinte:#3A4E8C"><span></span>CrisisShield, ce qui est…</a><a href="#chapitre-1-le-projet-en-trente-secondes" style="--teinte:#6B4A8F"><span></span>1 Le projet en trente sec…</a><a href="#chapitre-2-larchitecture" style="--teinte:#1F6E86"><span></span>2 L'architecture</a><a href="#chapitre-3-le-parcours-dune-requete" style="--teinte:#1E6B57"><span></span>3 Le parcours d'une requê…</a><a href="#chapitre-4-lidentite-et-les-jetons" style="--teinte:#A8621A"><span></span>4 L'identité et les jetons</a><a href="#chapitre-5-le-multi-locataire" style="--teinte:#A34434"><span></span>5 Le multi-locataire</a><a href="#chapitre-6-lassistant-ia" style="--teinte:#2D5F8F"><span></span>6 L'assistant IA</a><a href="#chapitre-7-devsecops" style="--teinte:#8C3F63"><span></span>7 DevSecOps</a><a href="#chapitre-8-ce-qui-nest-pas-fait" style="--teinte:#7A6B1B"><span></span>8 Ce qui n'est pas fait</a><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes" style="--teinte:#3F6B2E"><span></span>8 La démonstration de deu…</a><a href="#chapitre-9-simulation-dentretien" style="--teinte:#8A4E2A"><span></span>9 Simulation d'entretien</a><a href="#ce-que-tu-dois-savoir-refaire-sans-notes" style="--teinte:#4A4A55"><span></span>Ce que tu dois savoir ref…</a></nav><details class="som-mob"><summary>Sommaire</summary><div class="toc">
 <ul>
-<li class="ch-item" style="--teinte:#3A4E8C"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#cours-crisisshield-ce-qui-est-construit-et-pourquoi">Cours — CrisisShield, ce qui est construit et pourquoi</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</a><ul>
 <li><a href="#11-pourquoi-ce-projet-est-pertinent-pour-un-poste-devsecops">1.1 Pourquoi ce projet est pertinent pour un poste DevSecOps</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-larchitecture">Chapitre 2 — L'architecture</a><ul>
 <li><a href="#21-les-briques">2.1 Les briques</a></li>
 <li><a href="#22-lorganisation-du-backend">2.2 L'organisation du backend</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</a><ul>
 <li><a href="#31-la-connexion">3.1 La connexion</a></li>
 <li><a href="#32-une-requete-protegee">3.2 Une requête protégée</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</a><ul>
 <li><a href="#41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</a></li>
 <li><a href="#42-les-cinq-verifications">4.2 Les cinq vérifications</a></li>
 <li><a href="#43-les-tests-negatifs">4.3 Les tests négatifs</a></li>
 <li><a href="#44-pourquoi-deux-chaines-de-securite">4.4 Pourquoi deux chaînes de sécurité</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</a><ul>
 <li><a href="#51-le-mecanisme">5.1 Le mécanisme</a></li>
 <li><a href="#52-la-limite-a-connaitre-absolument">5.2 La limite, à connaître absolument</a></li>
 <li><a href="#53-la-preuve">5.3 La preuve</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</a><ul>
 <li><a href="#61-le-principe">6.1 Le principe</a></li>
 <li><a href="#62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</a></li>
 <li><a href="#63-ce-que-le-fournisseur-ne-voit-jamais">6.3 Ce que le fournisseur ne voit jamais</a></li>
@@ -313,21 +119,25 @@ nav.som li.ch-item{margin-bottom:10px;}
 <li><a href="#65-labstraction-du-fournisseur">6.5 L'abstraction du fournisseur</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-devsecops">Chapitre 7 — DevSecOps</a><ul>
 <li><a href="#71-limage">7.1 L'image</a></li>
 <li><a href="#72-la-chaine">7.2 La chaîne</a></li>
 <li><a href="#73-les-regles-maison">7.3 Les règles maison</a></li>
 <li><a href="#74-kubernetes">7.4 Kubernetes</a></li>
 </ul>
 </li>
-<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
-<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</a></li>
-<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
-<li class="ch-item" style="--teinte:#8A4E2A"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</a></li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</a></li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
 </ul>
 </div>
-</details>
-<section class="chapitre" style="--teinte:#3A4E8C"><h1 id="chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</h1>
+</details><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="cours-crisisshield-ce-qui-est-construit-et-pourquoi">Cours — CrisisShield, ce qui est construit et pourquoi</h1>
+<p><strong>Objectif :</strong> que tu puisses expliquer chaque brique de ton projet en entretien, avec le <em>pourquoi</em> derrière chaque choix, et sans notes.
+<strong>Durée :</strong> 45 minutes de lecture, puis 25 questions à travailler à voix haute.
+<strong>Règle :</strong> tout ce qui est écrit ici existe dans le code. Ce qui n'existe pas encore est dit clairement en fin de document. Un recruteur te fera plus confiance sur un périmètre honnête que sur un périmètre gonflé.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-1-le-projet-en-trente-secondes">Chapitre 1 — Le projet en trente secondes</h1>
 <blockquote>
 <p>CrisisShield est une plateforme de gestion de crise cyber, multi-organisations, avec un assistant IA. Chaque organisation ne voit que ses données, l'identité vient de l'annuaire d'entreprise, les jetons sont signés en asymétrique, et l'assistant ne laisse jamais sortir une donnée personnelle ni ne répond à une injection de prompt. Tout tourne dans Docker, la chaîne CI bloque sur les failles critiques.</p>
 </blockquote>
@@ -336,7 +146,7 @@ nav.som li.ch-item{margin-bottom:10px;}
 <p>Parce qu'il n'est pas un exercice de sécurité abstrait. C'est une application métier réelle — des plans de crise, des cellules de crise — sur laquelle chaque contrôle de sécurité a une <strong>raison métier</strong> : un plan contient des astreintes et des numéros, une crise engage la responsabilité juridique, deux clients ne doivent jamais se voir.</p>
 <p>En entretien, relie toujours le contrôle à ce qu'il protège. « J'ai mis du TLS mutuel » est une phrase de développeur. « Un plan de crise contient les numéros d'astreinte de la direction, donc rien ne circule en clair entre mes services » est une phrase de Tech Lead.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-2-larchitecture">Chapitre 2 — L'architecture</h1>
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-2-larchitecture">Chapitre 2 — L'architecture</h1>
 <h2 id="21-les-briques">2.1 Les briques</h2>
 <table>
 <thead>
@@ -403,7 +213,7 @@ config/          amorçage des données de développement</code></p>
 <p><strong>Question d'entretien probable :</strong> « Pourquoi pas une architecture hexagonale complète avec des ports et adaptateurs ? »
 Réponse : parce que le projet n'a pas encore la taille qui le justifie. Les couches sont là ; les interfaces de port viendront quand un second adaptateur existera réellement. Ajouter de l'abstraction avant le besoin est une dette, pas un investissement.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</h1>
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-3-le-parcours-dune-requete">Chapitre 3 — Le parcours d'une requête</h1>
 <p>C'est le chapitre à connaître par cœur. Un recruteur te demandera « que se passe-t-il quand un utilisateur appelle ton API ? » et attendra la chaîne complète.</p>
 <h2 id="31-la-connexion">3.1 La connexion</h2>
 <p><code>POST /api/auth/login  {username, password}
@@ -451,7 +261,7 @@ UserController             @PreAuthorize ROLE_ADMIN, appelle UserService
 UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la requête</code></p>
 <p><strong>La phrase clé :</strong> le contrôleur ne sait pas qu'il est multi-locataire. Il appelle <code>findAll()</code>. C'est Hibernate, via le filtre activé par <code>TenantFilter</code>, qui restreint à l'organisation. Le développeur ne peut pas oublier de filtrer, parce qu'il n'a pas à y penser.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</h1>
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-4-lidentite-et-les-jetons">Chapitre 4 — L'identité et les jetons</h1>
 <h2 id="41-pourquoi-rs256-plutot-que-hs256">4.1 Pourquoi RS256 plutôt que HS256</h2>
 <p>Avant le lot 1, le projet signait en HS256 : un secret partagé, présent dans <code>docker-compose.yml</code>. Quiconque lit ce secret peut forger un jeton administrateur.</p>
 <p>Maintenant, <code>JwtUtil</code> signe avec une clé privée RSA et vérifie avec la clé publique. La clé privée n'existe qu'à un endroit. La clé publique est publiée sur <code>/.well-known/jwks.json</code>.</p>
@@ -505,7 +315,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p><strong>Pourquoi pas une seule avec des <code>permitAll</code> ?</strong> Parce que le filtre JWT tournerait aussi sur les routes publiques et lèverait des exceptions sur les requêtes sans jeton. Deux chaînes, c'est deux périmètres réellement distincts.</p>
 <p><strong>L'erreur historique du projet :</strong> il y avait <em>trois</em> configurations de sécurité, dont deux actives en même temps sur le profil <code>ldap</code>, chacune déclarant une chaîne attrape-tout. Spring Security refusait de démarrer. C'est l'une des cinq causes qui empêchaient le projet de tourner pendant neuf mois. Raconter cette erreur en entretien est une bonne chose : elle montre que tu sais lire un message de démarrage Spring et en tirer la conclusion.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</h1>
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-5-le-multi-locataire">Chapitre 5 — Le multi-locataire</h1>
 <h2 id="51-le-mecanisme">5.1 Le mécanisme</h2>
 <p>Trois pièces :</p>
 <ul>
@@ -521,7 +331,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p><code>TenantIsolationTest</code> fait trois choses : filtre actif sur A, on ne voit que A ; filtre actif sur B, l'utilisateur de A est invisible même par son nom ; <strong>sans filtre, tout est visible</strong>.</p>
 <p>Le troisième test est le plus important. Il prouve que le filtre est <strong>la seule barrière</strong>. Si un jour quelqu'un désactive <code>TenantFilter</code>, ce test ne le détectera pas, mais il documente que la sécurité dépend entièrement de lui. Un auditeur appréciera cette honnêteté.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</h1>
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-6-lassistant-ia">Chapitre 6 — L'assistant IA</h1>
 <h2 id="61-le-principe">6.1 Le principe</h2>
 <p>Un seul point d'entrée, <code>POST /api/assistant/ask</code>, protégé par la chaîne 2. Aucun autre chemin vers un modèle. <code>AssistantService</code> est <strong>la</strong> passerelle.</p>
 <h2 id="62-le-pipeline-dans-lordre">6.2 Le pipeline, dans l'ordre</h2>
@@ -551,7 +361,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p><code>ModelProvider</code> est une interface à deux méthodes. <code>MockModelProvider</code> est l'implémentation active. Le jour où Bedrock est choisi, on écrit une classe, on change une propriété, rien d'autre ne bouge.</p>
 <p>Le choix lui-même n'est pas fait, et c'est documenté dans <code>docs/adr/0003-fournisseur-ia.md</code> avec les critères. Un registre de décision « non prise, voici pourquoi et voici comment on décidera » vaut mieux qu'une décision prise sans critères.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-7-devsecops">Chapitre 7 — DevSecOps</h1>
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-7-devsecops">Chapitre 7 — DevSecOps</h1>
 <h2 id="71-limage">7.1 L'image</h2>
 <p>Le <code>Dockerfile</code> du backend est en deux étapes : Maven construit, puis un JRE Alpine exécute. L'image finale ne contient ni Maven, ni le code source, ni un shell utilisable. Le processus tourne sous l'utilisateur <code>crisisshield</code>, pas <code>root</code>.</p>
 <p><strong>Pourquoi.</strong> Un conteneur compromis avec <code>root</code> et un shell permet d'installer des outils et de tenter une évasion. Sans l'un ni l'autre, l'attaquant est dans une boîte vide.</p>
@@ -596,7 +406,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p>Le chart Helm applique au conteneur : pas de racine, système de fichiers en lecture seule, toutes les capacités Linux retirées, pas d'élévation de privilège, sondes de vivacité et de disponibilité distinctes. La politique réseau refuse tout par défaut et n'ouvre que la résolution de noms, la base et l'annuaire.</p>
 <p>Tout cela est écrit et cohérent, mais <strong>pas encore déployé</strong> sur un cluster. Voir le chapitre 8.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</h1>
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="chapitre-8-ce-qui-nest-pas-fait">Chapitre 8 — Ce qui n'est pas fait</h1>
 <p>À dire spontanément. Un périmètre honnête inspire confiance ; un périmètre gonflé se démonte en trois questions.</p>
 <ul>
 <li><strong>Le métier n'existe pas côté backend.</strong> Plans, crises, war room, kits : le front les affiche avec des données simulées. Le backend n'a que les utilisateurs et les organisations.</li>
@@ -604,11 +414,11 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <li><strong>Kubernetes et Terraform sont écrits, pas exécutés.</strong> Le chart est cohérent, le plan AWS est un document.</li>
 <li><strong>La clé JWT est générée au démarrage.</strong> Pas encore de KMS ni de fichier de clé monté.</li>
 <li><strong>La PKI interne n'existe pas encore.</strong> Bouncy Castle est dans le <code>pom</code>, <code>CertificateRecord</code> attend son service. Tout l'épic EP09 est devant toi.</li>
-<li><strong>44 tests, tous unitaires ou d'intégration légère.</strong> Aucun test de bout en bout automatisé par HTTP — la démonstration du chapitre 8 bis le fait à la main.</li>
+<li><strong>29 tests, tous unitaires ou d'intégration légère.</strong> Aucun test de bout en bout automatisé par HTTP — la démonstration du chapitre 8 bis le fait à la main.</li>
 </ul>
 <p>Ce sont exactement les tickets du backlog enrichi. Quand on te demande « et ensuite ? », tu as la réponse.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</h1>
+</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="chapitre-8-bis-la-demonstration-de-deux-minutes">Chapitre 8 bis — La démonstration de deux minutes</h1>
 <p>Ces quatre commandes ont été exécutées le 13 septembre 2026 contre le projet en marche. Elles sont dans le README. Apprends-les : c'est ce que tu montres quand on te dit « fais-nous voir ».</p>
 <table>
 <thead>
@@ -644,7 +454,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p><strong>Comment la présenter.</strong> Ne lance pas les quatre d'un coup. Annonce chacune, lance-la, commente le résultat en une phrase. La troisième est la plus forte : montre le <code>[mock]</code> dans la réponse — le fournisseur a vu <code>[[EMAIL_1]]</code>, jamais <code>alice@a.test</code> — et dis que le test <code>AssistantServiceTest</code> le prouve en continu.</p>
 <p><strong>Ce que la démo ne montre pas, à dire avant qu'on te le demande :</strong> le modèle est simulé. Le pipeline de sécurité est réel, le cerveau derrière ne l'est pas encore.</p>
 <hr />
-</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</h1>
+</section><section class="chapitre" style="--teinte:#8A4E2A"><h1 id="chapitre-9-simulation-dentretien">Chapitre 9 — Simulation d'entretien</h1>
 <p>Formule ta réponse à voix haute avant d'ouvrir. Format attendu : une phrase directe, la nuance, un exemple.</p>
 <details>
 <summary>1. Décris-moi ton projet en trente secondes.</summary>
@@ -753,7 +563,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p>Ce qui manque, et que je nomme : pas encore de réplique ni de sauvegarde testée. C'est l'épic EP16.</p>
 </details>
 <details>
-<summary>23. Tu as 44 tests. Qu'est-ce qu'ils prouvent, et qu'est-ce qu'ils ne prouvent pas ?</summary>
+<summary>23. Tu as 29 tests. Qu'est-ce qu'ils prouvent, et qu'est-ce qu'ils ne prouvent pas ?</summary>
 <p>Ils prouvent les propriétés de sécurité unité par unité : les jetons invalides sont rejetés, l'isolation fonctionne, le fournisseur ne voit pas les données, l'injection est filtrée, le quota est respecté.</p>
 <p>Ils ne prouvent pas que l'ensemble fonctionne de bout en bout par HTTP, ni que la configuration Docker est correcte. Un test d'intégration complet avec conteneurs est la suite logique.</p>
 </details>
@@ -767,7 +577,7 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <p>Chaque brique cryptographique a un usage métier concret. C'est ça que je veux montrer : pas que je sais faire du PKCS#11, mais que j'ai rendu un rapport de crise opposable.</p>
 </details>
 <hr />
-</section><section class="chapitre" style="--teinte:#8A4E2A"><h1 id="ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</h1>
+</section><section class="chapitre" style="--teinte:#4A4A55"><h1 id="ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</h1>
 <ul class="controle">
 <li><input type="checkbox"><span>Le pitch de trente secondes</span></li>
 <li><input type="checkbox"><span>Le parcours complet d'une requête, de la connexion au <code>WHERE organisation_id</code></li>
@@ -779,50 +589,10 @@ UserRepository.findAll()   Hibernate ajoute WHERE organisation_id = :orgId à la
 <li><input type="checkbox"><span>Les cinq causes de non-démarrage</span></li>
 <li><input type="checkbox"><span>La liste de ce qui n'est pas fait, dite spontanément</span></li>
 </ul>
-<p>Si un point résiste, ouvre le fichier correspondant et relis-le. Pas ce cours : le code. C'est lui qu'on te demandera d'expliquer.</p></section>
-</div>
-</main>
-</div>
-
-<script>
-(function(){
-  var barre=document.getElementById('progression');
-  function maj(){
-    var h=document.documentElement.scrollHeight-window.innerHeight;
-    barre.style.width=(h>0?(window.scrollY/h)*100:0)+'%';
-  }
-  window.addEventListener('scroll',maj,{passive:true});
-  window.addEventListener('resize',maj);maj();
-
-
-  var sections=[].slice.call(document.querySelectorAll('section.chapitre'));
-  function teinte(){
-    var pos=window.scrollY+140,t=null;
-    sections.forEach(function(s){if(s.offsetTop<=pos)t=s.style.getPropertyValue('--teinte');});
-    if(t)barre.style.background=t;
-  }
-  window.addEventListener('scroll',teinte,{passive:true});teinte();
-
-  var liens=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]'));
-  var cibles=liens.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  function actif(){
-    var pos=window.scrollY+120,idx=-1;
-    cibles.forEach(function(c,i){if(c&&c.offsetTop<=pos)idx=i;});
-    liens.forEach(function(a,i){a.classList.toggle('actif',i===idx);});
-  }
-  window.addEventListener('scroll',actif,{passive:true});actif();
-
-  var cases=[].slice.call(document.querySelectorAll('ul.controle input'));
-  if(cases.length){
-    var c=document.createElement('p');c.className='compteur';
-    document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
-    function compte(){
-      var n=cases.filter(function(i){return i.checked;}).length;
-      c.innerHTML='<b>'+n+'</b> / '+cases.length+(n===cases.length?' — prêt pour la technique.':' points maîtrisés.');
-    }
-    cases.forEach(function(i){i.addEventListener('change',compte);});compte();
-  }
-})();
-</script>
-</body>
-</html>
+<p>Si un point résiste, ouvre le fichier correspondant et relis-le. Pas ce cours : le code. C'est lui qu'on te demandera d'expliquer.</p></section></div></main></div><script>(function(){var b=document.getElementById('progression');function m(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(h>0?window.scrollY/h*100:0)+'%';}
+var S=[].slice.call(document.querySelectorAll('section.chapitre'));function t(){var p=window.scrollY+140,c=null;S.forEach(function(s){if(s.offsetTop<=p)c=s.style.getPropertyValue('--teinte');});if(c)b.style.background=c;}
+var L=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]')),C=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function a(){var p=window.scrollY+120,i=-1;C.forEach(function(c,k){if(c&&c.offsetTop<=p)i=k;});L.forEach(function(x,k){x.classList.toggle('actif',k===i);});}
+['scroll','resize'].forEach(function(e){window.addEventListener(e,function(){m();t();a();},{passive:true});});m();t();a();
+var K=[].slice.call(document.querySelectorAll('ul.controle input'));if(K.length){var c=document.createElement('p');c.className='compteur';document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+function n(){var k=K.filter(function(i){return i.checked;}).length;c.innerHTML='<b>'+k+'</b> / '+K.length+(k===K.length?' — pret.':' points maitrises.');}K.forEach(function(i){i.addEventListener('change',n);});n();}})();</script></body></html>

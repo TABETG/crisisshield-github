@@ -1,0 +1,6 @@
+# Qui relit quoi. GitHub demande automatiquement la revue des proprietaires sur chaque pull request.
+*                                       @TABETG
+/backend/**/infrastructure/security/    @TABETG
+/backend/src/main/resources/db/         @TABETG
+/.github/                               @TABETG
+/infra/                                 @TABETG

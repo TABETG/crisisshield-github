@@ -54,7 +54,7 @@ Ils tournent **en parallèle**, sauf le dernier qui attend les autres. C'est une
 
 | Job | Ce qu'il fait | Bloquant ? | Pourquoi ce choix |
 |---|---|---|---|
-| `backend` | `mvn test` puis `mvn package` — les 44 tests | oui | Un test rouge, c'est une propriété de sécurité cassée |
+| `backend` | `mvn test` puis `mvn package` — les 29 tests | oui | Un test rouge, c'est une propriété de sécurité cassée |
 | `frontend` | `npm ci`, contrôle de typage, construction | oui | C'est ce job qui a échoué sur GitLab : 17 erreurs de typage que Docker ne voyait pas |
 | `secrets` | Gitleaks sur **tout l'historique** | oui | Un secret retiré hier est encore dans Git ; `fetch-depth: 0` récupère tout |
 | `dependencies` | Trivy, failles critiques dans les dépendances et la configuration | oui sur critique, information sur élevé | Bloquer sur tout, c'est bloquer sur du bruit ; bloquer sur critique, c'est bloquer sur ce qui compte |

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Ce test protege le mecanisme central du multi-locataire (EP03-US03). S'il casse, tout le reste est compromis.
  */
 @DataJpaTest
+@TestPropertySource(properties = "spring.flyway.enabled=false")   // H2 : schema genere, migrations PostgreSQL non applicables
 class TenantIsolationTest {
 
     @Autowired

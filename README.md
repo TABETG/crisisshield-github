@@ -24,8 +24,12 @@ scripts/     outils
 ## Demarrage
 
 ```bash
+cp .env.example .env                  # une fois : remplir les valeurs (jamais commite)
+git config core.hooksPath .githooks   # une fois : crochet Gitleaks
 docker compose up --build
 ```
+
+Le schema de base est cree par les migrations Flyway (`backend/src/main/resources/db/migration`), jamais par Hibernate.
 
 - API : http://localhost:8080 — sante : http://localhost:8080/actuator/health — cles : http://localhost:8080/.well-known/jwks.json
 - Front : http://localhost:5173

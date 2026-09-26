@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lot 2 — Fondations saines : base, secrets, dépôt</title><style>
+:root{--fond:#F5F7F4;--carte:#fff;--encre:#141A20;--douce:#52606C;--bleu:#2C4A78;--vert:#1C5C4C;--ocre:#9E4E17;--trait:#DCE2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--fond);color:var(--encre);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:17px;line-height:1.72}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto}@media(min-width:1040px){.page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px}}
+nav.som{padding:24px 20px 0}@media(min-width:1040px){nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:56px 24px 40px 0;border-right:1px solid var(--trait)}}
+nav.som ul{list-style:none;margin:0;padding:0}nav.som a{display:block;padding:4px 0 4px 12px;margin-left:-14px;border-left:2px solid transparent;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce);text-decoration:none}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px}nav.som a:hover,nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu)}
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent)}nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);border-left-color:var(--teinte)}nav.som li.ch-item{margin-bottom:10px}
+@media(max-width:1039px){nav.som.bureau{display:none}}@media(min-width:1040px){details.som-mob{display:none}}
+main{padding:0 20px 96px;min-width:0}@media(min-width:1040px){main{padding:56px 0 140px}}.enveloppe{max-width:69ch}
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px}.chapeau h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;letter-spacing:-.022em;margin:0 0 14px}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}
+h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3.4vw,30px);font-weight:660;letter-spacing:-.02em;margin:72px 0 6px;padding-top:30px;position:relative}
+.chapitre>h1{color:var(--teinte)}.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;background:var(--teinte)}
+h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:19px;font-weight:640;margin:42px 0 10px;color:var(--teinte,var(--bleu))}h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;margin:30px 0 8px}
+p{margin:0 0 16px}strong{font-weight:660}a{color:var(--bleu)}code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#EBEFEA;padding:1.5px 5px;border-radius:3px}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px}pre code{background:none;padding:0}
+ul,ol{margin:0 0 18px;padding-left:22px}li{margin:0 0 7px}blockquote{margin:22px 0;padding:14px 20px;border-left:3px solid var(--teinte,var(--bleu));background:var(--carte)}blockquote p:last-child{margin:0}
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.55}@media(max-width:700px){table{display:block;overflow-x:auto}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;border-bottom:1.5px solid var(--teinte,var(--encre));color:var(--teinte,var(--encre))}tbody td{padding:10px 14px 10px 0;border-bottom:1px solid #E9EDE8;vertical-align:top}
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));margin:0 0 10px}details[open]{border-left-color:var(--vert)}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px;font-weight:600;display:flex;gap:12px}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--teinte,var(--bleu));font-weight:700}details[open]>summary::before{content:"\2212";color:var(--vert)}details>*:not(summary){padding:0 18px}details>p:last-child{padding-bottom:16px;margin-bottom:0}
+details.som-mob{border:0;background:none}details.som-mob>summary{padding:14px 0}details.som-mob>*:not(summary){padding:0}
+ul.controle{list-style:none;padding:0}ul.controle li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #E9EDE8}ul.controle input{margin-top:7px;accent-color:var(--vert)}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through}.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}.compteur b{color:var(--vert);font-size:16px}
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);width:0;z-index:50}
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px}.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;font-weight:560;color:var(--douce);background:var(--carte);border:1px solid var(--trait);padding:5px 11px 5px 8px;border-radius:2px}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px}.spectre a:hover{color:var(--teinte);border-color:var(--teinte)}
+@media print{nav.som,details.som-mob,#progression,.spectre{display:none}body{background:#fff;font-size:11pt}.page{display:block}details>*:not(summary){display:block!important}}
+</style></head>
+<body><div id="progression"></div><div class="page"><nav class="som bureau"><p class="titre-som">Sommaire</p><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#lot-2-fondations-saines-base-secrets-depot">Lot 2 — Fondations saines : base, secrets, dépôt</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-ce-quon-a-fait-en-une-ligne-par-ticket">Chapitre 1 — Ce qu'on a fait, en une ligne par ticket</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-la-base-pourquoi-flyway-et-pourquoi-validate">Chapitre 2 — La base : pourquoi Flyway, et pourquoi validate</a><ul>
+<li><a href="#21-la-mauvaise-facon-celle-quon-vient-de-quitter">2.1 La mauvaise façon, celle qu'on vient de quitter</a></li>
+<li><a href="#22-la-bonne-facon-des-migrations-versionnees">2.2 La bonne façon : des migrations versionnées</a></li>
+<li><a href="#23-validate-hibernate-devient-un-controleur">2.3 validate : Hibernate devient un contrôleur</a></li>
+<li><a href="#24-ce-que-contient-v1__schema_initialsql">2.4 Ce que contient V1__schema_initial.sql</a></li>
+<li><a href="#25-attention-au-volume-existant">2.5 Attention au volume existant</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-deux-roles-postgresql-moindre-privilege-applique-a-la-base">Chapitre 3 — Deux rôles PostgreSQL : moindre privilège appliqué à la base</a><ul>
+<li><a href="#31-la-mauvaise-facon">3.1 La mauvaise façon</a></li>
+<li><a href="#32-la-bonne-facon">3.2 La bonne façon</a></li>
+<li><a href="#33-comment-cest-cable">3.3 Comment c'est câblé</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-les-secrets-hors-du-depot-sans-exception">Chapitre 4 — Les secrets : hors du dépôt, sans exception</a><ul>
+<li><a href="#41-la-mauvaise-facon">4.1 La mauvaise façon</a></li>
+<li><a href="#42-la-bonne-facon">4.2 La bonne façon</a></li>
+<li><a href="#43-le-crochet-gitleaks">4.3 Le crochet Gitleaks</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-le-depot-ce-quun-recruteur-voit-en-premier">Chapitre 5 — Le dépôt : ce qu'un recruteur voit en premier</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-ce-que-tu-fais-toi-meme-dans-lordre">Chapitre 6 — Ce que tu fais toi-même, dans l'ordre</a><ul>
+<li><a href="#61-appliquer-le-lot-et-verifier">6.1 Appliquer le lot et vérifier</a></li>
+<li><a href="#62-prouver-que-le-role-applicatif-ne-peut-pas-detruire">6.2 Prouver que le rôle applicatif ne peut pas détruire</a></li>
+<li><a href="#63-prouver-que-validate-protege">6.3 Prouver que validate protège</a></li>
+<li><a href="#64-sauvegarde-et-restauration-une-fois">6.4 Sauvegarde et restauration, une fois</a></li>
+<li><a href="#65-commits-signes-l2-08">6.5 Commits signés (L2-08)</a></li>
+<li><a href="#66-protection-de-branches-l2-07">6.6 Protection de branches (L2-07)</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-simulation-dentretien">Chapitre 7 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+</ul>
+</div>
+</nav><main><div class="enveloppe">
+<header class="chapeau"><h1>Lot 2 — Fondations saines : base, secrets, dépôt</h1><p class="meta">TP06, TP38, TP05 appliqués au vrai dépôt. Ce qu'on a fait, la bonne façon, la mauvaise évitée, 7 questions d'entretien.</p></header><nav class="spectre"><a href="#lot-2-fondations-saines-base-secrets-depot" style="--teinte:#3A4E8C"><span></span>2 Fondations saines : bas…</a><a href="#chapitre-1-ce-quon-a-fait-en-une-ligne-par-ticket" style="--teinte:#6B4A8F"><span></span>1 Ce qu'on a fait, en une…</a><a href="#chapitre-2-la-base-pourquoi-flyway-et-pourquoi-validate" style="--teinte:#1F6E86"><span></span>2 La base : pourquoi Flyw…</a><a href="#chapitre-3-deux-roles-postgresql-moindre-privilege-applique-a-la-base" style="--teinte:#1E6B57"><span></span>3 Deux rôles PostgreSQL :…</a><a href="#chapitre-4-les-secrets-hors-du-depot-sans-exception" style="--teinte:#A8621A"><span></span>4 Les secrets : hors du d…</a><a href="#chapitre-5-le-depot-ce-quun-recruteur-voit-en-premier" style="--teinte:#A34434"><span></span>5 Le dépôt : ce qu'un rec…</a><a href="#chapitre-6-ce-que-tu-fais-toi-meme-dans-lordre" style="--teinte:#2D5F8F"><span></span>6 Ce que tu fais toi-même…</a><a href="#chapitre-7-simulation-dentretien" style="--teinte:#8C3F63"><span></span>7 Simulation d'entretien</a><a href="#ce-que-tu-dois-savoir-refaire-sans-notes" style="--teinte:#7A6B1B"><span></span>Ce que tu dois savoir ref…</a></nav><details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#lot-2-fondations-saines-base-secrets-depot">Lot 2 — Fondations saines : base, secrets, dépôt</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-ce-quon-a-fait-en-une-ligne-par-ticket">Chapitre 1 — Ce qu'on a fait, en une ligne par ticket</a></li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-la-base-pourquoi-flyway-et-pourquoi-validate">Chapitre 2 — La base : pourquoi Flyway, et pourquoi validate</a><ul>
+<li><a href="#21-la-mauvaise-facon-celle-quon-vient-de-quitter">2.1 La mauvaise façon, celle qu'on vient de quitter</a></li>
+<li><a href="#22-la-bonne-facon-des-migrations-versionnees">2.2 La bonne façon : des migrations versionnées</a></li>
+<li><a href="#23-validate-hibernate-devient-un-controleur">2.3 validate : Hibernate devient un contrôleur</a></li>
+<li><a href="#24-ce-que-contient-v1__schema_initialsql">2.4 Ce que contient V1__schema_initial.sql</a></li>
+<li><a href="#25-attention-au-volume-existant">2.5 Attention au volume existant</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-deux-roles-postgresql-moindre-privilege-applique-a-la-base">Chapitre 3 — Deux rôles PostgreSQL : moindre privilège appliqué à la base</a><ul>
+<li><a href="#31-la-mauvaise-facon">3.1 La mauvaise façon</a></li>
+<li><a href="#32-la-bonne-facon">3.2 La bonne façon</a></li>
+<li><a href="#33-comment-cest-cable">3.3 Comment c'est câblé</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-les-secrets-hors-du-depot-sans-exception">Chapitre 4 — Les secrets : hors du dépôt, sans exception</a><ul>
+<li><a href="#41-la-mauvaise-facon">4.1 La mauvaise façon</a></li>
+<li><a href="#42-la-bonne-facon">4.2 La bonne façon</a></li>
+<li><a href="#43-le-crochet-gitleaks">4.3 Le crochet Gitleaks</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-le-depot-ce-quun-recruteur-voit-en-premier">Chapitre 5 — Le dépôt : ce qu'un recruteur voit en premier</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-ce-que-tu-fais-toi-meme-dans-lordre">Chapitre 6 — Ce que tu fais toi-même, dans l'ordre</a><ul>
+<li><a href="#61-appliquer-le-lot-et-verifier">6.1 Appliquer le lot et vérifier</a></li>
+<li><a href="#62-prouver-que-le-role-applicatif-ne-peut-pas-detruire">6.2 Prouver que le rôle applicatif ne peut pas détruire</a></li>
+<li><a href="#63-prouver-que-validate-protege">6.3 Prouver que validate protège</a></li>
+<li><a href="#64-sauvegarde-et-restauration-une-fois">6.4 Sauvegarde et restauration, une fois</a></li>
+<li><a href="#65-commits-signes-l2-08">6.5 Commits signés (L2-08)</a></li>
+<li><a href="#66-protection-de-branches-l2-07">6.6 Protection de branches (L2-07)</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-simulation-dentretien">Chapitre 7 — Simulation d'entretien</a></li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</a></li>
+</ul>
+</div>
+</details><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="lot-2-fondations-saines-base-secrets-depot">Lot 2 — Fondations saines : base, secrets, dépôt</h1>
+<p><strong>TP couverts :</strong> TP06 (PostgreSQL aux normes), TP38 partie locale (zéro secret statique), TP05 (dépôt propre et protégé).
+<strong>Chapitres du cours mobilisés :</strong> 6.1 Bases relationnelles, 9.3 Variables et surcharges Compose, 11.4 Secrets dans la CI, 5.5 Sécuriser le dépôt, 15.4 La base de données dans les déploiements.
+<strong>Durée :</strong> 40 minutes de lecture. Puis les vérifications du chapitre 6, à faire toi-même.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-1-ce-quon-a-fait-en-une-ligne-par-ticket">Chapitre 1 — Ce qu'on a fait, en une ligne par ticket</h1>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Ce qui change</th>
+<th>Fichiers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L2-01</td>
+<td>Le schéma est décrit par une migration SQL versionnée, appliquée par Flyway</td>
+<td><code>pom.xml</code>, <code>db/migration/V1__schema_initial.sql</code></td>
+</tr>
+<tr>
+<td>L2-02</td>
+<td>Hibernate ne touche plus au schéma, il le vérifie et refuse de démarrer s'il dévie</td>
+<td><code>application.properties</code></td>
+</tr>
+<tr>
+<td>L2-03</td>
+<td>Deux rôles PostgreSQL : l'application lit et écrit, seul Flyway peut modifier le schéma</td>
+<td><code>infra/postgres/init/01-roles.sh</code>, <code>application.properties</code>, <code>docker-compose.yml</code></td>
+</tr>
+<tr>
+<td>L2-04</td>
+<td>Sauvegarde et restauration scriptées</td>
+<td><code>scripts/sauvegarde.sh</code>, <code>scripts/restauration.sh</code></td>
+</tr>
+<tr>
+<td>L2-05</td>
+<td>Plus un seul secret dans <code>docker-compose.yml</code> : tout vient de <code>.env</code>, ignoré par Git</td>
+<td><code>docker-compose.yml</code>, <code>.env.example</code>, <code>.gitignore</code></td>
+</tr>
+<tr>
+<td>L2-06</td>
+<td>Un commit contenant un secret est refusé sur ton poste, avant de partir</td>
+<td><code>.githooks/pre-commit</code></td>
+</tr>
+<tr>
+<td>L2-07</td>
+<td>Branches protégées — à faire dans l'interface GitHub</td>
+<td>chapitre 6</td>
+</tr>
+<tr>
+<td>L2-08</td>
+<td>Commits signés — à faire sur ton poste</td>
+<td>chapitre 6</td>
+</tr>
+<tr>
+<td>L2-09</td>
+<td>Qui relit quoi, comment contribuer</td>
+<td><code>.github/CODEOWNERS</code>, <code>CONTRIBUTING.md</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-2-la-base-pourquoi-flyway-et-pourquoi-validate">Chapitre 2 — La base : pourquoi Flyway, et pourquoi <code>validate</code></h1>
+<h2 id="21-la-mauvaise-facon-celle-quon-vient-de-quitter">2.1 La mauvaise façon, celle qu'on vient de quitter</h2>
+<p><code>properties
+spring.jpa.hibernate.ddl-auto=update</code></p>
+<p>Au démarrage, Hibernate compare les entités Java au schéma de la base et <strong>modifie la base tout seul</strong> pour les faire correspondre. Ça marche en développement. En production, c'est une des causes de perte de données les plus classiques :</p>
+<ul>
+<li>Tu renommes un champ <code>mfaSecret</code> en <code>totpSecret</code>. Hibernate ne sait pas que c'est un renommage : il ajoute une colonne <code>totp_secret</code> vide. L'ancienne reste là, orpheline. Les secrets MFA de tous les utilisateurs sont perdus pour l'application.</li>
+<li>Personne ne relit ce que Hibernate a décidé de faire. Il n'y a pas de fichier à mettre en pull request.</li>
+<li>Impossible de savoir dans quel état est le schéma d'un environnement donné. Il est ce que la dernière version démarrée en a fait.</li>
+</ul>
+<p>Le cours le dit au chapitre 15.4 : la base de données est la partie d'un déploiement qu'on ne peut pas remettre en arrière par un simple redéploiement. C'est donc celle qu'on contrôle le plus strictement.</p>
+<h2 id="22-la-bonne-facon-des-migrations-versionnees">2.2 La bonne façon : des migrations versionnées</h2>
+<p>Un fichier SQL par changement, numéroté, dans <code>backend/src/main/resources/db/migration/</code> :</p>
+<p><code>V1__schema_initial.sql       ce lot
+V2__ajout_table_plan.sql     quand on créera les plans de crise
+V3__index_recherche.sql      ...</code></p>
+<p>Flyway, au démarrage, lit la table <code>flyway_schema_history</code>, voit quelles migrations sont déjà passées, et applique <strong>uniquement</strong> les nouvelles, dans l'ordre. Chaque migration est un fichier relu en pull request, tracé dans Git, appliqué à l'identique sur tous les environnements.</p>
+<p><strong>La règle que tu dois savoir énoncer :</strong> une migration appliquée ne se modifie jamais. Flyway stocke son empreinte ; si le fichier change après application, Flyway refuse de démarrer. Pour corriger une migration, on en écrit une nouvelle qui corrige.</p>
+<h2 id="23-validate-hibernate-devient-un-controleur">2.3 <code>validate</code> : Hibernate devient un contrôleur</h2>
+<p><code>properties
+spring.jpa.hibernate.ddl-auto=validate</code></p>
+<p>Hibernate compare toujours les entités au schéma, mais il ne modifie plus rien : si ça ne correspond pas, <strong>l'application refuse de démarrer</strong>, avec un message précis (« colonne <code>x</code> manquante dans la table <code>y</code> »).</p>
+<p>C'est exactement ce qu'on veut. Un développeur qui ajoute un champ à une entité et oublie la migration le saura au premier démarrage, pas en production.</p>
+<h2 id="24-ce-que-contient-v1__schema_initialsql">2.4 Ce que contient <code>V1__schema_initial.sql</code></h2>
+<p>Le schéma qu'Hibernate générait, réécrit à la main, avec des noms de contraintes lisibles (<code>uk_app_user_email</code> plutôt que <code>uk_1j9d9a06i600gd43uu3km82jw</code>). Quatre tables : <code>organisation</code>, <code>app_user</code>, <code>user_roles</code>, <code>certificate_inventory</code>. Trois index sur les clés étrangères — Hibernate ne les créait pas, PostgreSQL n'indexe pas les clés étrangères automatiquement, et sans index chaque filtre par organisation est un parcours complet de table.</p>
+<p>Le contrôle <code>check (role in ('ROLE_ADMIN', 'ROLE_OPS', 'ROLE_AUDITOR'))</code> : la base refuse un rôle inconnu, même si l'application a un bogue.</p>
+<h2 id="25-attention-au-volume-existant">2.5 Attention au volume existant</h2>
+<p>Ta base actuelle a été créée par Hibernate en <code>update</code>. Elle contient les tables mais pas <code>flyway_schema_history</code>. Flyway va refuser : « schéma non vide sans historique ». C'est une <strong>protection</strong>, pas un bogue : il ne prend jamais le risque de rejouer un <code>create table</code> sur une base qu'il ne connaît pas.</p>
+<p>En développement, on repart de zéro : <code>docker compose down -v</code>. En production, on ferait un <code>baseline</code> : on dit à Flyway « le schéma actuel correspond à V1, commence à V2 ». Sache le dire, c'est une question d'entretien.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-3-deux-roles-postgresql-moindre-privilege-applique-a-la-base">Chapitre 3 — Deux rôles PostgreSQL : moindre privilège appliqué à la base</h1>
+<h2 id="31-la-mauvaise-facon">3.1 La mauvaise façon</h2>
+<p>Un seul utilisateur, <code>crisisshield_user</code>, propriétaire de la base, utilisé par l'application. Il peut tout : <code>DROP TABLE</code>, <code>ALTER</code>, <code>TRUNCATE</code>. Une injection SQL, ou un simple bogue, peut supprimer une table.</p>
+<h2 id="32-la-bonne-facon">3.2 La bonne façon</h2>
+<table>
+<thead>
+<tr>
+<th>Rôle</th>
+<th>Utilisé par</th>
+<th>Peut</th>
+<th>Ne peut pas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>crisisshield_owner</code></td>
+<td>Flyway, sauvegardes</td>
+<td>tout</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>crisisshield_app</code></td>
+<td>l'application</td>
+<td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
+<td>créer, modifier ou supprimer une table</td>
+</tr>
+</tbody>
+</table>
+<p>L'application, même compromise, ne peut pas détruire le schéma. Elle peut détruire des données — c'est le rôle des sauvegardes (L2-04) — mais la structure survit.</p>
+<h2 id="33-comment-cest-cable">3.3 Comment c'est câblé</h2>
+<p><code>infra/postgres/init/01-roles.sh</code> est monté dans <code>/docker-entrypoint-initdb.d/</code> : l'image PostgreSQL l'exécute <strong>une seule fois</strong>, à la création du volume. Il crée le rôle applicatif et fixe les <strong>droits par défaut</strong> : toute table que le propriétaire créera plus tard sera automatiquement lisible et modifiable par l'application. C'est nécessaire parce qu'au moment où le script tourne, Flyway n'a pas encore créé les tables.</p>
+<p>Côté Spring, deux configurations distinctes :</p>
+<p><code>properties
+spring.datasource.username=${DB_APP_USER}      # l'application
+spring.flyway.user=${DB_OWNER_USER}            # les migrations</code></p>
+<p><strong>Question d'entretien :</strong> « Pourquoi <code>ALTER DEFAULT PRIVILEGES</code> et pas <code>GRANT ... ON ALL TABLES</code> ? »
+Parce que <code>GRANT ON ALL TABLES</code> ne couvre que les tables qui existent à l'instant du <code>GRANT</code>. Les tables de V2, V3 n'en bénéficieraient pas. <code>ALTER DEFAULT PRIVILEGES</code> s'applique aux tables futures.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-4-les-secrets-hors-du-depot-sans-exception">Chapitre 4 — Les secrets : hors du dépôt, sans exception</h1>
+<h2 id="41-la-mauvaise-facon">4.1 La mauvaise façon</h2>
+<p><code>yaml
+POSTGRES_PASSWORD: crisisshield_password</code></p>
+<p>Dans <code>docker-compose.yml</code>, donc dans Git, donc dans l'historique pour toujours, donc sur GitHub public. « C'est un mot de passe de développement » n'est pas une défense : l'habitude est la même, et le jour où quelqu'un copie ce fichier pour la recette, le mot de passe de recette est dans Git.</p>
+<h2 id="42-la-bonne-facon">4.2 La bonne façon</h2>
+<p><code>yaml
+POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD manquant dans .env}</code></p>
+<p>Compose lit <code>.env</code> dans le dossier courant. <code>.env</code> est dans <code>.gitignore</code>. <code>.env.example</code> est commité, sans valeurs, pour documenter ce qu'il faut remplir.</p>
+<p>La syntaxe <code>${VAR:?message}</code> est le détail qui compte : si la variable manque, Compose <strong>refuse de démarrer</strong> avec ton message, au lieu de lancer PostgreSQL avec un mot de passe vide. Un échec bruyant vaut mieux qu'un succès silencieux et dangereux.</p>
+<h2 id="43-le-crochet-gitleaks">4.3 Le crochet Gitleaks</h2>
+<p><code>.githooks/pre-commit</code> lance Gitleaks dans Docker sur les fichiers indexés, à chaque <code>git commit</code>. Un secret détecté = commit refusé. C'est la première ligne ; le job <code>secrets</code> de la chaîne CI est la seconde.</p>
+<p>Activation, une fois par clone : <code>git config core.hooksPath .githooks</code>. Git ne versionne pas <code>.git/hooks/</code>, c'est pourquoi on utilise un dossier du dépôt et cette configuration.</p>
+<p><strong>Ce que ça ne fait pas :</strong> un secret déjà commité hier n'est pas détecté par le crochet, seulement par la chaîne (<code>fetch-depth: 0</code>). Et la seule réponse correcte à un secret dans l'historique reste : révoquer d'abord, nettoyer ensuite.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-5-le-depot-ce-quun-recruteur-voit-en-premier">Chapitre 5 — Le dépôt : ce qu'un recruteur voit en premier</h1>
+<p><code>CODEOWNERS</code> : GitHub demande automatiquement ta revue sur les fichiers listés. Aujourd'hui tu es seul ; le jour où quelqu'un contribue, la sécurité et les migrations passent obligatoirement par toi.</p>
+<p><code>CONTRIBUTING.md</code> : les règles du dépôt en une page. C'est le document qu'on lit avant d'ouvrir le code, et il dit tout de la maturité d'un projet : branches, commits signés, migrations, secrets.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-6-ce-que-tu-fais-toi-meme-dans-lordre">Chapitre 6 — Ce que tu fais toi-même, dans l'ordre</h1>
+<h2 id="61-appliquer-le-lot-et-verifier">6.1 Appliquer le lot et vérifier</h2>
+<p><code>bash
+cd /c/FORMATION/crisisshield-github
+/c/Windows/System32/tar.exe -xf crisisshield-lot2.zip &amp;&amp; rm crisisshield-lot2.zip
+git config core.hooksPath .githooks
+docker compose down -v          # repart de zero : le volume actuel n'a pas d'historique Flyway
+docker compose up --build</code></p>
+<p>Dans les journaux du backend, cherche :</p>
+<p><code>Successfully applied 1 migration to schema "public", now at version v1</code></p>
+<p>Puis <code>bash scripts/demo.sh</code> doit toujours passer.</p>
+<h2 id="62-prouver-que-le-role-applicatif-ne-peut-pas-detruire">6.2 Prouver que le rôle applicatif ne peut pas détruire</h2>
+<p><code>bash
+docker compose exec db psql -U crisisshield_app -d crisisshield_db -c "DROP TABLE app_user;"</code></p>
+<p>Attendu : <code>ERROR: must be owner of table app_user</code>. C'est la preuve à montrer.</p>
+<h2 id="63-prouver-que-validate-protege">6.3 Prouver que <code>validate</code> protège</h2>
+<p>Ajoute un champ <code>private String telephone;</code> dans <code>User.java</code>, reconstruis. Le backend doit <strong>refuser de démarrer</strong> avec « Schema-validation: missing column [telephone] ». Retire le champ. Tu viens de voir ce que <code>update</code> aurait fait en silence.</p>
+<h2 id="64-sauvegarde-et-restauration-une-fois">6.4 Sauvegarde et restauration, une fois</h2>
+<p><code>bash
+bash scripts/sauvegarde.sh
+bash scripts/restauration.sh sauvegardes/crisisshield-*.dump</code></p>
+<p>Une sauvegarde jamais restaurée est une hypothèse, pas une sauvegarde.</p>
+<h2 id="65-commits-signes-l2-08">6.5 Commits signés (L2-08)</h2>
+<p><code>bash
+ssh-keygen -t ed25519 -C "signature-github" -f ~/.ssh/signature
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/signature.pub
+git config --global commit.gpgsign true
+cat ~/.ssh/signature.pub</code></p>
+<p>Puis GitHub → Settings → SSH and GPG keys → New SSH key → type <strong>Signing Key</strong> → colle la clé. Ton prochain commit affichera « Verified ».</p>
+<h2 id="66-protection-de-branches-l2-07">6.6 Protection de branches (L2-07)</h2>
+<p>Settings → Branches → Add branch ruleset, pour <code>master</code> puis <code>develop</code> : « Require a pull request before merging », « Require status checks to pass » avec <code>backend</code>, <code>frontend</code>, <code>secrets</code>, <code>dependencies</code>.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-7-simulation-dentretien">Chapitre 7 — Simulation d'entretien</h1>
+<details>
+<summary>1. Pourquoi `ddl-auto=update` est-il interdit en production ?</summary>
+<p>Parce qu'Hibernate modifie le schéma sans relecture, à partir de ce qu'il déduit des entités. Un champ renommé devient une colonne ajoutée et une colonne orpheline : les données sont perdues pour l'application. Et personne ne sait dans quel état est le schéma d'un environnement.</p>
+<p>Ma réponse : des migrations versionnées relues en pull request, et Hibernate en <code>validate</code> pour refuser de démarrer si le schéma dévie.</p>
+</details>
+<details>
+<summary>2. Une migration a une erreur. Tu la corriges ?</summary>
+<p>Jamais si elle a été appliquée quelque part : Flyway vérifie l'empreinte et refuserait de démarrer. J'écris une nouvelle migration qui corrige. Si elle n'a été appliquée nulle part — même pas sur mon poste — je peux la modifier, mais la règle simple est : on n'y touche pas.</p>
+</details>
+<details>
+<summary>3. Tu arrives sur une base existante sans Flyway. Comment tu fais ?</summary>
+<p>Baseline : je dis à Flyway que l'état actuel correspond à une version donnée, il crée sa table d'historique, et les migrations suivantes partent de là. Je n'essaie jamais de rejouer le schéma existant.</p>
+</details>
+<details>
+<summary>4. Pourquoi deux rôles PostgreSQL ?</summary>
+<p>Moindre privilège. L'application n'a besoin que de lire et écrire des lignes ; elle n'a jamais besoin de créer ou supprimer une table. Avec un rôle sans droit sur le schéma, une injection SQL ou un bogue ne peut pas détruire la structure. Le rôle propriétaire est réservé aux migrations et aux sauvegardes.</p>
+</details>
+<details>
+<summary>5. Le mot de passe de développement dans Compose, c'est grave ?</summary>
+<p>Ce n'est pas le mot de passe qui est grave, c'est l'habitude. Le fichier sera copié pour la recette, puis la production. Je sors toutes les valeurs dans <code>.env</code>, ignoré par Git, et Compose refuse de démarrer si une manque. Un crochet Gitleaks refuse le commit qui en contiendrait une.</p>
+</details>
+<details>
+<summary>6. Qu'est-ce qu'un commit signé prouve, et ne prouve pas ?</summary>
+<p>Il prouve que le commit a été créé par le détenteur de la clé privée. Il ne prouve pas que le code est bon, ni que la clé n'a pas été volée. C'est une garantie d'origine, pas de qualité. Elle compte pour la chaîne d'approvisionnement : on sait de qui vient chaque changement.</p>
+</details>
+<details>
+<summary>7. Pourquoi des index sur les clés étrangères ?</summary>
+<p>PostgreSQL n'en crée pas automatiquement, contrairement à ce que beaucoup croient. Sans index sur <code>organisation_id</code>, chaque requête filtrée par organisation parcourt toute la table. Avec le filtre multi-locataire actif sur chaque requête, c'est l'index le plus utilisé de l'application.</p>
+</details>
+<hr />
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="ce-que-tu-dois-savoir-refaire-sans-notes">Ce que tu dois savoir refaire sans notes</h1>
+<ul class="controle">
+<li><input type="checkbox"><span>Expliquer ce que <code>ddl-auto=update</code> détruit, avec l'exemple du champ renommé</li>
+<li><input type="checkbox"><span>Énoncer la règle : une migration appliquée ne se modifie jamais</span></li>
+<li><input type="checkbox"><span>Expliquer <code>baseline</code> pour une base existante</li>
+<li><input type="checkbox"><span>Justifier les deux rôles PostgreSQL et <code>ALTER DEFAULT PRIVILEGES</code></li>
+<li><input type="checkbox"><span>Expliquer <code>${VAR:?message}</code> et pourquoi l'échec bruyant est préférable</li>
+<li><input type="checkbox"><span>Dire ce qu'un commit signé prouve et ne prouve pas</span></li>
+</ul></section></div></main></div><script>(function(){var b=document.getElementById('progression');function m(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(h>0?window.scrollY/h*100:0)+'%';}
+var S=[].slice.call(document.querySelectorAll('section.chapitre'));function t(){var p=window.scrollY+140,c=null;S.forEach(function(s){if(s.offsetTop<=p)c=s.style.getPropertyValue('--teinte');});if(c)b.style.background=c;}
+var L=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]')),C=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function a(){var p=window.scrollY+120,i=-1;C.forEach(function(c,k){if(c&&c.offsetTop<=p)i=k;});L.forEach(function(x,k){x.classList.toggle('actif',k===i);});}
+['scroll','resize'].forEach(function(e){window.addEventListener(e,function(){m();t();a();},{passive:true});});m();t();a();
+var K=[].slice.call(document.querySelectorAll('ul.controle input'));if(K.length){var c=document.createElement('p');c.className='compteur';document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+function n(){var k=K.filter(function(i){return i.checked;}).length;c.innerHTML='<b>'+k+'</b> / '+K.length+(k===K.length?' — pret.':' points maitrises.');}K.forEach(function(i){i.addEventListener('change',n);});n();}})();</script></body></html>

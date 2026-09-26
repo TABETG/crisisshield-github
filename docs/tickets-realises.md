@@ -11,7 +11,7 @@ Verification : les quatre commandes du README renvoient le resultat attendu.
 
 # Tickets realises — lot 1 (13 septembre 2026)
 
-Sept tickets, 44 tests. Chaque ticket est verifiable par `mvn test` — dans Docker :
+Sept tickets, 29 tests. Chaque ticket est verifiable par `mvn test` — dans Docker :
 `MSYS_NO_PATHCONV=1 docker run --rm -v "$(pwd)/backend:/app" -v crisisshield-m2:/root/.m2 -w /app maven:3.9.9-eclipse-temurin-21 mvn -q test`.
 
 | Ticket | Ce qui a ete fait | Preuve |
@@ -67,3 +67,21 @@ injection refusee (`REFUSED_GUARD`). C'est la premiere fois que ce projet, comme
 | **EP17** Gouvernance | modele de pull request avec liste de controle securite, modele de story, `SECURITY.md` | tout nouveau ticket ou PR |
 
 Cours : `docs/github/cours-github-devsecops.html`. Reglages a faire a la main sur GitHub : chapitre 5 du cours.
+
+---
+
+# Lot 2 — Fondations saines (25 septembre 2026) — TP06, TP38, TP05
+
+| Ticket | Ce qui a ete fait | Preuve |
+|---|---|---|
+| **L2-01** Migrations Flyway | `V1__schema_initial.sql` reproduit le schema, avec index sur les cles etrangeres et controle sur les roles | journal : `Successfully applied 1 migration` |
+| **L2-02** Hibernate en `validate` | l'application refuse de demarrer si le schema devie des entites | ajouter un champ sans migration : demarrage refuse |
+| **L2-03** Deux roles PostgreSQL | `crisisshield_app` lit/ecrit, `crisisshield_owner` migre ; droits par defaut sur les tables futures | `DROP TABLE` par l'application : `must be owner` |
+| **L2-04** Sauvegarde / restauration | `scripts/sauvegarde.sh`, `scripts/restauration.sh` (pg_dump format compresse) | une restauration effectuee |
+| **L2-05** Zero secret dans Compose | `.env` ignore par Git, `.env.example` commite, `${VAR:?}` bloque si une variable manque | `grep -n password docker-compose.yml` : aucune valeur |
+| **L2-06** Crochet Gitleaks | `.githooks/pre-commit` dans Docker, actif via `core.hooksPath` | un commit avec un secret est refuse |
+| **L2-07** Branches protegees | a faire dans GitHub (chapitre 6 du cours) | badge de protection sur `master` et `develop` |
+| **L2-08** Commits signes | cle SSH de signature (chapitre 6 du cours) | badge « Verified » |
+| **L2-09** Gouvernance du depot | `CODEOWNERS`, `CONTRIBUTING.md` | revue automatique demandee sur les PR |
+
+Cours : `docs/parcours/lot-02-fondations-saines.html`. TP ecartes du parcours car sans apport au produit : 07, 11, 18, 22, 24, 50 (remplace), 53.

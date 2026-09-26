@@ -1,0 +1,865 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Parcours pratique v3 — tout le cours, appliqué à CrisisShield</title><style>
+:root{--fond:#F5F7F4;--carte:#fff;--encre:#141A20;--douce:#52606C;--bleu:#2C4A78;--vert:#1C5C4C;--ocre:#9E4E17;--trait:#DCE2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--fond);color:var(--encre);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:17px;line-height:1.72}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto}@media(min-width:1040px){.page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px}}
+nav.som{padding:24px 20px 0}@media(min-width:1040px){nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:56px 24px 40px 0;border-right:1px solid var(--trait)}}
+nav.som ul{list-style:none;margin:0;padding:0}nav.som a{display:block;padding:4px 0 4px 12px;margin-left:-14px;border-left:2px solid transparent;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce);text-decoration:none}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px}nav.som a:hover,nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu)}
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent)}nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);border-left-color:var(--teinte)}nav.som li.ch-item{margin-bottom:10px}
+@media(max-width:1039px){nav.som.bureau{display:none}}@media(min-width:1040px){details.som-mob{display:none}}
+main{padding:0 20px 96px;min-width:0}@media(min-width:1040px){main{padding:56px 0 140px}}.enveloppe{max-width:69ch}
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px}.chapeau h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;letter-spacing:-.022em;margin:0 0 14px}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}
+h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3.4vw,30px);font-weight:660;letter-spacing:-.02em;margin:72px 0 6px;padding-top:30px;position:relative}
+.chapitre>h1{color:var(--teinte)}.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;background:var(--teinte)}
+h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:19px;font-weight:640;margin:42px 0 10px;color:var(--teinte,var(--bleu))}h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;margin:30px 0 8px}
+p{margin:0 0 16px}strong{font-weight:660}a{color:var(--bleu)}code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#EBEFEA;padding:1.5px 5px;border-radius:3px}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px}pre code{background:none;padding:0}
+ul,ol{margin:0 0 18px;padding-left:22px}li{margin:0 0 7px}blockquote{margin:22px 0;padding:14px 20px;border-left:3px solid var(--teinte,var(--bleu));background:var(--carte)}blockquote p:last-child{margin:0}
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.55}@media(max-width:700px){table{display:block;overflow-x:auto}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;border-bottom:1.5px solid var(--teinte,var(--encre));color:var(--teinte,var(--encre))}tbody td{padding:10px 14px 10px 0;border-bottom:1px solid #E9EDE8;vertical-align:top}
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));margin:0 0 10px}details[open]{border-left-color:var(--vert)}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px;font-weight:600;display:flex;gap:12px}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--teinte,var(--bleu));font-weight:700}details[open]>summary::before{content:"\2212";color:var(--vert)}details>*:not(summary){padding:0 18px}details>p:last-child{padding-bottom:16px;margin-bottom:0}
+details.som-mob{border:0;background:none}details.som-mob>summary{padding:14px 0}details.som-mob>*:not(summary){padding:0}
+ul.controle{list-style:none;padding:0}ul.controle li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #E9EDE8}ul.controle input{margin-top:7px;accent-color:var(--vert)}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through}.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}.compteur b{color:var(--vert);font-size:16px}
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);width:0;z-index:50}
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px}.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;font-weight:560;color:var(--douce);background:var(--carte);border:1px solid var(--trait);padding:5px 11px 5px 8px;border-radius:2px}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px}.spectre a:hover{color:var(--teinte);border-color:var(--teinte)}
+@media print{nav.som,details.som-mob,#progression,.spectre{display:none}body{background:#fff;font-size:11pt}.page{display:block}details>*:not(summary){display:block!important}}
+</style></head>
+<body><div id="progression"></div><div class="page"><nav class="som bureau"><p class="titre-som">Sommaire</p><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#parcours-pratique-v3-tout-le-cours-applique-a-crisisshield">Parcours pratique v3 — tout le cours, appliqué à CrisisShield</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-0-ou-tu-en-es-au-25-septembre">Chapitre 0 — Où tu en es au 25 septembre</a><ul>
+<li><a href="#01-ce-qui-est-fait-et-pousse">0.1 Ce qui est fait, et poussé</a></li>
+<li><a href="#02-ce-qui-est-livre-mais-pas-encore-applique">0.2 Ce qui est livré mais pas encore appliqué</a></li>
+<li><a href="#03-trois-points-ouverts-sur-le-depot">0.3 Trois points ouverts sur le dépôt</a></li>
+<li><a href="#04-les-pull-requests-dependabot-quoi-fusionner">0.4 Les pull requests Dependabot : quoi fusionner</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-1-les-deux-decisions-qui-changent-lordre">Chapitre 1 — Les deux décisions qui changent l'ordre</a><ul>
+<li><a href="#11-keycloak-arrive-avant-le-front-pas-apres">1.1 Keycloak arrive avant le front, pas après</a></li>
+<li><a href="#12-lia-devient-une-phase-entiere-placee-tot">1.2 L'IA devient une phase entière, placée tôt</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-2-les-huit-phases">Chapitre 2 — Les huit phases</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-3-les-lots-un-par-un">Chapitre 3 — Les lots, un par un</a><ul>
+<li><a href="#phase-1-fondations">Phase 1 — Fondations</a></li>
+<li><a href="#phase-2-le-metier-et-lidentite">Phase 2 — Le métier et l'identité</a></li>
+<li><a href="#phase-3-voir">Phase 3 — Voir</a></li>
+<li><a href="#phase-4-lia">Phase 4 — L'IA</a></li>
+<li><a href="#phase-5-distribuer">Phase 5 — Distribuer</a></li>
+<li><a href="#phase-6-deployer">Phase 6 — Déployer</a></li>
+<li><a href="#phase-7-fiabiliser-et-securiser-en-profondeur">Phase 7 — Fiabiliser et sécuriser en profondeur</a></li>
+<li><a href="#phase-8-leadership">Phase 8 — Leadership</a></li>
+<li><a href="#recapitulatif-de-tous-les-lots">Récapitulatif de tous les lots</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-4-ce-quon-ne-fait-pas">Chapitre 4 — Ce qu'on ne fait pas</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-5-comment-reussir-a-tout-construire">Chapitre 5 — Comment réussir à tout construire</a><ul>
+<li><a href="#51-le-rythme-realiste">5.1 Le rythme réaliste</a></li>
+<li><a href="#52-les-cinq-regles">5.2 Les cinq règles</a></li>
+<li><a href="#53-tu-es-vendable-a-chaque-phase">5.3 Tu es vendable à chaque phase</a></li>
+<li><a href="#54-les-couts-a-prevoir">5.4 Les coûts à prévoir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-6-la-boucle-a-chaque-lot">Chapitre 6 — La boucle, à chaque lot</a></li>
+</ul>
+</div>
+</nav><main><div class="enveloppe">
+<header class="chapeau"><h1>Parcours pratique v3 — tout le cours, appliqué à CrisisShield</h1><p class="meta">État au 25 septembre, vérifié sur le dépôt : ce qui est fait, ce qui est à appliquer, les 24 lots.</p></header><nav class="spectre"><a href="#parcours-pratique-v3-tout-le-cours-applique-a-crisisshield" style="--teinte:#3A4E8C"><span></span>3 tout le cours, appliqué…</a><a href="#chapitre-0-ou-tu-en-es-au-25-septembre" style="--teinte:#6B4A8F"><span></span>0 Où tu en es au 25 septe…</a><a href="#chapitre-1-les-deux-decisions-qui-changent-lordre" style="--teinte:#1F6E86"><span></span>1 Les deux décisions qui…</a><a href="#chapitre-2-les-huit-phases" style="--teinte:#1E6B57"><span></span>2 Les huit phases</a><a href="#chapitre-3-les-lots-un-par-un" style="--teinte:#A8621A"><span></span>3 Les lots, un par un</a><a href="#chapitre-4-ce-quon-ne-fait-pas" style="--teinte:#A34434"><span></span>4 Ce qu'on ne fait pas</a><a href="#chapitre-5-comment-reussir-a-tout-construire" style="--teinte:#2D5F8F"><span></span>5 Comment réussir à tout…</a><a href="#chapitre-6-la-boucle-a-chaque-lot" style="--teinte:#8C3F63"><span></span>6 La boucle, à chaque lot</a></nav><details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#parcours-pratique-v3-tout-le-cours-applique-a-crisisshield">Parcours pratique v3 — tout le cours, appliqué à CrisisShield</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-0-ou-tu-en-es-au-25-septembre">Chapitre 0 — Où tu en es au 25 septembre</a><ul>
+<li><a href="#01-ce-qui-est-fait-et-pousse">0.1 Ce qui est fait, et poussé</a></li>
+<li><a href="#02-ce-qui-est-livre-mais-pas-encore-applique">0.2 Ce qui est livré mais pas encore appliqué</a></li>
+<li><a href="#03-trois-points-ouverts-sur-le-depot">0.3 Trois points ouverts sur le dépôt</a></li>
+<li><a href="#04-les-pull-requests-dependabot-quoi-fusionner">0.4 Les pull requests Dependabot : quoi fusionner</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-1-les-deux-decisions-qui-changent-lordre">Chapitre 1 — Les deux décisions qui changent l'ordre</a><ul>
+<li><a href="#11-keycloak-arrive-avant-le-front-pas-apres">1.1 Keycloak arrive avant le front, pas après</a></li>
+<li><a href="#12-lia-devient-une-phase-entiere-placee-tot">1.2 L'IA devient une phase entière, placée tôt</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-2-les-huit-phases">Chapitre 2 — Les huit phases</a></li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-3-les-lots-un-par-un">Chapitre 3 — Les lots, un par un</a><ul>
+<li><a href="#phase-1-fondations">Phase 1 — Fondations</a></li>
+<li><a href="#phase-2-le-metier-et-lidentite">Phase 2 — Le métier et l'identité</a></li>
+<li><a href="#phase-3-voir">Phase 3 — Voir</a></li>
+<li><a href="#phase-4-lia">Phase 4 — L'IA</a></li>
+<li><a href="#phase-5-distribuer">Phase 5 — Distribuer</a></li>
+<li><a href="#phase-6-deployer">Phase 6 — Déployer</a></li>
+<li><a href="#phase-7-fiabiliser-et-securiser-en-profondeur">Phase 7 — Fiabiliser et sécuriser en profondeur</a></li>
+<li><a href="#phase-8-leadership">Phase 8 — Leadership</a></li>
+<li><a href="#recapitulatif-de-tous-les-lots">Récapitulatif de tous les lots</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-4-ce-quon-ne-fait-pas">Chapitre 4 — Ce qu'on ne fait pas</a></li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-5-comment-reussir-a-tout-construire">Chapitre 5 — Comment réussir à tout construire</a><ul>
+<li><a href="#51-le-rythme-realiste">5.1 Le rythme réaliste</a></li>
+<li><a href="#52-les-cinq-regles">5.2 Les cinq règles</a></li>
+<li><a href="#53-tu-es-vendable-a-chaque-phase">5.3 Tu es vendable à chaque phase</a></li>
+<li><a href="#54-les-couts-a-prevoir">5.4 Les coûts à prévoir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-6-la-boucle-a-chaque-lot">Chapitre 6 — La boucle, à chaque lot</a></li>
+</ul>
+</div>
+</details><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="parcours-pratique-v3-tout-le-cours-applique-a-crisisshield">Parcours pratique v3 — tout le cours, appliqué à CrisisShield</h1>
+<p><strong>Ce qui change par rapport à la v2.</strong> Deux nouveaux cours : <strong>IA agentique</strong> (10 TP) et <strong>Keycloak et IAM</strong> (9 TP). Ils ne s'ajoutent pas en fin de liste : ils modifient l'ordre, parce qu'ils touchent deux fondations du projet — <strong>l'identité</strong> et <strong>l'assistant</strong>.</p>
+<p><strong>Le principe ne change pas :</strong> un TP est un ticket, chaque ticket fait avancer CrisisShield, rien n'est fait deux fois.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-0-ou-tu-en-es-au-25-septembre">Chapitre 0 — Où tu en es au 25 septembre</h1>
+<p>Vérifié directement sur ton dépôt GitHub, branche <code>develop</code>, dernier commit <code>33a54ab</code> du 13 septembre.</p>
+<h2 id="01-ce-qui-est-fait-et-pousse">0.1 Ce qui est fait, et poussé</h2>
+<p>Avant le parcours, trois lots de remise en état, tous en ligne :</p>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>Ce qu'il a apporté</th>
+<th>TP du cours couverts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remise en route</td>
+<td>cinq causes de non-démarrage corrigées, architecture propre, le projet tourne sous Docker pour la première fois (13 septembre)</td>
+<td>DevOps 08, 09</td>
+</tr>
+<tr>
+<td>Lot 1 sécurité</td>
+<td>jetons RS256 et JWKS, 10 tests négatifs, isolation multi-organisation prouvée, identifiant de corrélation, assistant avec filtrage d'injection, masquage des données personnelles, limitation de débit — 29 tests</td>
+<td>DevOps 41 et 54, en partie</td>
+</tr>
+<tr>
+<td>Lot GitHub</td>
+<td>chaîne GitHub Actions en 7 jobs, CodeQL, Dependabot, modèles de PR et de story, <code>SECURITY.md</code>, <code>scripts/demo.sh</code></td>
+<td>DevOps 12 ; 10, 13, 37, 40 en partie</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bilan :</strong> 3 TP terminés, 6 commencés. Et surtout une démonstration qui marche : clé publique, connexion LDAP, courriel masqué, injection refusée.</p>
+<h2 id="02-ce-qui-est-livre-mais-pas-encore-applique">0.2 Ce qui est livré mais pas encore appliqué</h2>
+<table>
+<thead>
+<tr>
+<th>Livraison</th>
+<th>Ce qu'elle contient</th>
+<th>Où elle est</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lot 2</strong></td>
+<td>Flyway, deux rôles PostgreSQL, secrets hors dépôt, crochet Gitleaks, <code>CODEOWNERS</code>, <code>CONTRIBUTING.md</code></td>
+<td><code>crisisshield-lot2.zip</code></td>
+</tr>
+<tr>
+<td>Parcours v3</td>
+<td>ce document et le cours du lot 2</td>
+<td><code>crisisshield-parcours-v3.zip</code></td>
+</tr>
+</tbody>
+</table>
+<p>Sur GitHub, <code>ddl-auto</code> est toujours à <code>update</code> et il n'y a ni <code>.env.example</code> ni migration : <strong>le lot 2 n'est pas appliqué</strong>. C'est la prochaine action, et la seule.</p>
+<h2 id="03-trois-points-ouverts-sur-le-depot">0.3 Trois points ouverts sur le dépôt</h2>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>État</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CodeQL Java en échec</td>
+<td>non résolu depuis le 13 septembre</td>
+<td>m'envoyer les dernières lignes du job <code>analyze</code>, ou passer CodeQL en « configuration par défaut » dans les réglages</td>
+</tr>
+<tr>
+<td>18 pull requests Dependabot</td>
+<td>en attente</td>
+<td>voir 0.4</td>
+</tr>
+<tr>
+<td>Commits signés, branches protégées</td>
+<td>non faits</td>
+<td>tickets L2-07 et L2-08 du lot 2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="04-les-pull-requests-dependabot-quoi-fusionner">0.4 Les pull requests Dependabot : quoi fusionner</h2>
+<p>Dependabot propose aussi des <strong>montées de version majeure</strong>. Les fusionner à l'aveugle casserait le projet.</p>
+<table>
+<thead>
+<tr>
+<th>Pull request</th>
+<th>Décision</th>
+<th>Raison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>actions GitHub (checkout, setup-node, upload-artifact, login, trivy, gitleaks)</td>
+<td>fusionner une par une, chaîne verte</td>
+<td>aucun risque sur le code</td>
+</tr>
+<tr>
+<td><code>bcpkix</code> 1.85</td>
+<td>fusionner</td>
+<td>correctif mineur</td>
+</tr>
+<tr>
+<td><code>spring-boot-starter-parent</code> <strong>4.1.1</strong></td>
+<td><strong>fermer</strong></td>
+<td>version majeure : chantier à part entière, pas une mise à jour</td>
+</tr>
+<tr>
+<td>image <code>maven … temurin-26</code>, <code>eclipse-temurin-24-jre</code></td>
+<td><strong>fermer</strong></td>
+<td>le projet est en Java 21, version à support long ; 24 et 26 ne le sont pas</td>
+</tr>
+<tr>
+<td><code>jjwt</code> 0.13</td>
+<td><strong>fermer</strong></td>
+<td><code>JwtUtil</code> est retiré au lot 6, remplacé par Keycloak</td>
+</tr>
+<tr>
+<td><code>vite</code> 8, <code>eslint-plugin-react-hooks</code> 7, groupe npm</td>
+<td><strong>attendre le lot 7</strong></td>
+<td>versions majeures du front, à faire quand on reprend le front</td>
+</tr>
+<tr>
+<td><code>axios</code>, <code>globals</code></td>
+<td>fusionner si la chaîne est verte</td>
+<td>mineures</td>
+</tr>
+</tbody>
+</table>
+<p>Au lot 3, on configure Dependabot pour ignorer les versions majeures : elles deviendront des tickets planifiés, pas des surprises.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-1-les-deux-decisions-qui-changent-lordre">Chapitre 1 — Les deux décisions qui changent l'ordre</h1>
+<h2 id="11-keycloak-arrive-avant-le-front-pas-apres">1.1 Keycloak arrive avant le front, pas après</h2>
+<p>Aujourd'hui, l'identité de CrisisShield est maison : bind LDAP, puis un jeton RS256 signé par <code>JwtUtil</code>. L'ADR 0002 l'assumait comme une dette temporaire, en attendant Keycloak.</p>
+<p>Si on branche le front React sur cette authentification maison, puis qu'on passe à Keycloak, <strong>on écrit deux fois la connexion du front</strong>. C'est exactement le double travail à éviter.</p>
+<p>Donc : Keycloak d'abord, le front ensuite, directement sur les bons flux (code avec PKCE, derrière un BFF). Le <code>JwtUtil</code> maison est retiré à ce moment-là. Rien n'est perdu : ce que tu as appris sur RS256, JWKS, audience et confusion d'algorithme est exactement ce que Keycloak fait — tu sauras l'auditer au lieu de le subir.</p>
+<p>L'OpenLDAP existant n'est pas jeté non plus : Keycloak le fédère en lecture seule (Keycloak, TP 5). Ton travail d'EP02-US05 devient une fédération d'annuaire, ce qui est le cas réel en entreprise.</p>
+<h2 id="12-lia-devient-une-phase-entiere-placee-tot">1.2 L'IA devient une phase entière, placée tôt</h2>
+<p>L'IA agentique est ton différenciateur de marché. Elle ne peut pas attendre la fin d'un parcours de six mois.</p>
+<p>Mais elle a deux prérequis : un <strong>métier réel</strong> (on ne trie pas des incidents qui n'existent pas) et de l'<strong>observabilité</strong> (on n'évalue pas un agent qu'on ne peut pas tracer). D'où sa place : juste après ces deux phases.</p>
+<p>Le code du lot 1 — <code>PromptGuard</code>, <code>PiiMasker</code>, <code>RateLimiter</code>, l'interface <code>ModelProvider</code> — est conservé. Spring AI se branche <strong>derrière</strong> <code>ModelProvider</code> ; le fournisseur simulé disparaît, les garde-fous restent devant. Aucune ligne refaite.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-2-les-huit-phases">Chapitre 2 — Les huit phases</h1>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Lots</th>
+<th>Ce qu'on construit</th>
+<th>Cours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Fondations</td>
+<td>2 à 4</td>
+<td>base aux normes, secrets, image signée, qualité, releases</td>
+<td>DevOps 0 à 2</td>
+</tr>
+<tr>
+<td>2. Le métier et l'identité</td>
+<td>5 à 8</td>
+<td>modules métier, Keycloak, front branché, authentification forte</td>
+<td>Microservices, Keycloak, React</td>
+</tr>
+<tr>
+<td>3. Voir</td>
+<td>9 à 10</td>
+<td>métriques, tableaux de bord, journaux, traces, SLO</td>
+<td>Monitoring, DevOps 6</td>
+</tr>
+<tr>
+<td>4. L'IA</td>
+<td>11 à 14</td>
+<td>tri, outils, MCP, RAG, agent, évaluations, test d'intrusion</td>
+<td>IA agentique, DevOps 54</td>
+</tr>
+<tr>
+<td>5. Distribuer</td>
+<td>15 à 17</td>
+<td>Kafka, saga, résilience, passerelle, autorisation fine, service extrait</td>
+<td>Microservices, Keycloak</td>
+</tr>
+<tr>
+<td>6. Déployer</td>
+<td>18 à 21</td>
+<td>Terraform, Kubernetes, GitOps, AWS</td>
+<td>DevOps 3 à 5, Cloud</td>
+</tr>
+<tr>
+<td>7. Fiabiliser</td>
+<td>22 à 24</td>
+<td>game day, PRA, PKI, mTLS, SLSA, audit, conformité</td>
+<td>DevOps 7 et 8, Java PKI, Keycloak</td>
+</tr>
+<tr>
+<td>8. Leadership</td>
+<td>25 et suite</td>
+<td>DORA, gouvernance, plateforme, landing zone</td>
+<td>DevOps 9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pourquoi cet ordre, en une phrase par phase :</strong> on ne sécurise pas un dépôt sale (1), on n'observe pas un produit vide (2), on ne débogue pas sans voir (3), l'IA a besoin des trois (4), on ne distribue qu'un monolithe compris (5), on ne déploie qu'une architecture stable (6), on ne fiabilise que ce qui tourne (7), on ne gouverne que ce qu'on mesure (8).</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-3-les-lots-un-par-un">Chapitre 3 — Les lots, un par un</h1>
+<h2 id="phase-1-fondations">Phase 1 — Fondations</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+<th>État</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>DevOps 05, 06, 38</td>
+<td>Flyway, deux rôles PostgreSQL, secrets hors dépôt, gouvernance du dépôt</td>
+<td><strong>livré</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>DevOps 10</td>
+<td>image signée Cosign, nomenclature attachée, vérification</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>DevOps 13, 14</td>
+<td>tests d'intégration Testcontainers, quality gate, releases automatiques</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-2-le-metier-et-lidentite">Phase 2 — Le métier et l'identité</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>Microservices 1, 2</td>
+<td>event storming ; modules <code>incidents</code>, <code>alertes</code>, <code>equipes</code>, <code>notifications</code> en Spring Modulith ; règles de dépendance vérifiées en CI ; migrations V2 à V5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Keycloak 1, 2, 5</td>
+<td>Keycloak en Compose, royaume <code>crisis</code> <strong>en Terraform</strong> (ta première infrastructure en code), fédération de l'OpenLDAP existant ; retrait du <code>JwtUtil</code> maison</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Keycloak 3, 4 ; React 4 à 6</td>
+<td>connexion du front par BFF (code et PKCE, jetons invisibles dans le navigateur) ; API en serveurs de ressources avec audience et rôles ; le front charge les vrais incidents</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Keycloak 6 ; React 7 à 9</td>
+<td>passkeys pour les coordinateurs, authentification renforcée pour « clore une crise » ; formulaire, filtres, quality gate front ; fin de <code>mockData.ts</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>À la fin de la phase 2 :</strong> une vraie application. On se connecte par Keycloak, on crée un incident, il est en base, visible par la seule bonne organisation.</p>
+<h2 id="phase-3-voir">Phase 3 — Voir</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9</td>
+<td>Monitoring 1 à 5 ; DevOps 33</td>
+<td>Prometheus, Micrometer, métriques RED et métier, PromQL, Grafana en code</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Monitoring 9 à 13 ; DevOps 32, 34, 35</td>
+<td>journaux vers Loki, collecteur OpenTelemetry, traces, SLO et alertes, sondes, supervision de la supervision ; événements de connexion Keycloak dans Loki</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-4-lia">Phase 4 — L'IA</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>IA 1, 2, 7</td>
+<td>tri des incidents P1 / P2 / P3, prompt versionné et validé, Spring AI derrière <code>ModelProvider</code> ; décision de l'ADR 0003 sur le fournisseur</td>
+</tr>
+<tr>
+<td>12</td>
+<td>IA 3, 4</td>
+<td>assistant de cellule de crise : outils en lecture seule, un outil d'écriture sous confirmation humaine ; <strong>serveur MCP de CrisisShield</strong></td>
+</tr>
+<tr>
+<td>13</td>
+<td>IA 5, 6, 8</td>
+<td>RAG sur les runbooks dans pgvector, filtré par organisation ; agent de diagnostic encadré ; évaluations bloquantes en CI, traces et tableau de bord IA</td>
+</tr>
+<tr>
+<td>14</td>
+<td>IA 9, 10 ; DevOps 54</td>
+<td>test d'intrusion de l'assistant, rapport OWASP LLM avant/après ; passerelle IA vitrine ; dépôt outillé pour un assistant de code</td>
+</tr>
+</tbody>
+</table>
+<p><strong>À la fin de la phase 4 :</strong> ta démonstration la plus vendable. Un assistant qui trie, cherche, propose — et qu'on ne peut pas détourner, preuves à l'appui.</p>
+<h2 id="phase-5-distribuer">Phase 5 — Distribuer</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>15</td>
+<td>Microservices 3, 4, 5 ; DevOps 46</td>
+<td>Kafka, notifications pilotées par événements, consommateur idempotent, saga, outbox</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Microservices 6 à 9 ; Keycloak 7</td>
+<td>résilience, panne provoquée, passerelle d'API ; sécurité entre services, échange de jeton ; autorisation par préfecture avec OPA et OpenFGA</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Microservices 10 à 13</td>
+<td>traces de bout en bout, contrats consommateur, déploiement autonome ; <strong>extraction du service Notifications</strong>, en Kotlin si tu le souhaites</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-6-deployer">Phase 6 — Déployer</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18</td>
+<td>DevOps 16, 17, 19</td>
+<td>Terraform et Ansible contre LocalStack, détection de dérive ; le royaume Keycloak du lot 6 rejoint cette organisation</td>
+</tr>
+<tr>
+<td>19</td>
+<td>DevOps 25, 26, 28 ; Monitoring 7</td>
+<td>cluster kind, manifestes, chart Helm, kube-prometheus-stack</td>
+</tr>
+<tr>
+<td>20</td>
+<td>DevOps 29, 31, 39</td>
+<td>GitOps ArgoCD, autoscaling, cluster durci</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Cloud 1 à 9 ; DevOps 20, 21, 23</td>
+<td>compte AWS verrouillé, VPC, identités sans clé, CrisisShield en Terraform, FinOps</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-7-fiabiliser-et-securiser-en-profondeur">Phase 7 — Fiabiliser et sécuriser en profondeur</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>DevOps 35, 36, 43, 44 ; Keycloak 8</td>
+<td>budget d'erreur, game day, résilience prouvée, PRA exécuté ; Keycloak de production, rotation de clé sans interruption</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Java PKI 1 à 9 ; DevOps 41</td>
+<td>PKI trois niveaux, keystores, HTTPS puis mTLS, service de signature, validateur</td>
+</tr>
+<tr>
+<td>24</td>
+<td>DevOps 37, 40, 42 ; Java PKI 10 ; Keycloak 9</td>
+<td>programme AppSec, SLSA niveau 3, dossier de conformité, fiche eIDAS, audit complet du royaume</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-8-leadership">Phase 8 — Leadership</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>TP</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25 et suite</td>
+<td>DevOps 15, 27, 30, 45, 47 à 52 ; Cloud 10</td>
+<td>blue/green, base en haute disponibilité, mesh, performance, DBA, plateforme interne, landing zone, gouvernance, DORA, revue Well-Architected</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recapitulatif-de-tous-les-lots">Récapitulatif de tous les lots</h2>
+<table>
+<thead>
+<tr>
+<th>Lot</th>
+<th>Phase</th>
+<th>Titre</th>
+<th>État</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>—</td>
+<td>avant</td>
+<td>Remise en route, lot 1 sécurité, lot GitHub</td>
+<td><strong>fait</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>Fondations saines : base, secrets, dépôt</td>
+<td><strong>livré, à appliquer</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>Image signée et nomenclature</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>Tests d'intégration, quality gate, releases</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>Monolithe modulaire, modules métier</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td>Keycloak, royaume en Terraform, fédération LDAP</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>Front branché par BFF, API en serveurs de ressources</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>8</td>
+<td>2</td>
+<td>Passkeys, authentification renforcée, fin des données simulées</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>9</td>
+<td>3</td>
+<td>Métriques et tableaux de bord</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>10</td>
+<td>3</td>
+<td>Journaux, traces, SLO</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>11</td>
+<td>4</td>
+<td>Tri des incidents par IA, Spring AI</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>Outils, confirmation humaine, serveur MCP</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>13</td>
+<td>4</td>
+<td>RAG, agent de diagnostic, évaluations</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>14</td>
+<td>4</td>
+<td>Test d'intrusion IA, passerelle vitrine</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>15</td>
+<td>5</td>
+<td>Kafka, saga, outbox</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>16</td>
+<td>5</td>
+<td>Résilience, passerelle d'API, autorisation fine</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>17</td>
+<td>5</td>
+<td>Contrats, extraction du service Notifications</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>18</td>
+<td>6</td>
+<td>Terraform et Ansible en local</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>19</td>
+<td>6</td>
+<td>Kubernetes : kind, manifestes, Helm</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>20</td>
+<td>6</td>
+<td>GitOps, autoscaling, cluster durci</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>21</td>
+<td>6</td>
+<td>AWS en Terraform, FinOps</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>22</td>
+<td>7</td>
+<td>Game day, PRA, Keycloak de production</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>23</td>
+<td>7</td>
+<td>PKI, mTLS, service de signature</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>24</td>
+<td>7</td>
+<td>AppSec, SLSA, conformité, audits</td>
+<td>à faire</td>
+</tr>
+<tr>
+<td>25+</td>
+<td>8</td>
+<td>Leadership et plateforme</td>
+<td>à faire</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-4-ce-quon-ne-fait-pas">Chapitre 4 — Ce qu'on ne fait pas</h1>
+<table>
+<thead>
+<tr>
+<th>Cours ou TP</th>
+<th>Raison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Angular, Vue</td>
+<td>un second front, donc refaire le même travail</td>
+</tr>
+<tr>
+<td>Struts, Hibernate, JSP ; Data platform</td>
+<td>absents du produit ; à lire si une mission l'exige</td>
+</tr>
+<tr>
+<td>React 1 à 3</td>
+<td>déjà en place</td>
+</tr>
+<tr>
+<td>Keycloak 3 : la partie Angular</td>
+<td>adaptée au front React</td>
+</tr>
+<tr>
+<td>Keycloak 4 : le service Node</td>
+<td>remplacé par le service Notifications, qui vérifie les jetons selon les mêmes règles</td>
+</tr>
+<tr>
+<td>DevOps 07, 11, 18, 22, 24, 50, 53</td>
+<td>sans code, ou fictif et remplacé par un vrai équivalent</td>
+</tr>
+<tr>
+<td>Java PKI 11, 13 ; Monitoring 6, 8</td>
+<td>couverts par les cours de lot ; ELK remplacé par Loki</td>
+</tr>
+<tr>
+<td>Savoir-être</td>
+<td>pas de code : une page par semaine, en parallèle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-5-comment-reussir-a-tout-construire">Chapitre 5 — Comment réussir à tout construire</h1>
+<p>Vingt-quatre lots, c'est long. Voici ce qui fait la différence entre les parcours qu'on termine et ceux qu'on abandonne au lot 7.</p>
+<h2 id="51-le-rythme-realiste">5.1 Le rythme réaliste</h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Rythme</th>
+<th>Durée des 24 lots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sans mission</td>
+<td>un lot par semaine, 8 à 10 heures</td>
+<td>6 mois</td>
+</tr>
+<tr>
+<td>En mission à temps plein</td>
+<td>un lot toutes les deux semaines, 5 heures par semaine</td>
+<td>11 à 12 mois</td>
+</tr>
+</tbody>
+</table>
+<p>Choisis le rythme qui tient <strong>quand tout va mal</strong>, pas celui qui tient quand tout va bien. Un rythme tenu vaut mieux qu'un rythme ambitieux abandonné.</p>
+<h2 id="52-les-cinq-regles">5.2 Les cinq règles</h2>
+<ol>
+<li><strong>Un seul lot ouvert à la fois.</strong> Jamais le lot suivant tant que le précédent n'est pas commité, prouvé et expliqué.</li>
+<li><strong>Terminé veut dire : ça tourne, c'est prouvé, tu l'expliques.</strong> Un lot dont tu ne peux pas raconter le pourquoi en trois minutes n'est pas terminé.</li>
+<li><strong>Bloqué plus de trente minutes : tu m'envoies la sortie.</strong> Pas deux heures seul sur une erreur de configuration. L'apprentissage est dans la compréhension, pas dans l'acharnement.</li>
+<li><strong>Un jalon par phase.</strong> À la fin de chaque phase, tu enregistres la démo de cinq minutes. C'est ta motivation et ta vitrine en même temps.</li>
+<li><strong>Une semaine ratée n'est pas une raison d'en rater deux.</strong> Tu reprends au lot en cours, sans culpabilité et sans rattrapage double.</li>
+</ol>
+<h2 id="53-tu-es-vendable-a-chaque-phase">5.3 Tu es vendable à chaque phase</h2>
+<table>
+<thead>
+<tr>
+<th>Après la phase</th>
+<th>Ce que tu montres</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>un dépôt propre, signé, sans secret, chaîne verte</td>
+</tr>
+<tr>
+<td>2</td>
+<td>une vraie application, connexion Keycloak, multi-organisation</td>
+</tr>
+<tr>
+<td>3</td>
+<td>un tableau de bord Grafana en direct, une trace de bout en bout</td>
+</tr>
+<tr>
+<td>4</td>
+<td>un assistant IA qui trie et cherche, et qu'on ne peut pas détourner</td>
+</tr>
+<tr>
+<td>5</td>
+<td>une architecture événementielle, un service extrait sans interruption</td>
+</tr>
+<tr>
+<td>6</td>
+<td>un déploiement GitOps sur Kubernetes et AWS, facture affichée</td>
+</tr>
+<tr>
+<td>7</td>
+<td>un game day, un PRA exécuté, une PKI, un audit Keycloak</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pour les missions d'octobre :</strong> la phase 2 est la priorité absolue, la phase 4 la plus différenciante. Une vraie application avec Keycloak et un assistant sécurisé vaut plus en entretien que tout le reste réuni.</p>
+<h2 id="54-les-couts-a-prevoir">5.4 Les coûts à prévoir</h2>
+<table>
+<thead>
+<tr>
+<th>Poste</th>
+<th>Quand</th>
+<th>Coût</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API d'un modèle de langage</td>
+<td>phase 4</td>
+<td>5 à 15 € pour toute la phase, clé dans <code>.env</code></td>
+</tr>
+<tr>
+<td>AWS</td>
+<td>lot 21</td>
+<td>10 à 30 € le mois du lot, alerte de budget à 30 € avant la première ligne</td>
+</tr>
+<tr>
+<td>Tout le reste</td>
+<td>toujours</td>
+<td>0 € : Docker, kind, LocalStack, GitHub</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-6-la-boucle-a-chaque-lot">Chapitre 6 — La boucle, à chaque lot</h1>
+<ol>
+<li><strong>Je livre</strong> le code en zip, le cours du lot en HTML, le suivi des tickets à jour.</li>
+<li><strong>Tu appliques</strong> sur <code>develop</code> et tu produis les preuves.</li>
+<li><strong>Tu m'expliques</strong> le lot en trois minutes.</li>
+<li><strong>On passe au suivant.</strong></li>
+</ol>
+<p>Le lot 2 est livré. C'est le seul lot ouvert. Termine-le.</p></section></div></main></div><script>(function(){var b=document.getElementById('progression');function m(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(h>0?window.scrollY/h*100:0)+'%';}
+var S=[].slice.call(document.querySelectorAll('section.chapitre'));function t(){var p=window.scrollY+140,c=null;S.forEach(function(s){if(s.offsetTop<=p)c=s.style.getPropertyValue('--teinte');});if(c)b.style.background=c;}
+var L=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]')),C=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function a(){var p=window.scrollY+120,i=-1;C.forEach(function(c,k){if(c&&c.offsetTop<=p)i=k;});L.forEach(function(x,k){x.classList.toggle('actif',k===i);});}
+['scroll','resize'].forEach(function(e){window.addEventListener(e,function(){m();t();a();},{passive:true});});m();t();a();
+var K=[].slice.call(document.querySelectorAll('ul.controle input'));if(K.length){var c=document.createElement('p');c.className='compteur';document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+function n(){var k=K.filter(function(i){return i.checked;}).length;c.innerHTML='<b>'+k+'</b> / '+K.length+(k===K.length?' — pret.':' points maitrises.');}K.forEach(function(i){i.addEventListener('change',n);});n();}})();</script></body></html>

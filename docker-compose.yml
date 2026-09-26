@@ -3,15 +3,19 @@ services:
     image: postgres:16-alpine
     container_name: crisisshield-db
     environment:
-      POSTGRES_DB: crisisshield_db
-      POSTGRES_USER: crisisshield_user
-      POSTGRES_PASSWORD: crisisshield_password
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB manquant dans .env}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER manquant dans .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD manquant dans .env}
+      DB_APP_USER: ${DB_APP_USER:?DB_APP_USER manquant dans .env}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?DB_APP_PASSWORD manquant dans .env}
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      # L2-03 : scripts executes une seule fois, a la creation du volume (creation du role applicatif)
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U crisisshield_user -d crisisshield_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 30
@@ -29,13 +33,13 @@ services:
       LDAP_ORGANISATION: "Spring Framework"
       LDAP_DOMAIN: "springframework.org"
       LDAP_BASE_DN: "dc=springframework,dc=org"
-      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD:?LDAP_ADMIN_PASSWORD manquant dans .env}
       LDAP_TLS: "false"
     volumes:
       - ldap_data:/var/lib/ldap
       - ldap_config:/etc/ldap/slapd.d
     healthcheck:
-      test: ["CMD-SHELL", "ldapsearch -x -H ldap://localhost:389 -b \"dc=springframework,dc=org\" -D \"cn=admin,dc=springframework,dc=org\" -w \"admin\" >/dev/null 2>&1"]
+      test: ["CMD-SHELL", "ldapsearch -x -H ldap://localhost:389 -b \"dc=springframework,dc=org\" -D \"cn=admin,dc=springframework,dc=org\" -w \"${LDAP_ADMIN_PASSWORD}\" >/dev/null 2>&1"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -64,17 +68,19 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: "ldap"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/crisisshield_db"
-      SPRING_DATASOURCE_USERNAME: "crisisshield_user"
-      SPRING_DATASOURCE_PASSWORD: "crisisshield_password"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/${POSTGRES_DB}"
+      DB_APP_USER: ${DB_APP_USER}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD}
+      DB_OWNER_USER: ${POSTGRES_USER}
+      DB_OWNER_PASSWORD: ${POSTGRES_PASSWORD}
       # Plus de secret partage : RS256, paire generee au demarrage en developpement (EP02-US06)
-      JWT_EXPIRATION: "900000"
-      APP_DEV_DATA_ENABLED: "true"
-      APP_ASSISTANT_PROVIDER: "mock"
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-900000}
+      APP_DEV_DATA_ENABLED: ${APP_DEV_DATA_ENABLED:-false}
+      APP_ASSISTANT_PROVIDER: ${APP_ASSISTANT_PROVIDER:-mock}
       LDAP_URLS: "ldap://openldap:389"
       LDAP_BASE_DN: "dc=springframework,dc=org"
       LDAP_MANAGER_DN: "cn=admin,dc=springframework,dc=org"
-      LDAP_MANAGER_PASSWORD: "admin"
+      LDAP_MANAGER_PASSWORD: ${LDAP_ADMIN_PASSWORD}
       LDAP_GROUP_SEARCH_BASE: "ou=groups"
       LDAP_GROUP_SEARCH_FILTER: "(member={0})"
     depends_on:

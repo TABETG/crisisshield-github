@@ -31,6 +31,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!-- L2-01 : migrations de schema versionnees. Hibernate ne touche plus jamais au schema. -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
         <!-- Dépendance pour la validation des DTOs -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

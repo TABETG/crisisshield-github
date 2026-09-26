@@ -1,0 +1,610 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lot 1 — Sécurité : ce que j'ai fait, à retenir par cœur</title><style>
+:root{--fond:#F5F7F4;--carte:#fff;--encre:#141A20;--douce:#52606C;--bleu:#2C4A78;--vert:#1C5C4C;--ocre:#9E4E17;--trait:#DCE2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--fond);color:var(--encre);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:17px;line-height:1.72}
+.page{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto}@media(min-width:1040px){.page{grid-template-columns:250px minmax(0,1fr);gap:56px;padding:0 40px}}
+nav.som{padding:24px 20px 0}@media(min-width:1040px){nav.som{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:56px 24px 40px 0;border-right:1px solid var(--trait)}}
+nav.som ul{list-style:none;margin:0;padding:0}nav.som a{display:block;padding:4px 0 4px 12px;margin-left:-14px;border-left:2px solid transparent;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce);text-decoration:none}
+nav.som ul ul a{font-size:12.5px;color:#78838D;padding-left:26px}nav.som a:hover,nav.som a.actif{color:var(--bleu);border-left-color:var(--bleu)}
+nav.som li.ch-item>a{color:var(--encre);font-weight:600;border-left-color:color-mix(in srgb,var(--teinte) 35%,transparent)}nav.som li.ch-item>a:hover,nav.som li.ch-item>a.actif{color:var(--teinte);border-left-color:var(--teinte)}nav.som li.ch-item{margin-bottom:10px}
+@media(max-width:1039px){nav.som.bureau{display:none}}@media(min-width:1040px){details.som-mob{display:none}}
+main{padding:0 20px 96px;min-width:0}@media(min-width:1040px){main{padding:56px 0 140px}}.enveloppe{max-width:69ch}
+.chapeau{border-bottom:2px solid var(--encre);padding-bottom:28px;margin-bottom:8px}.chapeau h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(28px,5vw,42px);line-height:1.12;font-weight:680;letter-spacing:-.022em;margin:0 0 14px}
+.chapeau .meta{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}
+h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3.4vw,30px);font-weight:660;letter-spacing:-.02em;margin:72px 0 6px;padding-top:30px;position:relative}
+.chapitre>h1{color:var(--teinte)}.chapitre>h1::before{content:"";position:absolute;top:0;left:0;width:72px;height:4px;background:var(--teinte)}
+h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:19px;font-weight:640;margin:42px 0 10px;color:var(--teinte,var(--bleu))}h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:640;margin:30px 0 8px}
+p{margin:0 0 16px}strong{font-weight:660}a{color:var(--bleu)}code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#EBEFEA;padding:1.5px 5px;border-radius:3px}
+pre{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 20px}pre code{background:none;padding:0}
+ul,ol{margin:0 0 18px;padding-left:22px}li{margin:0 0 7px}blockquote{margin:22px 0;padding:14px 20px;border-left:3px solid var(--teinte,var(--bleu));background:var(--carte)}blockquote p:last-child{margin:0}
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.55}@media(max-width:700px){table{display:block;overflow-x:auto}}
+thead th{text-align:left;font-weight:640;padding:0 14px 8px 0;border-bottom:1.5px solid var(--teinte,var(--encre));color:var(--teinte,var(--encre))}tbody td{padding:10px 14px 10px 0;border-bottom:1px solid #E9EDE8;vertical-align:top}
+details{background:var(--carte);border:1px solid var(--trait);border-left:3px solid var(--teinte,var(--bleu));margin:0 0 10px}details[open]{border-left-color:var(--vert)}
+details>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px;font-weight:600;display:flex;gap:12px}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";color:var(--teinte,var(--bleu));font-weight:700}details[open]>summary::before{content:"\2212";color:var(--vert)}details>*:not(summary){padding:0 18px}details>p:last-child{padding-bottom:16px;margin-bottom:0}
+details.som-mob{border:0;background:none}details.som-mob>summary{padding:14px 0}details.som-mob>*:not(summary){padding:0}
+ul.controle{list-style:none;padding:0}ul.controle li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #E9EDE8}ul.controle input{margin-top:7px;accent-color:var(--vert)}
+ul.controle li:has(input:checked){color:#93A0A8;text-decoration:line-through}.compteur{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--douce)}.compteur b{color:var(--vert);font-size:16px}
+#progression{position:fixed;top:0;left:0;height:3px;background:var(--bleu);width:0;z-index:50}
+.spectre{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 8px}.spectre a{display:flex;align-items:center;gap:7px;text-decoration:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;font-weight:560;color:var(--douce);background:var(--carte);border:1px solid var(--trait);padding:5px 11px 5px 8px;border-radius:2px}
+.spectre a span{width:9px;height:9px;background:var(--teinte);border-radius:1px}.spectre a:hover{color:var(--teinte);border-color:var(--teinte)}
+@media print{nav.som,details.som-mob,#progression,.spectre{display:none}body{background:#fff;font-size:11pt}.page{display:block}details>*:not(summary){display:block!important}}
+</style></head>
+<body><div id="progression"></div><div class="page"><nav class="som bureau"><p class="titre-som">Sommaire</p><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#lot-1-securite-ce-que-jai-fait-a-retenir-par-cur">Lot 1 — Sécurité : ce que j'ai fait, à retenir par cœur</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-le-lot-1-en-trente-secondes">Chapitre 1 — Le lot 1 en trente secondes</a><ul>
+<li><a href="#les-sept-tickets">Les sept tickets</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-les-chiffres-a-connaitre-par-cur">Chapitre 2 — Les chiffres à connaître par cœur</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-fiche-1-jetons-rs256-et-jwks-ep02-us06">Chapitre 3 — Fiche 1 : jetons RS256 et JWKS (EP02-US06)</a><ul>
+<li><a href="#le-probleme">Le problème</a></li>
+<li><a href="#ce-que-jai-fait">Ce que j'ai fait</a></li>
+<li><a href="#le-code-cle">Le code clé</a></li>
+<li><a href="#les-cinq-verifications-dans-lordre">Les cinq vérifications, dans l'ordre</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme">La limite que je nomme moi-même</a></li>
+<li><a href="#la-phrase-a-retenir">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-fiche-2-les-dix-tests-negatifs-ep02-us09">Chapitre 4 — Fiche 2 : les dix tests négatifs (EP02-US09)</a><ul>
+<li><a href="#le-probleme_1">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_1">Ce que j'ai fait</a></li>
+<li><a href="#le-test-le-plus-important-la-confusion-dalgorithme">Le test le plus important : la confusion d'algorithme</a></li>
+<li><a href="#la-phrase-a-retenir_1">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-fiche-3-lisolation-entre-organisations-ep03-us05">Chapitre 5 — Fiche 3 : l'isolation entre organisations (EP03-US05)</a><ul>
+<li><a href="#le-probleme_2">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_2">Ce que j'ai fait</a></li>
+<li><a href="#pourquoi-le-troisieme-test-compte-le-plus">Pourquoi le troisième test compte le plus</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme_1">La limite que je nomme moi-même</a></li>
+<li><a href="#la-phrase-a-retenir_2">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-fiche-4-lidentifiant-de-correlation-ep10-us05">Chapitre 6 — Fiche 4 : l'identifiant de corrélation (EP10-US05)</a><ul>
+<li><a href="#le-probleme_3">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_3">Ce que j'ai fait</a></li>
+<li><a href="#trois-details-a-savoir-expliquer">Trois détails à savoir expliquer</a></li>
+<li><a href="#la-phrase-a-retenir_3">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-fiche-5-le-pipeline-de-lassistant-ep18">Chapitre 7 — Fiche 5 : le pipeline de l'assistant (EP18)</a><ul>
+<li><a href="#les-six-etapes-dans-assistantserviceask">Les six étapes, dans AssistantService.ask</a></li>
+<li><a href="#pourquoi-cet-ordre">Pourquoi cet ordre</a></li>
+<li><a href="#ce-qui-est-journalise-et-ce-qui-ne-lest-jamais">Ce qui est journalisé, et ce qui ne l'est jamais</a></li>
+<li><a href="#labstraction-du-fournisseur">L'abstraction du fournisseur</a></li>
+<li><a href="#la-phrase-a-retenir_4">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-fiche-6-filtrage-dinjection-ep18-us03">Chapitre 8 — Fiche 6 : filtrage d'injection (EP18-US03)</a><ul>
+<li><a href="#ce-que-jai-fait_4">Ce que j'ai fait</a></li>
+<li><a href="#le-banc-dessai">Le banc d'essai</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme-la-plus-importante-du-lot">La limite que je nomme moi-même — la plus importante du lot</a></li>
+<li><a href="#la-phrase-a-retenir_5">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-9-fiche-7-masquage-et-limitation-ep18-us04-us06">Chapitre 9 — Fiche 7 : masquage et limitation (EP18-US04, US06)</a><ul>
+<li><a href="#le-masquage">Le masquage</a></li>
+<li><a href="#la-limitation-de-debit">La limitation de débit</a></li>
+<li><a href="#les-deux-phrases-a-retenir">Les deux phrases à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-10-la-demonstration-a-connaitre-par-cur">Chapitre 10 — La démonstration, à connaître par cœur</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#chapitre-11-plan-de-memorisation-sur-sept-jours">Chapitre 11 — Plan de mémorisation sur sept jours</a></li>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ce-que-tu-dois-savoir-reciter-sans-notes">Ce que tu dois savoir réciter sans notes</a></li>
+</ul>
+</div>
+</nav><main><div class="enveloppe">
+<header class="chapeau"><h1>Lot 1 — Sécurité : ce que j'ai fait, à retenir par cœur</h1><p class="meta">Sept tickets, sept fiches, les chiffres, la démonstration et un plan de mémorisation sur sept jours.</p></header><nav class="spectre"><a href="#lot-1-securite-ce-que-jai-fait-a-retenir-par-cur" style="--teinte:#3A4E8C"><span></span>1 Sécurité : ce que j'ai…</a><a href="#chapitre-1-le-lot-1-en-trente-secondes" style="--teinte:#6B4A8F"><span></span>1 Le lot 1 en trente seco…</a><a href="#chapitre-2-les-chiffres-a-connaitre-par-cur" style="--teinte:#1F6E86"><span></span>2 Les chiffres à connaîtr…</a><a href="#chapitre-3-fiche-1-jetons-rs256-et-jwks-ep02-us06" style="--teinte:#1E6B57"><span></span>3 Fiche 1 : jetons RS256…</a><a href="#chapitre-4-fiche-2-les-dix-tests-negatifs-ep02-us09" style="--teinte:#A8621A"><span></span>4 Fiche 2 : les dix tests…</a><a href="#chapitre-5-fiche-3-lisolation-entre-organisations-ep03-us05" style="--teinte:#A34434"><span></span>5 Fiche 3 : l'isolation e…</a><a href="#chapitre-6-fiche-4-lidentifiant-de-correlation-ep10-us05" style="--teinte:#2D5F8F"><span></span>6 Fiche 4 : l'identifiant…</a><a href="#chapitre-7-fiche-5-le-pipeline-de-lassistant-ep18" style="--teinte:#8C3F63"><span></span>7 Fiche 5 : le pipeline d…</a><a href="#chapitre-8-fiche-6-filtrage-dinjection-ep18-us03" style="--teinte:#7A6B1B"><span></span>8 Fiche 6 : filtrage d'in…</a><a href="#chapitre-9-fiche-7-masquage-et-limitation-ep18-us04-us06" style="--teinte:#3F6B2E"><span></span>9 Fiche 7 : masquage et l…</a><a href="#chapitre-10-la-demonstration-a-connaitre-par-cur" style="--teinte:#8A4E2A"><span></span>10 La démonstration, à co…</a><a href="#chapitre-11-plan-de-memorisation-sur-sept-jours" style="--teinte:#4A4A55"><span></span>11 Plan de mémorisation s…</a><a href="#ce-que-tu-dois-savoir-reciter-sans-notes" style="--teinte:#3A4E8C"><span></span>Ce que tu dois savoir réc…</a></nav><details class="som-mob"><summary>Sommaire</summary><div class="toc">
+<ul>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#lot-1-securite-ce-que-jai-fait-a-retenir-par-cur">Lot 1 — Sécurité : ce que j'ai fait, à retenir par cœur</a></li>
+<li class="ch-item" style="--teinte:#6B4A8F"><a href="#chapitre-1-le-lot-1-en-trente-secondes">Chapitre 1 — Le lot 1 en trente secondes</a><ul>
+<li><a href="#les-sept-tickets">Les sept tickets</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#1F6E86"><a href="#chapitre-2-les-chiffres-a-connaitre-par-cur">Chapitre 2 — Les chiffres à connaître par cœur</a></li>
+<li class="ch-item" style="--teinte:#1E6B57"><a href="#chapitre-3-fiche-1-jetons-rs256-et-jwks-ep02-us06">Chapitre 3 — Fiche 1 : jetons RS256 et JWKS (EP02-US06)</a><ul>
+<li><a href="#le-probleme">Le problème</a></li>
+<li><a href="#ce-que-jai-fait">Ce que j'ai fait</a></li>
+<li><a href="#le-code-cle">Le code clé</a></li>
+<li><a href="#les-cinq-verifications-dans-lordre">Les cinq vérifications, dans l'ordre</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme">La limite que je nomme moi-même</a></li>
+<li><a href="#la-phrase-a-retenir">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A8621A"><a href="#chapitre-4-fiche-2-les-dix-tests-negatifs-ep02-us09">Chapitre 4 — Fiche 2 : les dix tests négatifs (EP02-US09)</a><ul>
+<li><a href="#le-probleme_1">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_1">Ce que j'ai fait</a></li>
+<li><a href="#le-test-le-plus-important-la-confusion-dalgorithme">Le test le plus important : la confusion d'algorithme</a></li>
+<li><a href="#la-phrase-a-retenir_1">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#A34434"><a href="#chapitre-5-fiche-3-lisolation-entre-organisations-ep03-us05">Chapitre 5 — Fiche 3 : l'isolation entre organisations (EP03-US05)</a><ul>
+<li><a href="#le-probleme_2">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_2">Ce que j'ai fait</a></li>
+<li><a href="#pourquoi-le-troisieme-test-compte-le-plus">Pourquoi le troisième test compte le plus</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme_1">La limite que je nomme moi-même</a></li>
+<li><a href="#la-phrase-a-retenir_2">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#2D5F8F"><a href="#chapitre-6-fiche-4-lidentifiant-de-correlation-ep10-us05">Chapitre 6 — Fiche 4 : l'identifiant de corrélation (EP10-US05)</a><ul>
+<li><a href="#le-probleme_3">Le problème</a></li>
+<li><a href="#ce-que-jai-fait_3">Ce que j'ai fait</a></li>
+<li><a href="#trois-details-a-savoir-expliquer">Trois détails à savoir expliquer</a></li>
+<li><a href="#la-phrase-a-retenir_3">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8C3F63"><a href="#chapitre-7-fiche-5-le-pipeline-de-lassistant-ep18">Chapitre 7 — Fiche 5 : le pipeline de l'assistant (EP18)</a><ul>
+<li><a href="#les-six-etapes-dans-assistantserviceask">Les six étapes, dans AssistantService.ask</a></li>
+<li><a href="#pourquoi-cet-ordre">Pourquoi cet ordre</a></li>
+<li><a href="#ce-qui-est-journalise-et-ce-qui-ne-lest-jamais">Ce qui est journalisé, et ce qui ne l'est jamais</a></li>
+<li><a href="#labstraction-du-fournisseur">L'abstraction du fournisseur</a></li>
+<li><a href="#la-phrase-a-retenir_4">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#7A6B1B"><a href="#chapitre-8-fiche-6-filtrage-dinjection-ep18-us03">Chapitre 8 — Fiche 6 : filtrage d'injection (EP18-US03)</a><ul>
+<li><a href="#ce-que-jai-fait_4">Ce que j'ai fait</a></li>
+<li><a href="#le-banc-dessai">Le banc d'essai</a></li>
+<li><a href="#la-limite-que-je-nomme-moi-meme-la-plus-importante-du-lot">La limite que je nomme moi-même — la plus importante du lot</a></li>
+<li><a href="#la-phrase-a-retenir_5">La phrase à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#3F6B2E"><a href="#chapitre-9-fiche-7-masquage-et-limitation-ep18-us04-us06">Chapitre 9 — Fiche 7 : masquage et limitation (EP18-US04, US06)</a><ul>
+<li><a href="#le-masquage">Le masquage</a></li>
+<li><a href="#la-limitation-de-debit">La limitation de débit</a></li>
+<li><a href="#les-deux-phrases-a-retenir">Les deux phrases à retenir</a></li>
+</ul>
+</li>
+<li class="ch-item" style="--teinte:#8A4E2A"><a href="#chapitre-10-la-demonstration-a-connaitre-par-cur">Chapitre 10 — La démonstration, à connaître par cœur</a></li>
+<li class="ch-item" style="--teinte:#4A4A55"><a href="#chapitre-11-plan-de-memorisation-sur-sept-jours">Chapitre 11 — Plan de mémorisation sur sept jours</a></li>
+<li class="ch-item" style="--teinte:#3A4E8C"><a href="#ce-que-tu-dois-savoir-reciter-sans-notes">Ce que tu dois savoir réciter sans notes</a></li>
+</ul>
+</div>
+</details><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="lot-1-securite-ce-que-jai-fait-a-retenir-par-cur">Lot 1 — Sécurité : ce que j'ai fait, à retenir par cœur</h1>
+<p><strong>But de ce support :</strong> que tu puisses raconter le lot 1 sans notes, ticket par ticket, avec le code, le pourquoi et la limite. Chaque fiche se termine par <strong>la phrase à retenir</strong> : c'est elle que tu apprends mot pour mot.</p>
+<p><strong>Le code complet</strong> de chaque fiche, ligne par ligne, est dans <code>lot-01-code-commente</code> : garde les deux ouverts côte à côte.</p>
+<p><strong>Méthode :</strong> lis une fiche par jour, récite sa phrase le lendemain, puis fais les cartes mémoire du chapitre 10. Au bout d'une semaine, tu dois pouvoir dérouler le chapitre 1 en trois minutes.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#6B4A8F"><h1 id="chapitre-1-le-lot-1-en-trente-secondes">Chapitre 1 — Le lot 1 en trente secondes</h1>
+<blockquote>
+<p>Au lot 1, j'ai sécurisé l'identité et l'assistant IA de CrisisShield. Les jetons sont signés en RS256 avec une clé publique exposée en JWKS, et dix tests négatifs vérifient qu'aucun jeton falsifié ne passe. L'isolation entre organisations est prouvée par test. Chaque requête porte un identifiant de corrélation. Et l'assistant a trois garde-fous devant le modèle : limitation de débit, filtrage d'injection, masquage des données personnelles. Vingt-neuf tests en tout.</p>
+</blockquote>
+<p><strong>C'est le texte à apprendre en premier.</strong> Tout le reste du support détaille une phrase de ce paragraphe.</p>
+<h2 id="les-sept-tickets">Les sept tickets</h2>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Ce que j'ai fait</th>
+<th>Fichier principal</th>
+<th>Preuve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EP02-US06</td>
+<td>jetons signés en RS256, clé publique en JWKS</td>
+<td><code>JwtUtil</code>, <code>JwksController</code></td>
+<td><code>/.well-known/jwks.json</code></td>
+</tr>
+<tr>
+<td>EP02-US09</td>
+<td>10 tests négatifs sur les jetons</td>
+<td><code>JwtUtilTest</code></td>
+<td>10 tests verts</td>
+</tr>
+<tr>
+<td>EP03-US05</td>
+<td>isolation entre organisations prouvée</td>
+<td><code>TenantIsolationTest</code></td>
+<td>3 tests verts</td>
+</tr>
+<tr>
+<td>EP10-US05</td>
+<td>identifiant de corrélation</td>
+<td><code>CorrelationIdFilter</code></td>
+<td>en-tête <code>X-Correlation-Id</code></td>
+</tr>
+<tr>
+<td>EP18-US03</td>
+<td>filtrage d'injection de prompt</td>
+<td><code>PromptGuard</code></td>
+<td>banc d'essai 20 + 10</td>
+</tr>
+<tr>
+<td>EP18-US04</td>
+<td>masquage des données personnelles</td>
+<td><code>PiiMasker</code></td>
+<td><code>maskedEntities: 1</code></td>
+</tr>
+<tr>
+<td>EP18-US06</td>
+<td>limitation de débit</td>
+<td><code>RateLimiter</code></td>
+<td>code HTTP 429</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#1F6E86"><h1 id="chapitre-2-les-chiffres-a-connaitre-par-cur">Chapitre 2 — Les chiffres à connaître par cœur</h1>
+<p>Un chiffre précis vaut une phrase d'explication. Apprends ce tableau.</p>
+<table>
+<thead>
+<tr>
+<th>Chiffre</th>
+<th>Ce que c'est</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>29</strong></td>
+<td>tests au total, en 7 classes</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>tests négatifs sur les jetons</td>
+</tr>
+<tr>
+<td><strong>15 minutes</strong></td>
+<td>durée de vie d'un jeton (<code>900000</code> millisecondes)</td>
+</tr>
+<tr>
+<td><strong>5 secondes</strong></td>
+<td>tolérance d'horloge sur l'expiration</td>
+</tr>
+<tr>
+<td><strong>8 octets</strong></td>
+<td>l'identifiant de clé <code>kid</code> : les 8 premiers octets du SHA-256 de la clé publique</td>
+</tr>
+<tr>
+<td><strong>14</strong></td>
+<td>motifs d'injection dans <code>PromptGuard</code></td>
+</tr>
+<tr>
+<td><strong>4 000</strong></td>
+<td>caractères maximum par question</td>
+</tr>
+<tr>
+<td><strong>20 + 10</strong></td>
+<td>le banc d'essai : 20 attaques, 10 questions légitimes</td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td>faux positif exigé sur les questions légitimes</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>types de données masquées : IBAN, numéro de sécurité sociale, courriel, téléphone</td>
+</tr>
+<tr>
+<td><strong>20 puis 20 par minute</strong></td>
+<td>la limitation de débit : 20 requêtes d'un coup, puis 20 par minute</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>étapes du pipeline de l'assistant</td>
+</tr>
+<tr>
+<td><strong>200, 422, 429</strong></td>
+<td>les trois réponses de l'assistant : accepté, refusé par le filtre, quota dépassé</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section><section class="chapitre" style="--teinte:#1E6B57"><h1 id="chapitre-3-fiche-1-jetons-rs256-et-jwks-ep02-us06">Chapitre 3 — Fiche 1 : jetons RS256 et JWKS (EP02-US06)</h1>
+<h2 id="le-probleme">Le problème</h2>
+<p>Avant, les jetons étaient signés en <strong>HS256</strong> avec un secret partagé écrit dans <code>docker-compose.yml</code>. Quiconque lit ce fichier peut fabriquer un jeton administrateur.</p>
+<h2 id="ce-que-jai-fait">Ce que j'ai fait</h2>
+<p>Le jeton est signé avec une <strong>clé privée RSA</strong> et vérifié avec la <strong>clé publique</strong>. La clé privée ne sert qu'à signer, dans <code>JwtUtil</code>. La clé publique est publiée sur <code>/.well-known/jwks.json</code>.</p>
+<h2 id="le-code-cle">Le code clé</h2>
+<p>À l'émission, dans <code>JwtUtil.generateToken</code> :</p>
+<p><code>java
+.setHeaderParam("kid", keyId)
+.setSubject(userDetails.getUsername())
+.setIssuer(ISSUER)                      // "crisisshield"
+.setAudience(AUDIENCE)                  // "crisisshield-api"
+.signWith(privateKey, SignatureAlgorithm.RS256)</code></p>
+<p>À la vérification, dans <code>JwtUtil.parse</code> :</p>
+<p><code>java
+Jwts.parserBuilder()
+    .setSigningKey(publicKey)           // impose RS256 : HS256 ou "none" rejetés
+    .requireIssuer(ISSUER)
+    .requireAudience(AUDIENCE)
+    .setAllowedClockSkewSeconds(CLOCK_SKEW_SECONDS)   // 5 secondes</code></p>
+<p>Le jeton porte aussi <code>organisationId</code>, mais <strong>à titre d'information seulement</strong> : à chaque requête, <code>JwtAuthenticationFilter</code> recharge l'utilisateur en base et prend son organisation <strong>en base</strong>. Si un utilisateur change d'organisation, son ancien jeton ne lui donne pas accès à l'ancienne. La base fait foi, pas le jeton.</p>
+<h2 id="les-cinq-verifications-dans-lordre">Les cinq vérifications, dans l'ordre</h2>
+<ol>
+<li><strong>Signature</strong> avec la clé publique</li>
+<li><strong>Émetteur</strong> égal à <code>crisisshield</code></li>
+<li><strong>Audience</strong> égale à <code>crisisshield-api</code></li>
+<li><strong>Expiration</strong>, avec 5 secondes de tolérance</li>
+<li><strong>Algorithme</strong> imposé par la clé, jamais lu dans le jeton</li>
+</ol>
+<h2 id="la-limite-que-je-nomme-moi-meme">La limite que je nomme moi-même</h2>
+<p>En développement, la paire de clés est générée au démarrage : les jetons ne survivent pas à un redémarrage, et deux instances auraient deux clés différentes. En production, la clé privée viendra d'un module matériel ou d'un service de gestion de clés.</p>
+<h2 id="la-phrase-a-retenir">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« Avec HS256, tous ceux qui vérifient peuvent aussi forger. Avec RS256, seul l'émetteur détient la clé privée ; tout le monde vérifie avec la clé publique, et personne d'autre ne peut forger. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#A8621A"><h1 id="chapitre-4-fiche-2-les-dix-tests-negatifs-ep02-us09">Chapitre 4 — Fiche 2 : les dix tests négatifs (EP02-US09)</h1>
+<h2 id="le-probleme_1">Le problème</h2>
+<p>Tout le monde teste qu'un bon jeton passe. Presque personne ne teste qu'un mauvais jeton est rejeté. Or c'est là que sont les failles.</p>
+<h2 id="ce-que-jai-fait_1">Ce que j'ai fait</h2>
+<p>Dix tests dans <code>JwtUtilTest</code>. Un seul vérifie le cas nominal ; les neuf autres construisent un jeton hostile et vérifient son rejet.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Attaque couverte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jeton valide</td>
+<td>le cas nominal, pour comparaison</td>
+</tr>
+<tr>
+<td>mauvais sujet</td>
+<td>un jeton d'alice présenté pour bob</td>
+</tr>
+<tr>
+<td>jeton expiré</td>
+<td>rejouer un vieux jeton</td>
+</tr>
+<tr>
+<td>autre clé privée</td>
+<td>l'attaquant signe avec sa propre clé</td>
+</tr>
+<tr>
+<td>mauvaise audience</td>
+<td>un jeton d'un autre service accepté à tort</td>
+</tr>
+<tr>
+<td>mauvais émetteur</td>
+<td>un jeton d'un fournisseur étranger</td>
+</tr>
+<tr>
+<td><code>alg=none</code></td>
+<td>un jeton <strong>non signé</strong></td>
+</tr>
+<tr>
+<td>confusion d'algorithme</td>
+<td>la clé <strong>publique</strong> utilisée comme secret HS256</td>
+</tr>
+<tr>
+<td>jeton altéré</td>
+<td>le sujet modifié après signature</td>
+</tr>
+<tr>
+<td>chaîne absurde</td>
+<td>rejet sans exception, sans plantage</td>
+</tr>
+</tbody>
+</table>
+<h2 id="le-test-le-plus-important-la-confusion-dalgorithme">Le test le plus important : la confusion d'algorithme</h2>
+<p>L'attaquant connaît la clé publique — elle est publiée. Il fabrique un jeton qui annonce <code>HS256</code> et le signe en utilisant cette clé publique comme secret. Une bibliothèque naïve lit l'algorithme dans l'en-tête, fait confiance, et valide.</p>
+<p>Ma parade : l'algorithme est imposé par la clé que je fournis au vérificateur. Un jeton HS256 est rejeté d'office.</p>
+<h2 id="la-phrase-a-retenir_1">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« On ne demande jamais à l'entrée hostile comment il faut la vérifier. L'algorithme vient de ma configuration, jamais de l'en-tête du jeton. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#A34434"><h1 id="chapitre-5-fiche-3-lisolation-entre-organisations-ep03-us05">Chapitre 5 — Fiche 3 : l'isolation entre organisations (EP03-US05)</h1>
+<h2 id="le-probleme_2">Le problème</h2>
+<p>CrisisShield sert plusieurs organisations. Si l'une voit les incidents d'une autre, c'est la faille la plus grave possible pour le produit.</p>
+<h2 id="ce-que-jai-fait_2">Ce que j'ai fait</h2>
+<p>Le filtre Hibernate <code>orgFilter</code> ajoute automatiquement <code>WHERE organisation_id = :orgId</code> à chaque requête. <code>TenantIsolationTest</code> le prouve avec deux organisations et trois utilisateurs, en trois tests :</p>
+<ol>
+<li><strong>Filtre actif sur A</strong> : on ne voit que les utilisateurs de A</li>
+<li><strong>Filtre actif sur B</strong> : l'utilisateur de A est invisible, même cherché par son nom</li>
+<li><strong>Sans filtre</strong> : tout est visible</li>
+</ol>
+<h2 id="pourquoi-le-troisieme-test-compte-le-plus">Pourquoi le troisième test compte le plus</h2>
+<p>Il prouve que le filtre est <strong>la seule barrière</strong>. Si un jour quelqu'un désactive <code>TenantFilter</code>, toutes les données se mélangent. Ce test documente cette dépendance au lieu de la cacher.</p>
+<h2 id="la-limite-que-je-nomme-moi-meme_1">La limite que je nomme moi-même</h2>
+<p>Le filtre Hibernate ne s'applique pas à <code>EntityManager.find(id)</code>. Un accès direct par identifiant le contourne. Les services doivent donc passer par les méthodes de dépôt.</p>
+<h2 id="la-phrase-a-retenir_2">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« Le développeur ne peut pas oublier de filtrer par organisation, parce qu'il n'a pas à y penser : Hibernate ajoute la clause à chaque requête. Et mon test prouve que ce filtre est la seule barrière. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#2D5F8F"><h1 id="chapitre-6-fiche-4-lidentifiant-de-correlation-ep10-us05">Chapitre 6 — Fiche 4 : l'identifiant de corrélation (EP10-US05)</h1>
+<h2 id="le-probleme_3">Le problème</h2>
+<p>Un utilisateur signale une erreur. Dans les journaux, des milliers de lignes. Impossible de savoir lesquelles appartiennent à sa requête.</p>
+<h2 id="ce-que-jai-fait_3">Ce que j'ai fait</h2>
+<p><code>CorrelationIdFilter</code>, exécuté <strong>en tout premier</strong> (<code>HIGHEST_PRECEDENCE</code>) :</p>
+<p><code>java
+String id = request.getHeader("X-Correlation-Id");
+if (id == null || id.isBlank() || id.length() &gt; 64) {
+    id = UUID.randomUUID().toString();       // généré si absent ou suspect
+}
+MDC.put("correlationId", id);                // présent dans chaque ligne de journal
+response.setHeader("X-Correlation-Id", id);  // renvoyé à l'appelant</code></p>
+<h2 id="trois-details-a-savoir-expliquer">Trois détails à savoir expliquer</h2>
+<ul>
+<li><strong>En tout premier</strong> : pour couvrir aussi les requêtes refusées par l'authentification.</li>
+<li><strong>Limite à 64 caractères</strong> : une valeur venant de l'extérieur est hostile. Sans limite, un attaquant peut injecter n'importe quoi dans tes journaux.</li>
+<li><strong><code>MDC.remove</code> dans un <code>finally</code></strong> : les fils d'exécution sont réutilisés ; sans nettoyage, la requête suivante hériterait de l'identifiant.</li>
+</ul>
+<h2 id="la-phrase-a-retenir_3">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« Chaque requête reçoit un identifiant, repris de l'appelant ou généré, présent dans chaque ligne de journal et renvoyé dans la réponse. Un utilisateur me donne cet identifiant, je retrouve tout son parcours en une recherche. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#8C3F63"><h1 id="chapitre-7-fiche-5-le-pipeline-de-lassistant-ep18">Chapitre 7 — Fiche 5 : le pipeline de l'assistant (EP18)</h1>
+<p>C'est la fiche la plus demandée en entretien. Apprends le schéma par cœur, puis refais-le de mémoire sur une feuille.</p>
+<h2 id="les-six-etapes-dans-assistantserviceask">Les six étapes, dans <code>AssistantService.ask</code></h2>
+<p><code>question
+   │
+   ▼  1. RateLimiter.tryAcquire      quota dépassé ?        → 429, fin
+   ▼  2. PromptGuard.inspectInput    injection détectée ?   → 422, fin
+   ▼  3. PiiMasker.mask              alice@a.test → [[EMAIL_1]]
+   ▼  4. ModelProvider.complete      le modèle reçoit le texte masqué
+   ▼  5. PromptGuard.sanitizeOutput  la réponse contient le prompt système ? → bloquée
+   ▼  6. masked.restore              [[EMAIL_1]] → alice@a.test
+   ▼
+réponse, 200</code></p>
+<h2 id="pourquoi-cet-ordre">Pourquoi cet ordre</h2>
+<p><strong>Du moins cher au plus cher.</strong> Le quota coûte une lecture en mémoire. Le filtre coûte quelques expressions régulières. Le modèle coûte de l'argent et des secondes. On rejette avant de payer.</p>
+<h2 id="ce-qui-est-journalise-et-ce-qui-ne-lest-jamais">Ce qui est journalisé, et ce qui ne l'est jamais</h2>
+<p>Journalisé : utilisateur, organisation, fournisseur, latence, taille de la question, nombre d'entités masquées.
+<strong>Jamais journalisé : le contenu de la question.</strong> Sinon les journaux deviendraient une base de données de secrets d'entreprise.</p>
+<h2 id="labstraction-du-fournisseur">L'abstraction du fournisseur</h2>
+<p><code>ModelProvider</code> est une interface à deux méthodes : <code>name()</code> et <code>complete()</code>. Aujourd'hui <code>MockModelProvider</code> ; demain un vrai modèle, en changeant une seule classe.</p>
+<h2 id="la-phrase-a-retenir_4">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« Six étapes, du moins cher au plus cher : quota, filtre, masquage, modèle, contrôle de sortie, restauration. On rejette avant de payer, et on ne journalise jamais le contenu de la question. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#7A6B1B"><h1 id="chapitre-8-fiche-6-filtrage-dinjection-ep18-us03">Chapitre 8 — Fiche 6 : filtrage d'injection (EP18-US03)</h1>
+<h2 id="ce-que-jai-fait_4">Ce que j'ai fait</h2>
+<p><code>PromptGuard.inspectInput</code> refuse une question vide, une question de plus de 4 000 caractères, ou une question qui correspond à l'un des <strong>14 motifs</strong> :</p>
+<ul>
+<li>consignes de contournement : « ignore previous instructions », « oublie tes consignes »</li>
+<li>extraction du prompt système : « reveal your prompt », « montre-moi tes instructions »</li>
+<li>changement d'identité : « you are now », « tu es maintenant », « developer mode »</li>
+<li>faux séparateurs : <code>system:</code>, <code>&lt;system&gt;</code>, <code>### Instruction</code></li>
+</ul>
+<p>Avant la comparaison, le texte est <strong>normalisé</strong> : minuscules, sans accents, espaces réduits. « Oublie TES consignes » et « oublie tes consignes » sont traités pareil.</p>
+<p><code>sanitizeOutput</code> fait le contrôle inverse : si la réponse contient le prompt système, elle est bloquée.</p>
+<h2 id="le-banc-dessai">Le banc d'essai</h2>
+<p><code>PromptGuardBenchTest</code> : 20 attaques, 10 questions légitimes. Il exige <strong>zéro faux positif</strong> et publie le taux de détection.</p>
+<p><strong>Pourquoi zéro faux positif est exigé :</strong> un filtre qui bloque une vraie question sera désactivé par les utilisateurs dès la première semaine.</p>
+<h2 id="la-limite-que-je-nomme-moi-meme-la-plus-importante-du-lot">La limite que je nomme moi-même — la plus importante du lot</h2>
+<p>Aucun filtre ne bloque toute injection. Un modèle ne distingue pas l'instruction de la donnée : c'est une injection <strong>par conception</strong>. La vraie défense est ailleurs : le modèle n'a <strong>aucune action possible</strong>. Une injection qui passe obtient au pire une réponse déplacée, jamais un effet. C'est le principe de moindre capacité.</p>
+<h2 id="la-phrase-a-retenir_5">La phrase à retenir</h2>
+<blockquote>
+<p><strong>« Mon filtre est une première couche, mesurée : zéro faux positif exigé. Mais la vraie défense, c'est que le modèle ne peut rien faire. Une injection réussie doit rester sans conséquence. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#3F6B2E"><h1 id="chapitre-9-fiche-7-masquage-et-limitation-ep18-us04-us06">Chapitre 9 — Fiche 7 : masquage et limitation (EP18-US04, US06)</h1>
+<h2 id="le-masquage">Le masquage</h2>
+<p><code>PiiMasker</code> détecte quatre types : <strong>IBAN</strong>, <strong>numéro de sécurité sociale</strong>, <strong>courriel</strong>, <strong>téléphone</strong>. Chacun est remplacé par un marqueur stable, <code>[[EMAIL_1]]</code>, <code>[[TELEPHONE_1]]</code>.</p>
+<p>Trois points :
+- <strong>L'ordre compte</strong> : les motifs longs (IBAN, sécurité sociale) passent avant les courts (téléphone), sinon un morceau d'IBAN serait pris pour un téléphone.
+- <strong>Même valeur, même marqueur</strong> : <code>alice@a.test</code> cité deux fois devient deux fois <code>[[EMAIL_1]]</code>. Le modèle comprend que c'est la même personne.
+- <strong>Restauration</strong> : la réponse du modèle contient <code>[[EMAIL_1]]</code>, l'utilisateur reçoit <code>alice@a.test</code>.</p>
+<p><strong>La preuve :</strong> <code>AssistantServiceTest</code> place un fournisseur <strong>espion</strong> qui enregistre ce qu'il reçoit. Il vérifie que <code>alice@a.test</code> n'y figure pas, et que la réponse rendue le contient.</p>
+<p><strong>La limite :</strong> les noms de personnes ne sont pas couverts par des expressions régulières. Il faut un détecteur d'entités nommées.</p>
+<h2 id="la-limitation-de-debit">La limitation de débit</h2>
+<p><code>RateLimiter</code> : un <strong>seau à jetons</strong> par utilisateur. 20 jetons au départ, 20 rechargés par minute. Chaque question consomme un jeton. Seau vide : réponse 429 avec l'en-tête <code>Retry-After: 60</code>.</p>
+<p><strong>La limite :</strong> l'état est en mémoire, donc propre à une instance. À deux instances, la limite réelle double. Il faudra Redis au passage sur Kubernetes.</p>
+<h2 id="les-deux-phrases-a-retenir">Les deux phrases à retenir</h2>
+<blockquote>
+<p><strong>« Le fournisseur ne voit jamais une donnée personnelle : il raisonne sur des marqueurs stables, et je restaure les vraies valeurs dans la réponse. Un test avec un fournisseur espion le prouve. »</strong></p>
+<p><strong>« Un seau à jetons par utilisateur, vingt requêtes puis vingt par minute. Correct pour une instance, faux dès la deuxième : je le sais, et Redis est prévu. »</strong></p>
+</blockquote>
+<hr />
+</section><section class="chapitre" style="--teinte:#8A4E2A"><h1 id="chapitre-10-la-demonstration-a-connaitre-par-cur">Chapitre 10 — La démonstration, à connaître par cœur</h1>
+<p>Tu dois pouvoir la lancer et commenter chaque ligne sans regarder.</p>
+<p><code>bash
+bash scripts/demo.sh</code></p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Ce que tu vois</th>
+<th>Ce que tu dis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>une clé JSON avec <code>"alg":"RS256"</code> et un <code>kid</code></td>
+<td>« la clé publique est publiée ; n'importe quel service vérifie sans secret »</td>
+</tr>
+<tr>
+<td>2</td>
+<td>un jeton qui commence par <code>eyJ</code></td>
+<td>« connexion par l'annuaire LDAP, puis jeton RS256 de quinze minutes »</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>"maskedEntities":1</code></td>
+<td>« le courriel a été masqué avant le modèle, et restauré dans la réponse »</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>"code":"REFUSED_GUARD"</code></td>
+<td>« l'injection est refusée avant tout appel au modèle : ça ne coûte rien »</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>HTTP 403</code></td>
+<td>« sans jeton, rien ne passe »</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Une imprécision à connaître, et à dire toi-même :</strong> sans jeton, l'application répond <code>403</code> (interdit) alors que le bon code est <code>401</code> (non authentifié). C'est parce qu'aucun point d'entrée d'authentification n'est déclaré dans la chaîne Spring Security, qui renvoie alors 403 par défaut. Ce sera corrigé au lot 6 : avec Keycloak, l'application devient un serveur de ressources OAuth 2, qui renvoie 401 nativement. En entretien, le signaler avant qu'on te le fasse remarquer montre que tu connais la différence : 401, « je ne sais pas qui tu es » ; 403, « je sais qui tu es, et c'est non ».</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#4A4A55"><h1 id="chapitre-11-plan-de-memorisation-sur-sept-jours">Chapitre 11 — Plan de mémorisation sur sept jours</h1>
+<table>
+<thead>
+<tr>
+<th>Jour</th>
+<th>Ce que tu fais</th>
+<th>Durée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>lire les chapitres 1 et 2, réciter le paragraphe de trente secondes</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>fiches 1 et 2 ; réciter leurs phrases</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>fiches 3 et 4 ; redessiner de mémoire le parcours d'une requête</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>fiche 5 ; <strong>redessiner le pipeline sur une feuille, sans regarder</strong></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>fiches 6 et 7 ; les cartes mémoire</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>lancer la démonstration en la commentant à voix haute</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>tout le lot à voix haute, sans notes, en cinq minutes</strong> — enregistre-toi</td>
+<td>15 min</td>
+</tr>
+</tbody>
+</table>
+<p>Puis tous les trois jours : les cartes mémoire, cinq minutes. C'est la répétition espacée : on retient ce qu'on récupère souvent de mémoire, pas ce qu'on relit souvent.</p>
+<hr />
+</section><section class="chapitre" style="--teinte:#3A4E8C"><h1 id="ce-que-tu-dois-savoir-reciter-sans-notes">Ce que tu dois savoir réciter sans notes</h1>
+<ul class="controle">
+<li><input type="checkbox"><span>Le paragraphe de trente secondes du chapitre 1</span></li>
+<li><input type="checkbox"><span>Les chiffres : 29 tests, 10 négatifs, 15 minutes, 14 motifs, 4 types masqués, 20 puis 20 par minute</span></li>
+<li><input type="checkbox"><span>La différence HS256 et RS256, en une phrase</span></li>
+<li><input type="checkbox"><span>Les cinq vérifications d'un jeton, dans l'ordre</span></li>
+<li><input type="checkbox"><span>L'attaque par confusion d'algorithme et la parade</span></li>
+<li><input type="checkbox"><span>Pourquoi le troisième test d'isolation est le plus important</span></li>
+<li><input type="checkbox"><span>Les six étapes du pipeline, dans l'ordre, et pourquoi cet ordre</span></li>
+<li><input type="checkbox"><span>Ce qui n'est jamais journalisé</span></li>
+<li><input type="checkbox"><span>Le principe de moindre capacité</span></li>
+<li><input type="checkbox"><span>Les quatre limites : clé générée au démarrage, <code>find</code> qui contourne le filtre, noms non masqués, quota par instance</li>
+<li><input type="checkbox"><span>La démonstration, commentée ligne par ligne</span></li>
+</ul></section></div></main></div><script>(function(){var b=document.getElementById('progression');function m(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(h>0?window.scrollY/h*100:0)+'%';}
+var S=[].slice.call(document.querySelectorAll('section.chapitre'));function t(){var p=window.scrollY+140,c=null;S.forEach(function(s){if(s.offsetTop<=p)c=s.style.getPropertyValue('--teinte');});if(c)b.style.background=c;}
+var L=[].slice.call(document.querySelectorAll('nav.som a[href^="#"]')),C=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function a(){var p=window.scrollY+120,i=-1;C.forEach(function(c,k){if(c&&c.offsetTop<=p)i=k;});L.forEach(function(x,k){x.classList.toggle('actif',k===i);});}
+['scroll','resize'].forEach(function(e){window.addEventListener(e,function(){m();t();a();},{passive:true});});m();t();a();
+var K=[].slice.call(document.querySelectorAll('ul.controle input'));if(K.length){var c=document.createElement('p');c.className='compteur';document.querySelector('ul.controle').insertAdjacentElement('afterend',c);
+function n(){var k=K.filter(function(i){return i.checked;}).length;c.innerHTML='<b>'+k+'</b> / '+K.length+(k===K.length?' — pret.':' points maitrises.');}K.forEach(function(i){i.addEventListener('change',n);});n();}})();</script></body></html>

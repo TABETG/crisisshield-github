@@ -272,7 +272,7 @@ Tout cela est écrit et cohérent, mais **pas encore déployé** sur un cluster.
 - **Kubernetes et Terraform sont écrits, pas exécutés.** Le chart est cohérent, le plan AWS est un document.
 - **La clé JWT est générée au démarrage.** Pas encore de KMS ni de fichier de clé monté.
 - **La PKI interne n'existe pas encore.** Bouncy Castle est dans le `pom`, `CertificateRecord` attend son service. Tout l'épic EP09 est devant toi.
-- **44 tests, tous unitaires ou d'intégration légère.** Aucun test de bout en bout automatisé par HTTP — la démonstration du chapitre 8 bis le fait à la main.
+- **29 tests, tous unitaires ou d'intégration légère.** Aucun test de bout en bout automatisé par HTTP — la démonstration du chapitre 8 bis le fait à la main.
 
 Ce sont exactement les tickets du backlog enrichi. Quand on te demande « et ensuite ? », tu as la réponse.
 
@@ -445,7 +445,7 @@ Tout. Le backend refuse de démarrer sans elle, et c'est voulu : une application
 Ce qui manque, et que je nomme : pas encore de réplique ni de sauvegarde testée. C'est l'épic EP16.
 </details>
 
-<details><summary>23. Tu as 44 tests. Qu'est-ce qu'ils prouvent, et qu'est-ce qu'ils ne prouvent pas ?</summary>
+<details><summary>23. Tu as 29 tests. Qu'est-ce qu'ils prouvent, et qu'est-ce qu'ils ne prouvent pas ?</summary>
 
 Ils prouvent les propriétés de sécurité unité par unité : les jetons invalides sont rejetés, l'isolation fonctionne, le fournisseur ne voit pas les données, l'injection est filtrée, le quota est respecté.
 
