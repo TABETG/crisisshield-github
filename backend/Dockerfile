@@ -1,5 +1,5 @@
 # --- Etape 1 : construction ---
-FROM maven:3.9.9-eclipse-temurin-21 AS builder
+FROM maven:3-eclipse-temurin-24 AS builder
 WORKDIR /app
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 MAVEN_OPTS="-Dfile.encoding=UTF-8"
 COPY pom.xml .
